@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="assets/css/home-global.css">
+
+
+
+<style>
+/* Standardized Background Texture */
+html, body {
+    background-color: #fcf9f9 !important;
+    background-image: url('assets/images/bg.png?v=59045c99') !important;
+    background-attachment: fixed !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: repeat !important;
+}
+.site-wrapper, .site-main, .inner {
+    background-color: transparent !important;
+}
+body::before {
+    display: none !important;
+}
+</style>
+
+<style>
+/* Global Design Consistency & Centering Fixes */
+html, body {
+    background-color: #fcf9f9 !important;
+    background-image: url('assets/images/bg.png?v=59045c99') !important;
+    background-attachment: fixed !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: repeat !important;
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure the logo (instance-3) is always centered and correctly sized */
+.image-component.instance-3 {
+    text-align: center !important;
+    width: 100% !important;
+    display: block !important;
+    margin-bottom: 2rem !important;
+}
+
+.image-component.instance-3 > .frame {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 36rem !important;
+    max-width: 90% !important;
+    margin-top: -2rem !important;
+}
+
+/* Center the main content wrapper */
+.site-main, .site-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    background-color: transparent !important;
+}
+
+.site-main > .inner {
+    width: 100% !important;
+    max-width: 1200px !important; /* Standardized width for better readability */
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+    background-color: transparent !important;
+}
+
+/* Center all headings for a prestigious look */
+h1, h2, .text-component.style-1 {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+body::before {
+    display: none !important;
+}
+</style>
+</head>
+
+
+
+
+<body>
+
+    
+
+
+    
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  window.supabase = window.supabase.createClient('https://test.supabase.co', 'dummy_key');
+  console.log(typeof supabase.from);
+</script>
+<script src="assets/js/site-announcement.js"></script>
+
+  <script src="assets/js/bg-music.js"></script>
+</body>
+</html>

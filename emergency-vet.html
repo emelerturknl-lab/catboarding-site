@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Emergency Veterinary Help Netherlands | Black Princess & White Prince</title>
+  <meta charset="utf-8">
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta name="color-scheme" content="light only">
+  <meta name="description"
+    content="Quickly find contact information for emergency veterinary care in the Netherlands. Some animal hospitals offering emergency care and guidance.">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --primary-red: #E74C3C;
+      --soft-red: #FFF5F5;
+      --gold-accent: #D9A3A3;
+      --text-dark: #2D3436;
+      --text-muted: #636E72;
+      --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      --border-radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--soft-red);
+      color: var(--text-dark);
+      line-height: 1.6;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .brand-font {
+      font-family: 'Dancing Script', cursive !important;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* Header Section */
+    .hero {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px 0;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      color: var(--primary-red);
+      margin: 0;
+      font-family: 'Dancing Script', cursive;
+    }
+
+    /* Top Emergency Notice Card */
+    .notice-card {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 30px;
+      margin-bottom: 40px;
+      box-shadow: var(--card-shadow);
+      border: 2px solid rgba(231, 76, 60, 0.2);
+      text-align: center;
+    }
+
+    .notice-card h2 {
+      color: var(--primary-red);
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin: 0 0 15px 0;
+    }
+
+    .notice-card p {
+      font-size: 1.05rem;
+      color: var(--text-dark);
+      margin-bottom: 15px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .notice-card .small-line {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      border-top: 1px solid #F1F1F1;
+      padding-top: 15px;
+      margin-top: 5px;
+    }
+
+    /* Section Title */
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin: 40px 0 20px;
+      text-align: center;
+      color: var(--text-dark);
+    }
+
+    /* Hospital Cards */
+    .hospital-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .hospital-card {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s ease;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #F1F1F1;
+    }
+
+    .hospital-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .hospital-label {
+      display: inline-block;
+      background: #FEECEC;
+      color: var(--primary-red);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .hospital-name {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin: 0 0 5px 0;
+      color: var(--text-dark);
+      display: block;
+    }
+
+    .hospital-city {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gold-accent);
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .hospital-info {
+      margin-bottom: 20px;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .info-row strong {
+      color: var(--text-dark);
+    }
+
+    .distance-tag {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      background: var(--soft-red);
+      color: var(--primary-red);
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 5px 15px;
+      border-radius: 100px;
+    }
+
+    .card-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px;
+      border-radius: 16px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .btn-outline {
+      border: 2px solid #F1F1F1;
+      color: var(--text-dark);
+    }
+
+    .btn-outline:hover {
+      background: #F1F1F1;
+    }
+
+    .btn-primary {
+      background: var(--primary-red);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #D63031;
+    }
+
+    /* Legal Disclaimer */
+    .legal-disclaimer {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      text-align: center;
+      margin: 20px 0 40px;
+      padding: 0 20px;
+      font-style: italic;
+    }
+
+    /* Sorting Section */
+    .sorting-section {
+      background: white;
+      border-radius: var(--border-radius);
+      padding: 40px 30px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      margin-top: 20px;
+      border: 1px solid #F1F1F1;
+    }
+
+    .sorting-section h3 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin: 0 0 10px 0;
+    }
+
+    .sorting-section p {
+      color: var(--text-muted);
+      margin-bottom: 25px;
+      font-weight: 500;
+    }
+
+    .sort-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--text-dark);
+      color: white;
+      padding: 18px 35px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 1.1rem;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .sort-btn:hover {
+      background: #000;
+      transform: scale(1.02);
+    }
+
+    .sort-btn:active {
+      transform: scale(0.98);
+    }
+
+    .status-msg {
+      margin-top: 15px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--primary-red);
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 60px 0;
+    }
+
+    .back-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: var(--primary-red);
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 2.4rem;
+      }
+
+      .card-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .hospital-name {
+        font-size: 1.2rem;
+      }
+
+      .container {
+        padding: 30px 15px;
+      }
+
+      .distance-tag {
+        position: static;
+        display: inline-block;
+        margin-bottom: 10px;
+      }
+
+      .notice-card h2 {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="main-header">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="rules.html">Rules</a>
+      <a href="emergency-vet.html">Emergency</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="hero">
+      <h1 class="brand-font">Emergency Veterinary Help</h1>
+    </header>
+
+    <!-- Top Emergency Notice -->
+    <div class="notice-card">
+      <h2>Emergency Notice</h2>
+      <p>Black Princess & White Prince is not a veterinary clinic, emergency service, or medical advice provider. This
+        page is only intended to help visitors find publicly available emergency veterinary contact information faster.
+      </p>
+      <div class="small-line">
+        In an emergency, always contact a licensed veterinarian or animal hospital directly.
+      </div>
+    </div>
+
+    <!-- Hospital List Section -->
+    <h2 class="section-title">Some Animal Hospitals Offering Emergency Care in the Netherlands</h2>
+
+    <div class="legal-disclaimer" style="margin-top: 0; margin-bottom: 20px;">
+      This is a curated list of some animal hospitals in the Netherlands that may offer emergency care. Availability,
+      opening hours, address details, phone numbers, and emergency services can change. Always contact the hospital
+      directly before travelling. </div>
+
+    <div id="hospital-container" class="hospital-list">
+      <!-- Hospitals injected via JS on load -->
+    </div>
+
+    <!-- Legal Disclaimer -->
+    <div class="legal-disclaimer">
+      Hospital information is provided for convenience only and may not be complete or up to date. Please verify
+      address, opening hours, phone number, and
+      availability directly with the hospital before travelling.
+    </div>
+    <p style="font-size: 12px; opacity: 0.7; margin-top: 8px;">Last updated: April 2026</p>
+
+
+    <!-- Location Sorting Section -->
+    <div class="sorting-section">
+      <h3>Find the nearest emergency vet</h3>
+      <p>Share your location to sort the hospitals from nearest to farthest.</p>
+      <button id="sort-btn" class="sort-btn" onclick="sortByLocation()">
+        📍 Sort by my location
+      </button>
+      <div id="status-msg" class="status-msg"></div>
+    </div>
+
+    <footer>
+      <a href="index.html" class="back-link">← Back to Home</a>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8PdQzSDHqUhpd8dPfMAYHdoS63Pey9yY&libraries=geometry"></script>
+
+  <script>
+    const hospitals = [
+      {
+        name: "Evidensia Dierenziekenhuis Amsterdam",
+        city: "Amstelveen",
+        lat: 52.3164,
+        lng: 4.9085,
+        addr: "De Oude Molen 2, 1184 VW Amstelveen",
+        phone: "020 308 07 50",
+        website: "https://www.evidensiadierenziekenhuis.nl/amsterdam"
+      },
+      {
+        name: "Medisch Centrum voor Dieren",
+        city: "Amsterdam",
+        lat: 52.3908,
+        lng: 4.8475,
+        addr: "Isolatorweg 45, 1014 AS Amsterdam",
+        phone: "020 7 400 600",
+        website: "https://www.mcvoordieren.nl"
+      },
+      {
+        name: "Universiteitskliniek Gezelschapsdieren Utrecht",
+        city: "Utrecht",
+        lat: 52.0805,
+        lng: 5.1762,
+        addr: "Yalelaan, Utrecht",
+        phone: "0900 222 3000",
+        website: "https://www.diergeneeskunde.nl"
+      },
+      {
+        name: "Evidensia Dierenziekenhuis Arnhem",
+        city: "Arnhem",
+        lat: 51.9685,
+        lng: 5.9612,
+        addr: "Meander 10, 6825 MB Arnhem",
+        phone: "026 333 37 30",
+        website: "https://www.evidensiadierenziekenhuis.nl/arnhem"
+      },
+      {
+        name: "AniCura Dierenziekenhuis Leeuwarden",
+        city: "Leeuwarden",
+        lat: 53.1952,
+        lng: 5.8214,
+        addr: "Jelsumerstraat 47, 8917 EM Leeuwarden",
+        phone: "058 212 38 91",
+        website: "https://www.anicura.nl/leeuwarden"
+      }
+    ];
+
+    function renderHospitals(list) {
+      const container = document.getElementById('hospital-container');
+      container.innerHTML = '';
+
+      list.forEach(h => {
+        const card = document.createElement('div');
+        card.className = 'hospital-card';
+
+        let distanceHtml = h.dist ? `<div class="distance-tag">${h.dist.toFixed(1)} km away</div>` : '';
+        let websiteBtn = h.website ? `<a href="${h.website}" target="_blank" class="action-btn btn-outline">🌐 Website</a>` : '';
+
+        card.innerHTML = `
+          ${distanceHtml}
+          <span class="hospital-label">Check availability before visiting</span>
+          <h3 class="hospital-name">${h.name}</h3>
+          <span class="hospital-city">${h.city}</span>
+          
+          <div class="hospital-info">
+            <div class="info-row">
+              <strong>📍 Address:</strong> <span>${h.addr}</span>
+            </div>
+            <div class="info-row">
+              <strong>📞 Phone:</strong> <span>${h.phone}</span>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(h.addr)}" 
+               target="_blank" class="action-btn btn-primary">
+              🚗 Directions
+            </a>
+            ${websiteBtn}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function sortByLocation() {
+      const statusMsg = document.getElementById('status-msg');
+      const sortBtn = document.getElementById('sort-btn');
+
+      if (!navigator.geolocation) {
+        statusMsg.textContent = "Geolocation is not supported by your browser.";
+        statusMsg.style.display = 'block';
+        return;
+      }
+
+      sortBtn.textContent = "⌛ Calculating distance...";
+      sortBtn.disabled = true;
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const uLat = pos.coords.latitude;
+          const uLng = pos.coords.longitude;
+
+          hospitals.forEach(h => {
+            h.dist = google.maps.geometry.spherical.computeDistanceBetween(
+              new google.maps.LatLng(uLat, uLng),
+              new google.maps.LatLng(h.lat, h.lng)
+            ) / 1000;
+          });
+
+          hospitals.sort((a, b) => a.dist - b.dist);
+          renderHospitals(hospitals);
+
+          sortBtn.innerHTML = "📍 Sorted by distance";
+          sortBtn.style.background = "#2E7D32";
+          statusMsg.style.display = 'none';
+        },
+        (err) => {
+          console.error(err);
+          sortBtn.innerHTML = "📍 Sort by my location";
+          sortBtn.disabled = false;
+          statusMsg.textContent = "Location access was not enabled. You can still use the hospital list above.";
+          statusMsg.style.display = 'block';
+        }
+      );
+    }
+
+    // Initial render
+    window.addEventListener('DOMContentLoaded', () => {
+      renderHospitals(hospitals);
+    });
+  </script>
+  
+
+  <script src="assets/js/bg-music.js"></script>
+</body>
+
+</html>
