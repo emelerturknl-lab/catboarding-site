@@ -1997,16 +1997,16 @@
                   </select>
                   <div id="dropoff-custom-address" style="display: none; ">
                     <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-                      <input type="text" id="dropoff-street" placeholder="Street" oninput="debouncedCalculate()"
+                      <input type="text" name="dropoff-street" id="dropoff-street" placeholder="Street" oninput="debouncedCalculate()"
                         style="flex: 3; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem;">
-                      <input type="text" id="dropoff-houseno" placeholder="No" oninput="debouncedCalculate()"
+                      <input type="text" name="dropoff-houseno" id="dropoff-houseno" placeholder="No" oninput="debouncedCalculate()"
                         style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem;">
                     </div>
                     <div style="display: flex; gap: 0.5rem;">
-                      <input type="text" id="dropoff-postcode" placeholder="Postcode"
+                      <input type="text" name="dropoff-postcode" id="dropoff-postcode" placeholder="Postcode"
                         oninput="handlePostcodeLookup('dropoff')"
                         style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem;">
-                      <input type="text" id="dropoff-city" placeholder="City" oninput="debouncedCalculate()"
+                      <input type="text" name="dropoff-city" id="dropoff-city" placeholder="City" oninput="debouncedCalculate()"
                         style="flex: 2; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem;">
                     </div>
                     <div id="dropoff-status"
@@ -2070,16 +2070,16 @@
                   </select>
                   <div id="pickup-custom-address" style="display: none; ">
                     <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-                      <input type="text" id="pickup-street" placeholder="Street" oninput="debouncedCalculate()"
+                      <input type="text" name="pickup-street" id="pickup-street" placeholder="Street" oninput="debouncedCalculate()"
                         style="flex: 3; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem;">
-                      <input type="text" id="pickup-houseno" placeholder="No" oninput="debouncedCalculate()"
+                      <input type="text" name="pickup-houseno" id="pickup-houseno" placeholder="No" oninput="debouncedCalculate()"
                         style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem;">
                     </div>
                     <div style="display: flex; gap: 0.5rem;">
-                      <input type="text" id="pickup-postcode" placeholder="Postcode"
+                      <input type="text" name="pickup-postcode" id="pickup-postcode" placeholder="Postcode"
                         oninput="handlePostcodeLookup('pickup')"
                         style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem;">
-                      <input type="text" id="pickup-city" placeholder="City" oninput="debouncedCalculate()"
+                      <input type="text" name="pickup-city" id="pickup-city" placeholder="City" oninput="debouncedCalculate()"
                         style="flex: 2; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem;">
                     </div>
                     <div id="pickup-status"
