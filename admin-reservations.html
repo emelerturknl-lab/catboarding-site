@@ -1447,6 +1447,15 @@
             }
         }
 
+        function sendQuickWhatsApp(name, contact, dropoff, pickup) {
+            if (!contact) return;
+            // Clean phone: remove spaces, +, parentheses, dashes
+            const cleanContact = contact.replace(/[\s\+\(\)\-]/g, '');
+            const msg = `Hello ${name}, thank you for your reservation request. We received your booking from ${dropoff} to ${pickup}. We will contact you soon to confirm availability. - Black Princess & White Prince`;
+            const url = `https://wa.me/${cleanContact}?text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank');
+        }
+
         function populateReminders(bookings) {
             const section = document.getElementById('reminder-section');
             const list = document.getElementById('reminder-list');
@@ -1499,11 +1508,18 @@
 
             const tr = document.createElement('tr');
             if (bgStyle) tr.style = bgStyle;
+            const waButton = r.customer_contact 
+                ? `<button type="button" class="btn" style="padding: 6px 12px; font-size:0.8em; background:#25D366; color:white; border:none; margin-left:5px;" onclick="sendQuickWhatsApp('${r.customer_name.replace(/'/g, "\\'")}', '${r.customer_contact.replace(/'/g, "\\'")}', '${r.dropoff_date}', '${r.pickup_date}')">WhatsApp</button>`
+                : "";
+
             tr.innerHTML = `
-            <td><b>${r.customer_name}</b><br><small>${r.customer_contact}</small><br>${urgentWarning}</td>
+            <td><b>${r.customer_name}</b><br><small>${r.customer_contact || 'No contact'}</small><br>${urgentWarning}</td>
             <td>${r.dropoff_date} <br> ${r.pickup_date} <br>${statusBadge}</td>
             <td>${r.cat_count} Kedi<br>€${r.total_price}</td>
-            <td><button type="button" class="btn" style="padding: 6px 12px; font-size:0.8em;" onclick="editBooking('${r.id}')">İncele</button></td>
+            <td style="white-space:nowrap;">
+                <button type="button" class="btn" style="padding: 6px 12px; font-size:0.8em;" onclick="editBooking('${r.id}')">İncele</button>
+                ${waButton}
+            </td>
         `;
             return tr;
         }
