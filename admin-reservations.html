@@ -1449,9 +1449,20 @@
 
         function sendQuickWhatsApp(name, contact, dropoff, pickup) {
             if (!contact) return;
-            // Clean phone: remove spaces, +, parentheses, dashes
-            const cleanContact = contact.replace(/[\s\+\(\)\-]/g, '');
             const msg = `Hello ${name}, thank you for your reservation request. We received your booking from ${dropoff} to ${pickup}. We will contact you soon to confirm availability. - Black Princess & White Prince`;
+            
+            if (!confirm("Send WhatsApp confirmation message?\n\nPreview:\n" + msg)) return;
+
+            // Remove spaces, parentheses, dashes
+            let cleanContact = contact.replace(/[\s\(\)\-]/g, '');
+            
+            // Handle prefixes
+            if (cleanContact.startsWith('+')) {
+                cleanContact = cleanContact.substring(1);
+            } else if (cleanContact.startsWith('0')) {
+                cleanContact = '31' + cleanContact.substring(1);
+            }
+            
             const url = `https://wa.me/${cleanContact}?text=${encodeURIComponent(msg)}`;
             window.open(url, '_blank');
         }
