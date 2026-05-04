@@ -20,12 +20,14 @@ export const handler = async (event, context) => {
 
     console.log('Payload keys received:', Object.keys(payloadData));
 
-    // Minimal payload based on confirmed existing columns
+    // Payload based on confirmed required columns
     const payload = {
       customer_name: payloadData['name'] || payloadData['customer_name'] || '',
       customer_contact: payloadData['phone'] || payloadData['customer_contact'] || '',
       dropoff_date: payloadData['dropoff-date'] || payloadData['dropoff_date'] || null,
-      pickup_date: payloadData['pickup-date'] || payloadData['pickup_date'] || null
+      pickup_date: payloadData['pickup-date'] || payloadData['pickup_date'] || null,
+      dropoff_time: payloadData['dropoff-time'] || payloadData['dropoff_time'] || '12:00:00',
+      pickup_time: payloadData['pickup-time'] || payloadData['pickup_time'] || '12:00:00'
     };
 
     console.log("Final Supabase insert keys:", Object.keys(payload));
