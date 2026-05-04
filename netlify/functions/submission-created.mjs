@@ -20,27 +20,28 @@ export const handler = async (event, context) => {
 
     console.log('Payload keys received:', Object.keys(payloadData));
 
-    // Construct Locations
-    let dropLoc = null;
+    // Consolidate extra info into the message field to avoid PGRST204 column errors
+    const phone = payloadData['phone'] || null;
+    const email = payloadData['email'] || 'Not provided';
+    const catCount = parseInt(payloadData['cat-count']) || 1;
+    const totalPrice = parseFloat(payloadData['estimated-total']) || 0;
+
+    // Locations
+    let locationsInfo = "";
     if (payloadData['transfer-dropoff'] === 'on' || payloadData['transfer-dropoff'] === true) {
-      dropLoc = payloadData['dropoff-location-select'] === 'Custom'
+      const loc = payloadData['dropoff-location-select'] === 'Custom'
         ? `${payloadData['dropoff-street'] || ''} ${payloadData['dropoff-houseno'] || ''}, ${payloadData['dropoff-postcode'] || ''} ${payloadData['dropoff-city'] || ''}`
         : payloadData['dropoff-location-select'];
+      locationsInfo += `\nDrop-off Transfer: ${loc}`;
     }
-
-    let pickLoc = null;
     if (payloadData['transfer-pickup'] === 'on' || payloadData['transfer-pickup'] === true) {
-      pickLoc = payloadData['pickup-location-select'] === 'Custom'
+      const loc = payloadData['pickup-location-select'] === 'Custom'
         ? `${payloadData['pickup-street'] || ''} ${payloadData['pickup-houseno'] || ''}, ${payloadData['pickup-postcode'] || ''} ${payloadData['pickup-city'] || ''}`
         : payloadData['pickup-location-select'];
+      locationsInfo += `\nPick-up Transfer: ${loc}`;
     }
 
-    const phone = payloadData['phone'] || null;
-    const email = payloadData['email'] || null;
-    const userMessage = payloadData['message'] || "";
-    const fullMessage = email ? `Email: ${email}\n---\n${userMessage}` : userMessage;
-
-    // Cat items logic
+    // Items
     let catItems = [];
     if (payloadData['cat-item']) {
       catItems = Array.isArray(payloadData['cat-item']) ? payloadData['cat-item'] : [payloadData['cat-item']];
@@ -48,36 +49,42 @@ export const handler = async (event, context) => {
     const otherItem = payloadData['cat-item-other'];
     const itemsText = catItems.join(', ') + (otherItem ? ` (Other: ${otherItem})` : '');
 
-    // Special needs logic
+    // Special needs
     let specialNeeds = [];
     if (payloadData['special-need']) {
       specialNeeds = Array.isArray(payloadData['special-need']) ? payloadData['special-need'] : [payloadData['special-need']];
     }
     const needsText = specialNeeds.join(', ') + (payloadData['special-need-details'] ? `\nDetails: ${payloadData['special-need-details']}` : '');
 
-    const totalPrice = parseFloat(payloadData['estimated-total']) || 0;
+    const additionalNotes = payloadData['additional-notes'] || '';
+    const userMessage = payloadData['message'] || "";
+
+    // Final consolidated message
+    const fullMessage = `Email: ${email}
+---
+Items: ${itemsText || 'None'}
+Needs: ${needsText || 'None'}
+Notes: ${additionalNotes || 'None'}
+Locations: ${locationsInfo || 'N/A'}
+---
+Message: ${userMessage}`;
 
     const payload = {
       customer_name: payloadData['name'] || 'Unknown',
       customer_contact: phone,
       dropoff_date: payloadData['dropoff-date'],
-      dropoff_time: payloadData['dropoff-time'],
+      dropoff_time: payloadData['dropoff-time'] || '14:00',
       pickup_date: payloadData['pickup-date'],
-      pickup_time: payloadData['pickup-time'],
-      transfer_dropoff: payloadData['transfer-dropoff'] === 'on' || payloadData['transfer-dropoff'] === true,
-      dropoff_location: dropLoc,
-      transfer_pickup: payloadData['transfer-pickup'] === 'on' || payloadData['transfer-pickup'] === true,
-      pickup_location: pickLoc,
-      cat_count: parseInt(payloadData['cat-count']) || 1,
+      pickup_time: payloadData['pickup-time'] || '14:00',
+      status: 'pending',
       total_price: totalPrice,
       message: fullMessage,
+      cat_count: catCount,
       language: 'EN',
-      cat_items: itemsText,
-      special_needs: needsText,
-      additional_notes: payloadData['additional-notes'] || '',
-      whatsapp_status: 'none',
-      reservation_type: payloadData['reservation_type'] || 'normal_booking'
+      whatsapp_status: 'none'
     };
+
+    console.log("Final Supabase insert keys:", Object.keys(payload));
 
     // Use native fetch to insert into Supabase
     const response = await fetch(`${SUPABASE_URL}/rest/v1/reservations`, {
