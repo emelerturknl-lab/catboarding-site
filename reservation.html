@@ -2614,23 +2614,73 @@
             }
           });
 
-          // 2. Form Submit Validation
+          // 2. Form Submit Redirect to WhatsApp
           const form = document.querySelector('form[name="reservation"]');
           form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
             // Validation
             const dDrop = dropoffPicker.selectedDates[0];
             const dPick = pickupPicker.selectedDates[0];
             if (!dDrop || !dPick || dPick <= dDrop) {
-              e.preventDefault();
               alert("Error: Pick-up date must be at least 1 day after Drop-off date.");
               return;
             }
 
-            const btn = form.querySelector('button[type="submit"]');
-            btn.innerHTML = "Sending...";
+            const formData = new FormData(form);
+            const name = formData.get('name');
+            const phone = formData.get('phone');
+            const email = formData.get('email') || 'Not provided';
+            const dropoffDate = formData.get('dropoff-date');
+            const dropoffTime = formData.get('dropoff-time');
+            const pickupDate = formData.get('pickup-date');
+            const pickupTime = formData.get('pickup-time');
+            const catCount = formData.get('cat-count');
+            
+            // Transfer info
+            const transferDropoff = formData.get('transfer-dropoff') === 'on' ? 'Yes' : 'No';
+            const dropoffLoc = formData.get('dropoff-location-select') || '';
+            const dropoffAddr = transferDropoff === 'Yes' && dropoffLoc === 'Custom' 
+                ? `${formData.get('dropoff-street')} ${formData.get('dropoff-houseno')}, ${formData.get('dropoff-postcode')} ${formData.get('dropoff-city')}` 
+                : dropoffLoc;
 
-            // The browser will now natively submit the form to Netlify.
-            // Supabase sync is securely handled by the Netlify backend function.
+            const transferPickup = formData.get('transfer-pickup') === 'on' ? 'Yes' : 'No';
+            const pickupLoc = formData.get('pickup-location-select') || '';
+            const pickupAddr = transferPickup === 'Yes' && pickupLoc === 'Custom' 
+                ? `${formData.get('pickup-street')} ${formData.get('pickup-houseno')}, ${formData.get('pickup-postcode')} ${formData.get('pickup-city')}` 
+                : pickupLoc;
+
+            // Cat Care Items
+            const items = formData.getAll('cat-item').join(', ') || 'None';
+            const otherItems = formData.get('cat-item-other') ? ` (Other: ${formData.get('cat-item-other')})` : '';
+            
+            // Special Needs
+            const needs = formData.getAll('special-need').join(', ') || 'None';
+            const needDetails = formData.get('special-need-details') ? ` (Details: ${formData.get('special-need-details')})` : '';
+
+            const notes = formData.get('additional-notes') || 'No additional notes';
+
+            // Construct Message
+            let message = `🐾 *New Reservation Request*\n\n`;
+            message += `👤 *Name:* ${name}\n`;
+            message += `📞 *Phone:* ${phone}\n`;
+            message += `📧 *Email:* ${email}\n\n`;
+            message += `📅 *Drop-off:* ${dropoffDate} at ${dropoffTime}\n`;
+            message += `📅 *Pick-up:* ${pickupDate} at ${pickupTime}\n`;
+            message += `🐈 *Cats:* ${catCount}\n\n`;
+            message += `🚗 *Transfer (Drop-off):* ${transferDropoff}${dropoffAddr ? ' - ' + dropoffAddr : ''}\n`;
+            message += `🚗 *Transfer (Pick-up):* ${transferPickup}${pickupAddr ? ' - ' + pickupAddr : ''}\n\n`;
+            message += `🎒 *Items:* ${items}${otherItems}\n`;
+            message += `🩹 *Needs:* ${needs}${needDetails}\n\n`;
+            message += `📝 *Notes:* ${notes}\n\n`;
+            message += `💰 *Estimated Total:* €${document.getElementById('estimated-total').value}`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/31615677962?text=${encodedMessage}`;
+
+            alert("Your reservation request will now open in WhatsApp. Please send the message there to complete your request.");
+            
+            window.location.href = whatsappUrl;
           });
 
         });
