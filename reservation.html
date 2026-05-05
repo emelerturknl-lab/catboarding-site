@@ -58,24 +58,6 @@
       cursor: not-allowed !important;
     }
 
-    /* Pre-reservation styling */
-    .pre-reservation-notice {
-      display: none;
-      background: #FFF5E6;
-      border: 1px solid #FFD580;
-      border-radius: 12px;
-      padding: 1.2rem;
-      margin-bottom: 1.5rem;
-      text-align: left;
-      font-family: sans-serif;
-      font-size: 0.95rem;
-      color: #856404;
-      line-height: 1.5;
-    }
-
-    .pre-reservation-notice strong {
-      color: #d68910;
-    }
 
     /* Body & Content Optimization */
     body {
@@ -227,34 +209,6 @@
       border: 1px solid #FFD580;
     }
 
-    .pre-reservation-notice {
-      display: none;
-      background: #FFF5E6;
-      border: 1px solid #FFD580;
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      text-align: left;
-      font-family: sans-serif;
-    }
-
-    .pre-reservation-notice h4 {
-      color: #E67E22;
-      margin-top: 0;
-      margin-bottom: 0.5rem;
-    }
-
-    .pre-reservation-notice ul {
-      margin: 0;
-      padding-left: 1.2rem;
-      font-size: 0.9rem;
-      color: #666;
-      line-height: 1.4;
-    }
-
-    .pre-reservation-notice li {
-      margin-bottom: 0.3rem;
-    }
 
     #inline-calendar {
       background: rgba(255, 255, 255, 0.9);
@@ -1944,11 +1898,13 @@
           <!-- Form Side -->
           <div
             style="flex: 1; min-width: 320px; max-width: 600px; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left;">
-            <div id="pre-reservation-notice" class="pre-reservation-notice">
-              <strong>Pre-reservation Request:</strong><br>
-              This date is outside the standard booking window. You can submit a pre-reservation request. A €5
-              non-refundable pre-reservation fee may apply. If your booking is confirmed, this fee may be deducted from
-              the final total.
+            <div id="reservation-info-notice" style="background: #FFF9F9; border: 1px solid #F2DEDE; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: left; font-family: sans-serif;">
+              <strong style="color: #D9A3A3; display: block; font-size: 1.2rem; margin-bottom: 0.8rem; font-family: 'Dancing Script', cursive !important;">Reservation Info</strong>
+              <p style="margin: 0; color: #4A4A4A; line-height: 1.6; font-size: 1rem;">
+                At the moment, reservations are handled manually.<br><br>
+                To ensure your booking is confirmed, please contact us via WhatsApp after filling in your details.<br><br>
+                Payment is made in cash at the start of the stay.
+              </p>
             </div>
             <form name="reservation" method="POST" data-netlify="true"
               style="display: flex; flex-direction: column; gap: 1.5rem;">
@@ -2615,10 +2571,6 @@
             const typeField = document.getElementById("reservation-type");
             if (typeField) typeField.value = isPreReservation ? "pre_reservation_request" : "normal_booking";
 
-            const notice = document.getElementById('pre-reservation-notice');
-            if (notice) {
-              notice.style.display = isPreReservation ? 'block' : 'none';
-            }
             console.log("Reservation type:", typeField ? typeField.value : "unknown");
           }
 
