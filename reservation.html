@@ -2660,20 +2660,24 @@
 
             const notes = formData.get('additional-notes') || 'No additional notes';
 
-            // Construct Message
+            // Construct Message (Strictly following user request list)
             let message = `🐾 *New Reservation Request*\n\n`;
-            message += `👤 *Name:* ${name}\n`;
+            message += `👤 *Customer name:* ${name}\n`;
             message += `📞 *Phone:* ${phone}\n`;
             message += `📧 *Email:* ${email}\n\n`;
-            message += `📅 *Drop-off:* ${dropoffDate} at ${dropoffTime}\n`;
-            message += `📅 *Pick-up:* ${pickupDate} at ${pickupTime}\n`;
-            message += `🐈 *Cats:* ${catCount}\n\n`;
-            message += `🚗 *Transfer (Drop-off):* ${transferDropoff}${dropoffAddr ? ' - ' + dropoffAddr : ''}\n`;
-            message += `🚗 *Transfer (Pick-up):* ${transferPickup}${pickupAddr ? ' - ' + pickupAddr : ''}\n\n`;
-            message += `🎒 *Items:* ${items}${otherItems}\n`;
-            message += `🩹 *Needs:* ${needs}${needDetails}\n\n`;
-            message += `📝 *Notes:* ${notes}\n\n`;
-            message += `💰 *Estimated Total:* €${document.getElementById('estimated-total').value}`;
+            message += `📅 *Drop-off date and time:* ${dropoffDate} at ${dropoffTime}\n`;
+            message += `📅 *Pick-up date and time:* ${pickupDate} at ${pickupTime}\n\n`;
+            message += `🐈 *Cat count:* ${catCount}\n`;
+            message += `🎒 *Cat details / special needs:* ${items}${otherItems}, ${needs}${needDetails}\n\n`;
+            message += `🚗 *Transfer choices:* Drop-off: ${transferDropoff}, Pick-up: ${transferPickup}\n`;
+            if (transferDropoff === 'Yes' || transferPickup === 'Yes') {
+                message += `📍 *Addresses:* \n`;
+                if (transferDropoff === 'Yes') message += `   - Drop-off: ${dropoffAddr}\n`;
+                if (transferPickup === 'Yes') message += `   - Pick-up: ${pickupAddr}\n`;
+                message += `\n`;
+            }
+            message += `📝 *Additional notes:* ${notes}\n\n`;
+            message += `💰 *Estimated total:* €${document.getElementById('estimated-total').value}`;
 
             const encodedMessage = encodeURIComponent(message);
             const whatsappUrl = `https://wa.me/31615677962?text=${encodedMessage}`;
