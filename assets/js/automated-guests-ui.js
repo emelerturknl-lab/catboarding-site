@@ -91,36 +91,13 @@ function renderGuests() {
             card.style.width = '100%';
         }
 
-        // Generate gallery thumbnails HTML
-        let galleryHtml = '';
-        if (guest.gallery && guest.gallery.length > 0) {
-            const thumbs = guest.gallery.map(img => `
-                <div class="gallery-thumb-wrapper" onclick="openLightbox('${img}')">
-                    <img src="${img}" class="gallery-thumb" alt="${guest.name} gallery image" loading="lazy" onerror="this.parentElement.style.display='none'">
-                </div>
-            `).join('');
-            
-            galleryHtml = `
-                <div class="guest-gallery-section">
-                    <div class="gallery-scroll-container">
-                        ${thumbs}
-                    </div>
-                </div>
-            `;
-        }
-
+        // Simplified UI: Only show the cover image since names/text are baked into the photo
         card.innerHTML = `
-            <div class="cover-wrapper" onclick="openLightbox('${guest.cover}')">
-                <img src="${guest.cover}" alt="${guest.name} cover" class="guest-cover" loading="lazy" onerror="this.src='/assets/images/main_logo.png'; this.onerror=null;">
+            <div class="cover-wrapper" style="height: auto; border-radius: 20px; aspect-ratio: 4/5;" onclick="openLightbox('${guest.cover}')">
+                <img src="${guest.cover}" alt="${guest.name} cover" class="guest-cover" style="object-fit: contain; width: 100%; height: 100%;" loading="lazy" onerror="this.src='/assets/images/main_logo.png'; this.onerror=null;">
                 <div class="cover-overlay">
                     <div class="zoom-icon">🔍 Büyüt</div>
                 </div>
-            </div>
-            <div class="guest-details">
-                <h2 class="guest-title">${guest.name}</h2>
-                <div class="guest-separator"></div>
-                <p class="guest-description">${guest.description}</p>
-                ${galleryHtml}
             </div>
         `;
         container.appendChild(card);
