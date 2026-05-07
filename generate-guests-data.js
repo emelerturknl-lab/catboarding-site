@@ -47,7 +47,8 @@ function generateData() {
             // Extract guest name
             const match = coverFile.match(/^KAPAK-(.+?)(?:-\d+)?\.[a-zA-Z0-9]+$/i);
             if (match) {
-                const guestName = match[1].trim();
+                const originalGuestName = match[1].trim();
+                const guestName = originalGuestName.replace(/\s*G[Iİiı\u0307]+FT\s*/i, '').trim();
                 
                 // Check for duplicates
                 if (processedNames.has(guestName.toUpperCase())) {
@@ -61,12 +62,12 @@ function generateData() {
                     if (f === coverFile) return false;
                     const ext = path.extname(f).toLowerCase();
                     if (!validExtensions.includes(ext)) return false;
-                    return f.toUpperCase().startsWith(guestName.toUpperCase());
+                    return f.toUpperCase().startsWith(originalGuestName.toUpperCase());
                 });
 
                 // Find description if exists
                 let description = 'Göz alıcı zarafeti ve asil duruşuyla evimizin en özel misafirlerinden biri. Sevgi dolu ve sakin karakteriyle kalbimizde taht kurdu.'; // Premium placeholder
-                const textFiles = files.filter(f => f.toUpperCase().startsWith(guestName.toUpperCase()) && (f.endsWith('.txt') || f.endsWith('.md')));
+                const textFiles = files.filter(f => f.toUpperCase().startsWith(originalGuestName.toUpperCase()) && (f.endsWith('.txt') || f.endsWith('.md')));
                 if (textFiles.length > 0) {
                     try {
                         description = fs.readFileSync(path.join(targetDir, textFiles[0]), 'utf8');
@@ -78,8 +79,8 @@ function generateData() {
 
                 guests.push({
                     name: guestName,
-                    cover: `/Konuklarımız/gift/${coverFile}`,
-                    gallery: galleryPhotos.map(f => `/Konuklarımız/gift/${f}`),
+                    cover: encodeURI(`/Konuklarımız/gift/${coverFile}`),
+                    gallery: galleryPhotos.map(f => encodeURI(`/Konuklarımız/gift/${f}`)),
                     description: description
                 });
 

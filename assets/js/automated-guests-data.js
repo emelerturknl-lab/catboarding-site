@@ -2,26 +2,26 @@
 const guestsData = [
     {
         "name": "BAMİ",
-        "cover": "/Konuklarımız/gift/KAPAK-BAMİ-1.png",
+        "cover": "/Konuklar%C4%B1m%C4%B1z/gift/KAPAK-BAMI%CC%87-1.png",
         "gallery": [
-            "/Konuklarımız/gift/BAMİ-2.png",
-            "/Konuklarımız/gift/BAMİ-3.png"
+            "/Konuklar%C4%B1m%C4%B1z/gift/BAMI%CC%87-2.png",
+            "/Konuklar%C4%B1m%C4%B1z/gift/BAMI%CC%87-3.png"
         ],
         "description": "Göz alıcı zarafeti ve asil duruşuyla evimizin en özel misafirlerinden biri. Sevgi dolu ve sakin karakteriyle kalbimizde taht kurdu."
     },
     {
         "name": "BONCUK",
-        "cover": "/Konuklarımız/gift/KAPAK-BONCUK-1.png",
+        "cover": "/Konuklar%C4%B1m%C4%B1z/gift/KAPAK-BONCUK-1.png",
         "gallery": [
-            "/Konuklarımız/gift/BONCUK-2.png",
-            "/Konuklarımız/gift/BONCUK-3.png",
-            "/Konuklarımız/gift/BONCUK-4.png"
+            "/Konuklar%C4%B1m%C4%B1z/gift/BONCUK-2.png",
+            "/Konuklar%C4%B1m%C4%B1z/gift/BONCUK-3.png",
+            "/Konuklar%C4%B1m%C4%B1z/gift/BONCUK-4.png"
         ],
         "description": "Göz alıcı zarafeti ve asil duruşuyla evimizin en özel misafirlerinden biri. Sevgi dolu ve sakin karakteriyle kalbimizde taht kurdu."
     },
     {
-        "name": "MİLO GİFT",
-        "cover": "/Konuklarımız/gift/KAPAK-MİLO GİFT.png",
+        "name": "MİLO",
+        "cover": "/Konuklar%C4%B1m%C4%B1z/gift/KAPAK-MI%CC%87LO%20GI%CC%87FT.png",
         "gallery": [],
         "description": "Göz alıcı zarafeti ve asil duruşuyla evimizin en özel misafirlerinden biri. Sevgi dolu ve sakin karakteriyle kalbimizde taht kurdu."
     }
