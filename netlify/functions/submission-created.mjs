@@ -2,10 +2,15 @@
 
 export const handler = async (event, context) => {
   try {
-    const SUPABASE_URL = 'https://hrlvsrvkaoepblodsdmt.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_pvGGrrnT0-B9VPTsx3j97Q_5IDViROP';
+    const SUPABASE_URL = process.env.SUPABASE_URL || 'https://hrlvsrvkaoepblodsdmt.supabase.co';
+    const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     console.log('--- Function started: submission-created ---');
+
+    if (!SUPABASE_SERVICE_KEY) {
+      console.error('Error: SUPABASE_SERVICE_ROLE_KEY is missing from environment variables.');
+      return { statusCode: 500, body: JSON.stringify({ error: 'Server misconfiguration' }) };
+    }
 
     // Parse the Netlify event body
     const body = JSON.parse(event.body || '{}');
@@ -41,12 +46,12 @@ export const handler = async (event, context) => {
 
     console.log("Final Supabase insert keys:", Object.keys(payload));
 
-    // Use native fetch to insert into Supabase
+    // Use native fetch to insert into Supabase using Service Role Key
     const response = await fetch(`${SUPABASE_URL}/rest/v1/reservations`, {
       method: 'POST',
       headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'apikey': SUPABASE_SERVICE_KEY,
+        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
         'Content-Type': 'application/json',
         'Prefer': 'return=minimal'
       },
