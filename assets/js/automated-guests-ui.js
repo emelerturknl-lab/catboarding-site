@@ -91,11 +91,17 @@ function renderGuests() {
             card.style.width = '100%';
         }
 
-        // Simplified UI: Only show the cover image since names/text are baked into the photo
+        // Remove the black card background so it tightly wraps the image
+        card.style.setProperty('background', 'transparent', 'important');
+        card.style.setProperty('border', 'none', 'important');
+        card.style.setProperty('box-shadow', '0 15px 35px rgba(0,0,0,0.5)', 'important');
+        card.style.borderRadius = '20px';
+
+        // Simplified UI: Image uses natural height (height: auto) to prevent black bars
         card.innerHTML = `
-            <div class="cover-wrapper" style="height: auto; border-radius: 20px; aspect-ratio: 4/5;" onclick="openLightbox('${guest.cover}')">
-                <img src="${guest.cover}" alt="${guest.name} cover" class="guest-cover" style="object-fit: contain; width: 100%; height: 100%;" loading="lazy" onerror="this.src='/assets/images/main_logo.png'; this.onerror=null;">
-                <div class="cover-overlay">
+            <div class="cover-wrapper" style="height: auto; width: 100%; border-radius: 20px; overflow: hidden; position: relative;" onclick="openLightbox('${guest.cover}')">
+                <img src="${guest.cover}" alt="${guest.name} cover" style="width: 100%; height: auto; display: block; transition: transform 0.5s ease;" loading="lazy" onerror="this.src='/assets/images/main_logo.png'; this.onerror=null;">
+                <div class="cover-overlay" style="border-radius: 20px;">
                     <div class="zoom-icon">🔍 Büyüt</div>
                 </div>
             </div>
