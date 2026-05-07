@@ -1,14 +1,14 @@
 const fs = require('fs');
 const path = require('path');
 
-const targetDir = path.join(process.cwd(), 'Konuklarımız', 'gift');
+const targetDir = path.join(process.cwd(), 'assets', 'guests');
 const outputFilePath = path.join(process.cwd(), 'assets', 'js', 'automated-guests-data.js');
 
 function generateData() {
     console.log(`\n🔍 Scanning directory: ${targetDir}`);
     
     if (!fs.existsSync(targetDir)) {
-        console.error('❌ Error: Directory does not exist! Please create Konuklarımız/gift folder.');
+        console.error('❌ Error: Directory does not exist! Please create assets/guests folder.');
         return;
     }
 
@@ -79,8 +79,8 @@ function generateData() {
 
                 guests.push({
                     name: guestName,
-                    cover: `/Konuklarımız/gift/${coverFile}`,
-                    gallery: galleryPhotos.map(f => `/Konuklarımız/gift/${f}`),
+                    cover: `/assets/guests/${coverFile}`,
+                    gallery: galleryPhotos.map(f => `/assets/guests/${f}`),
                     description: description
                 });
 

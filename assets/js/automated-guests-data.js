@@ -2,26 +2,19 @@
 const guestsData = [
     {
         "name": "BAMİ",
-        "cover": "/Konuklarımız/gift/KAPAK-BAMİ-1.png",
-        "gallery": [
-            "/Konuklarımız/gift/BAMİ-2.png",
-            "/Konuklarımız/gift/BAMİ-3.png"
-        ],
+        "cover": "/assets/guests/KAPAK-BAMİ-1.jpeg",
+        "gallery": [],
         "description": "Göz alıcı zarafeti ve asil duruşuyla evimizin en özel misafirlerinden biri. Sevgi dolu ve sakin karakteriyle kalbimizde taht kurdu."
     },
     {
         "name": "BONCUK",
-        "cover": "/Konuklarımız/gift/KAPAK-BONCUK-1.png",
-        "gallery": [
-            "/Konuklarımız/gift/BONCUK-2.png",
-            "/Konuklarımız/gift/BONCUK-3.png",
-            "/Konuklarımız/gift/BONCUK-4.png"
-        ],
+        "cover": "/assets/guests/KAPAK-BONCUK-1.jpeg",
+        "gallery": [],
         "description": "Göz alıcı zarafeti ve asil duruşuyla evimizin en özel misafirlerinden biri. Sevgi dolu ve sakin karakteriyle kalbimizde taht kurdu."
     },
     {
         "name": "MİLO",
-        "cover": "/Konuklarımız/gift/KAPAK-MİLO GİFT.png",
+        "cover": "/assets/guests/KAPAK-MİLO-1.jpeg",
         "gallery": [],
         "description": "Göz alıcı zarafeti ve asil duruşuyla evimizin en özel misafirlerinden biri. Sevgi dolu ve sakin karakteriyle kalbimizde taht kurdu."
     }
