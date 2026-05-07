@@ -63,9 +63,33 @@ function renderGuests() {
     const oldContainer = document.getElementById('guests-container');
     if (oldContainer) oldContainer.style.display = 'none';
 
+    // Sort guests: BONCUK first, then MİLO, then BAMİ
+    guestsData.sort((a, b) => {
+        const order = { 'BONCUK': 1, 'MİLO': 2, 'BAMİ': 3 };
+        const aVal = order[a.name] || 99;
+        const bVal = order[b.name] || 99;
+        return aVal - bVal;
+    });
+
+    // Force container to be a centered 2-column grid max 900px
+    container.style.display = 'grid';
+    container.style.gridTemplateColumns = 'repeat(auto-fit, minmax(350px, 1fr))';
+    container.style.gap = '40px';
+    container.style.maxWidth = '900px';
+    container.style.margin = '60px auto 0 auto';
+    container.style.justifyContent = 'center';
+
     guestsData.forEach(guest => {
         const card = document.createElement('div');
         card.className = 'automated-guest-card';
+        
+        // Force BONCUK to span full width and center
+        if (guest.name === 'BONCUK') {
+            card.style.gridColumn = '1 / -1';
+            card.style.maxWidth = '450px';
+            card.style.margin = '0 auto';
+            card.style.width = '100%';
+        }
 
         // Generate gallery thumbnails HTML
         let galleryHtml = '';
@@ -87,7 +111,7 @@ function renderGuests() {
 
         card.innerHTML = `
             <div class="cover-wrapper" onclick="openLightbox('${guest.cover}')">
-                <img src="${guest.cover}" alt="${guest.name} cover" class="guest-cover" loading="lazy" onerror="this.src='/assets/images/placeholder.jpg'; this.onerror=null;">
+                <img src="${guest.cover}" alt="${guest.name} cover" class="guest-cover" loading="lazy" onerror="this.src='/assets/images/main_logo.png'; this.onerror=null;">
                 <div class="cover-overlay">
                     <div class="zoom-icon">🔍 Büyüt</div>
                 </div>

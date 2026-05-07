@@ -79,8 +79,8 @@ function generateData() {
 
                 guests.push({
                     name: guestName,
-                    cover: encodeURI(`/Konuklarımız/gift/${coverFile}`),
-                    gallery: galleryPhotos.map(f => encodeURI(`/Konuklarımız/gift/${f}`)),
+                    cover: `/Konuklarımız/gift/${coverFile}`,
+                    gallery: galleryPhotos.map(f => `/Konuklarımız/gift/${f}`),
                     description: description
                 });
 
