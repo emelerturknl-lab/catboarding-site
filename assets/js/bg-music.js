@@ -121,8 +121,8 @@
 
     // Initial Play on Interaction
     const startMusic = () => {
-        // If it was explicitly paused by user, don't auto-start
-        if (localStorage.getItem('bgMusic_manual_pause') === 'true') {
+        // If it was explicitly paused by user in this session, don't auto-start
+        if (sessionStorage.getItem('bgMusic_manual_pause') === 'true') {
             return;
         }
 
@@ -168,13 +168,13 @@
         if (audio.paused) {
             audio.play().then(() => {
                 localStorage.setItem('bgMusic_playing', 'true');
-                localStorage.setItem('bgMusic_manual_pause', 'false');
+                sessionStorage.setItem('bgMusic_manual_pause', 'false');
                 updateIcon();
             });
         } else {
             audio.pause();
             localStorage.setItem('bgMusic_playing', 'false');
-            localStorage.setItem('bgMusic_manual_pause', 'true');
+            sessionStorage.setItem('bgMusic_manual_pause', 'true');
             updateIcon();
         }
     });
