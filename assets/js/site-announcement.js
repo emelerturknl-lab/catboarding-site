@@ -9,7 +9,7 @@
 
     const showBanner = () => {
         // Don't show if already hidden or already exists
-        if (localStorage.getItem(storageKey) || document.getElementById('site-announcement-banner')) return;
+        if (sessionStorage.getItem(storageKey) || document.getElementById('site-announcement-banner')) return;
 
         const banner = document.createElement('div');
         banner.id = 'site-announcement-banner';
@@ -64,7 +64,7 @@
             banner.style.opacity = '0';
             banner.style.transform = 'translateY(-20px)';
             setTimeout(() => banner.remove(), 500);
-            localStorage.setItem(storageKey, 'true');
+            sessionStorage.setItem(storageKey, 'true');
         };
 
         // Hover effect for WA button
@@ -81,7 +81,7 @@
         triggerEvents.forEach(evt => window.removeEventListener(evt, handleTrigger));
     };
 
-    if (!localStorage.getItem(storageKey)) {
+    if (!sessionStorage.getItem(storageKey)) {
         // Wait for first interaction to avoid blocking music or other initial loads
         triggerEvents.forEach(evt => window.addEventListener(evt, handleTrigger));
         
