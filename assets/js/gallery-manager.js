@@ -21,11 +21,11 @@
         }
 
         if (!items || items.length === 0) {
-            // Keep existing static content or show a placeholder if DB is empty
+            // Placeholder will remain visible if DB has no published items
             return;
         }
 
-        // Clear existing static content
+        // Clear existing static content (including placeholder)
         container.innerHTML = '';
 
         items.forEach(item => {
