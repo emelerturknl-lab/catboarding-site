@@ -501,13 +501,14 @@
       const sortBtn = document.getElementById('sort-btn');
 
       if (!navigator.geolocation) {
-        statusMsg.textContent = "Geolocation is not supported by your browser.";
+        statusMsg.textContent = "We couldn’t detect your location. Please try again or check your browser settings.";
         statusMsg.style.display = 'block';
         return;
       }
 
       sortBtn.textContent = "⌛ Calculating distance...";
       sortBtn.disabled = true;
+      sortBtn.style.background = ""; // reset background
 
       navigator.geolocation.getCurrentPosition(
         (pos) => {
@@ -515,12 +516,13 @@
           const uLng = pos.coords.longitude;
 
           hospitals.forEach(h => {
+            h.dist = 0;
             // Attempt to use Google Maps API as requested
             try {
               if (window.google && google.maps && google.maps.geometry) {
                 const distMeters = google.maps.geometry.spherical.computeDistanceBetween(
-                  {lat: uLat, lng: uLng},
-                  {lat: h.lat, lng: h.lng}
+                  new google.maps.LatLng(uLat, uLng),
+                  new google.maps.LatLng(h.lat, h.lng)
                 );
                 h.dist = distMeters / 1000;
               }
@@ -529,7 +531,7 @@
             }
 
             // If Google Maps API is restricted, blocked, or returns NaN/0, use native fallback
-            if (!h.dist || isNaN(h.dist)) {
+            if (!h.dist || isNaN(h.dist) || h.dist === 0) {
               const R = 6371; // Earth's radius in km
               const dLat = (h.lat - uLat) * Math.PI / 180;
               const dLon = (h.lng - uLng) * Math.PI / 180;
@@ -546,15 +548,23 @@
 
           sortBtn.innerHTML = "📍 Sorted by distance";
           sortBtn.style.background = "#2E7D32";
+          sortBtn.disabled = false; // allow re-clicking
           statusMsg.style.display = 'none';
         },
         (err) => {
-          console.error(err);
+          console.error("Geolocation error:", err);
           sortBtn.innerHTML = "📍 Sort by my location";
           sortBtn.disabled = false;
-          statusMsg.textContent = "Location access was not enabled. You can still use the hospital list above.";
+          sortBtn.style.background = "";
+          
+          if (err.code === 1 || err.PERMISSION_DENIED) { // 1 is PERMISSION_DENIED
+            statusMsg.textContent = "Location permission is needed to sort by nearest distance.";
+          } else {
+            statusMsg.textContent = "We couldn’t detect your location. Please try again or check your browser settings.";
+          }
           statusMsg.style.display = 'block';
-        }
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     }
 
