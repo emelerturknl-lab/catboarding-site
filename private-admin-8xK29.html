@@ -1302,20 +1302,18 @@
                         <div style="flex: 1;">
                             <label style="font-size: 0.75rem;">Method</label>
                             <select id="paymentMethod">
-                                <option value="unspecified">Unspecified</option>
+                                <option value="">-- Seçiniz --</option>
+                                <option value="tikkie">Tikkie</option>
                                 <option value="cash">Cash</option>
                                 <option value="bank_transfer">Bank Transfer</option>
-                                <option value="tikkie">Tikkie</option>
-                                <option value="other">Other</option>
                             </select>
                         </div>
                         <div style="flex: 1;">
                             <label style="font-size: 0.75rem;">Payment Status</label>
-                            <select id="paymentStatus">
+                            <select id="paymentStatus" onchange="togglePaymentMethod()">
                                 <option value="unpaid">🔴 Unpaid</option>
                                 <option value="partial">🟡 Partial</option>
                                 <option value="paid">🟢 Paid</option>
-                                <option value="refunded">⚪ Refunded</option>
                             </select>
                         </div>
                     </div>
@@ -1823,9 +1821,11 @@
             // Financials
             document.getElementById('paymentAmount').value = res.payment_amount || 0;
             document.getElementById('paymentDate').value = res.payment_date || '';
-            document.getElementById('paymentMethod').value = res.payment_method || 'unspecified';
+            document.getElementById('paymentMethod').value = res.payment_method || '';
             document.getElementById('paymentStatus').value = res.payment_status || 'unpaid';
             document.getElementById('internalNotes').value = res.internal_notes || '';
+            
+            togglePaymentMethod();
 
             document.getElementById('bookingModal').style.display = 'flex';
         }
@@ -1844,9 +1844,11 @@
             document.getElementById('bookingLanguage').value = "EN"; // Default to English for manual dashboard bookings
             document.getElementById('paymentAmount').value = "0";
             document.getElementById('paymentDate').value = "";
-            document.getElementById('paymentMethod').value = "unspecified";
+            document.getElementById('paymentMethod').value = "";
             document.getElementById('paymentStatus').value = "unpaid";
             document.getElementById('internalNotes').value = "";
+            
+            togglePaymentMethod();
 
             window._manualEditActive = false; // Fresh start
             syncNotesWithTemplate();
@@ -1959,6 +1961,14 @@
             const status = document.getElementById('status').value;
             const id = document.getElementById('bookingIndex').value;
 
+            const pStatus = document.getElementById('paymentStatus').value;
+            const pMethod = document.getElementById('paymentMethod').value;
+
+            if (pStatus !== 'unpaid' && !pMethod) {
+                alert("Lütfen ödeme yöntemini seçiniz (Partial/Paid durumları için zorunludur).");
+                return;
+            }
+
             if (!name || !contact || !start || !end) {
                 alert("Lütfen tüm zorunlu alanları doldurun.");
                 return;
@@ -1990,8 +2000,8 @@
                     language: document.getElementById('bookingLanguage').value,
                     payment_amount: parseFloat(document.getElementById('paymentAmount').value) || 0,
                     payment_date: document.getElementById('paymentDate').value || null,
-                    payment_method: document.getElementById('paymentMethod').value,
-                    payment_status: document.getElementById('paymentStatus').value,
+                    payment_method: pStatus === 'unpaid' ? null : pMethod,
+                    payment_status: pStatus,
                     internal_notes: document.getElementById('internalNotes').value
                 };
 
@@ -2072,8 +2082,8 @@
                 language: document.getElementById('bookingLanguage').value,
                 payment_amount: parseFloat(document.getElementById('paymentAmount').value) || 0,
                 payment_date: document.getElementById('paymentDate').value || null,
-                payment_method: document.getElementById('paymentMethod').value,
-                payment_status: document.getElementById('paymentStatus').value,
+                payment_method: status === 'unpaid' ? null : method,
+                payment_status: status,
                 internal_notes: document.getElementById('internalNotes').value
             };
             sendWhatsAppFor(id, updates);
@@ -2120,6 +2130,17 @@
         // ==========================================
         // TABS LOGIC
         // ==========================================
+        function togglePaymentMethod() {
+            const status = document.getElementById('paymentStatus').value;
+            const methodSelect = document.getElementById('paymentMethod');
+            if (status === 'unpaid') {
+                methodSelect.value = '';
+                methodSelect.disabled = true;
+            } else {
+                methodSelect.disabled = false;
+            }
+        }
+
         function switchTab(tabName) {
             // Save to remember after refresh
             localStorage.setItem('adminActiveTab', tabName);
@@ -2237,13 +2258,21 @@
 
             filtered.forEach(r => {
                 const tr = document.createElement('tr');
-                const paymentBadge = `<span class="badge ${r.payment_status === 'paid' ? 'confirmed' : 'pending'}" style="background: ${r.payment_status === 'paid' ? '#2ecc71' : (r.payment_status === 'partial' ? '#f39c12' : '#e74c3c')};">${r.payment_status.toUpperCase()}</span>`;
+                
+                let paymentLabel = r.payment_status.toUpperCase();
+                if (r.payment_status !== 'unpaid' && r.payment_method) {
+                    const methodMap = { 'tikkie': 'Tikkie', 'cash': 'Cash', 'bank_transfer': 'Bank Transfer' };
+                    const statusPrefix = r.payment_status === 'partial' ? 'Partially paid via ' : 'Paid via ';
+                    paymentLabel = statusPrefix + (methodMap[r.payment_method] || r.payment_method);
+                }
+
+                const paymentBadge = `<span class="badge ${r.payment_status === 'paid' ? 'confirmed' : 'pending'}" style="background: ${r.payment_status === 'paid' ? '#2ecc71' : (r.payment_status === 'partial' ? '#f39c12' : '#e74c3c')}; padding: 4px 8px; border-radius: 6px; color: white; font-size: 0.7rem; display: inline-block;">${paymentLabel}</span>`;
                 
                 tr.innerHTML = `
                     <td><b>${r.customer_name}</b><br><small>${r.customer_contact || ''}</small></td>
                     <td>${r.dropoff_date}<br>${r.pickup_date}</td>
                     <td>€${r.total_price}<br><small>Rec: €${r.payment_amount || 0}</small></td>
-                    <td>${paymentBadge}<br><small>${r.payment_method || ''}</small></td>
+                    <td>${paymentBadge}</td>
                     <td><button class="btn" style="padding:4px 8px; font-size:0.75rem;" onclick="editBooking('${r.id}')">İncele</button></td>
                 `;
                 list.appendChild(tr);
