@@ -799,28 +799,11 @@
 
 
 
-    <div id="loading-screen">
-        <div style="font-family: 'Dancing Script', cursive; font-size: 3rem; margin-bottom: 20px;">Black Princess</div>
-        <p>Oturum kontrol ediliyor, lütfen bekleyin...</p>
+    <div id="loading-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:9999; display:flex; align-items:center; justify-content:center;">
+        <div style="font-family: 'Dancing Script', cursive; font-size: 2rem;">Giriş doğrulanıyor...</div>
     </div>
 
-    <div id="login-screen">
-        <h2>Yönetici Girişi</h2>
-        <p style="color:#666; margin-bottom:20px;">Lütfen Supabase e-posta ve şifrenizle giriş yapın.</p>
-        <div id="login-box">
-            <div class="form-group">
-                <input type="email" id="email" placeholder="admin@catboardingalmere.nl">
-            </div>
-            <div class="form-group">
-                <input type="password" id="password" placeholder="Şifreniz">
-            </div>
-            <button type="button" class="btn" style="width:100%" id="login-btn" onclick="performLogin()">Giriş
-                Yap</button>
-            <button type="button" class="btn btn-secondary" style="width:100%; margin-left:0; margin-top:10px;"
-                onclick="window.location.href='index.html'">🏠 Web Sitesine Dön</button>
-            <p id="login-error" style="color:red; display:none; margin-top:10px; font-size:14px;"></p>
-        </div>
-    </div>
+
 
     <!-- Main App -->
     <div class="container" id="app">
@@ -1366,49 +1349,44 @@
         let reservations = [];
         let calendar;
         let currentUser = null;
+        const ADMIN_EMAIL = 'admin@catboardingalmere.nl';
+        const LOGIN_PAGE = 'private-admin-login-8xK29.html';
 
-        // Supabase Auth Check (Hardened)
-        supabase.auth.onAuthStateChange(async (event, session) => {
-            const loginScreen = document.getElementById('login-screen');
-            const app = document.getElementById('app');
-            const loadingScreen = document.getElementById('loading-screen');
+        // Strict Auth Guard
+        async function checkAuth() {
+            const { data: { session }, error } = await supabase.auth.getSession();
+            
+            if (error || !session || session.user.email !== ADMIN_EMAIL) {
+                console.warn("Unauthorized access detected. Redirecting...");
+                if (session) await supabase.auth.signOut();
+                window.location.href = LOGIN_PAGE;
+                return;
+            }
+
+            // Authorized
+            currentUser = session.user;
+            document.getElementById('loading-overlay').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+
+            // Initialize app
+            const lastTab = localStorage.getItem('adminActiveTab') || 'reservations';
+            switchTab(lastTab);
+            initCalendar();
+            fetchData();
+            
             const exportBtn = document.getElementById('export-csv-btn');
+            if (exportBtn) exportBtn.style.display = 'block';
+        }
 
-            if (session) {
-                // Critical: Verify identity
-                if (session.user.email !== 'admin@catboardingalmere.nl') {
-                    console.warn("Unauthorized access attempt by:", session.user.email);
-                    await supabase.auth.signOut();
-                    alert("Yetkisiz erişim denemesi! Sadece yönetici girişi yapabilir.");
-                    return;
-                }
-
-                currentUser = session.user;
-                loadingScreen.style.display = 'none';
-                loginScreen.style.display = 'none';
-                app.style.display = 'block';
-
-                // Restore last active tab
-                const lastTab = localStorage.getItem('adminActiveTab') || 'reservations';
-                switchTab(lastTab);
-
-                initCalendar();
-                fetchData();
-
-                if (exportBtn) exportBtn.style.display = 'block';
-            } else {
-                currentUser = null;
-                loadingScreen.style.display = 'none';
-                loginScreen.style.display = 'block';
-                app.style.display = 'none';
-                if (exportBtn) exportBtn.style.display = 'none';
+        // Listen for signs outs from other tabs
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_OUT' || (session && session.user.email !== ADMIN_EMAIL)) {
+                window.location.href = LOGIN_PAGE;
             }
         });
 
-        // Enter key support for login
-        document.getElementById('password').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') performLogin();
-        });
+        // Initialize Guard
+        checkAuth();
 
         // Set default archive filter
         document.addEventListener('DOMContentLoaded', () => {
@@ -1417,34 +1395,7 @@
         });
 
         // Login logic
-        async function performLogin() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const btn = document.getElementById('login-btn');
-            const err = document.getElementById('login-error');
 
-            if (!email || !password) {
-                err.innerText = "Lütfen tüm alanları doldurun.";
-                err.style.display = "block";
-                return;
-            }
-
-            btn.innerHTML = "Giriş Yapılıyor..."; btn.disabled = true;
-            const { error } = await supabase.auth.signInWithPassword({ email, password });
-
-            btn.innerHTML = "Giriş Yap"; btn.disabled = false;
-            if (error) {
-                err.innerText = "Giriş başarısız. Lütfen bilgilerinizi kontrol edin.";
-                err.style.display = "block";
-            } else {
-                console.log("Giriş başarılı, güvenlik kontrolü yapılıyor...");
-                // Security Check for New Device
-                const { data: { user } } = await supabase.auth.getUser();
-                if (user) {
-                    await checkDeviceSecurity(user);
-                }
-            }
-        }
 
         async function logout() {
             await supabase.auth.signOut();
