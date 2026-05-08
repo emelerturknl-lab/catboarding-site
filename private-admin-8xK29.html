@@ -1819,9 +1819,13 @@
             toggleModalButtons(false);
             
             // Financials
+            const validMethods = ['tikkie', 'cash', 'bank_transfer'];
+            let currentMethod = res.payment_method;
+            if (currentMethod && !validMethods.includes(currentMethod)) currentMethod = '';
+
             document.getElementById('paymentAmount').value = res.payment_amount || 0;
             document.getElementById('paymentDate').value = res.payment_date || '';
-            document.getElementById('paymentMethod').value = res.payment_method || '';
+            document.getElementById('paymentMethod').value = currentMethod || '';
             document.getElementById('paymentStatus').value = res.payment_status || 'unpaid';
             document.getElementById('internalNotes').value = res.internal_notes || '';
             
@@ -2000,7 +2004,7 @@
                     language: document.getElementById('bookingLanguage').value,
                     payment_amount: parseFloat(document.getElementById('paymentAmount').value) || 0,
                     payment_date: document.getElementById('paymentDate').value || null,
-                    payment_method: pStatus === 'unpaid' ? null : pMethod,
+                    payment_method: pStatus === 'unpaid' ? null : (pMethod || null),
                     payment_status: pStatus,
                     internal_notes: document.getElementById('internalNotes').value
                 };
