@@ -836,6 +836,7 @@
         <!-- TABS NAVIGATION -->
         <div class="tabs-nav">
             <button class="tab-btn active" onclick="switchTab('reservations')">📅 Rezervasyonlar</button>
+            <button class="tab-btn" onclick="switchTab('financials')">📊 Arşiv & Finans</button>
             <button class="tab-btn" onclick="switchTab('gallery')">🖼️ Galeri Yönetimi</button>
             <button class="tab-btn" onclick="switchTab('guests')">🐾 Misafirlerimiz</button>
             <button class="tab-btn" onclick="switchTab('security')">🔒 Güvenlik</button>
@@ -1167,6 +1168,43 @@
                 </div>
             </div>
         </div>
+        
+        <!-- PANEL: FINANCIAL RECORDS / ARCHIVE -->
+        <div id="financials-panel" class="tab-panel" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Reservation Archive & Financial Records</h2>
+                <button type="button" class="btn btn-success" id="export-csv-btn" onclick="exportToCSV()" style="display: none;">📥 Export CSV (GDPR)</button>
+            </div>
+
+            <div style="background: #fdfdfd; padding: 20px; border-radius: 15px; border: 1px solid #eee; margin-bottom: 30px; display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap;">
+                <div>
+                    <label style="display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px;">Filter From:</label>
+                    <input type="date" id="archive-date-from" style="padding: 8px; border-radius: 8px; border: 1px solid #ddd;">
+                </div>
+                <div>
+                    <label style="display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px;">Filter To:</label>
+                    <input type="date" id="archive-date-to" style="padding: 8px; border-radius: 8px; border: 1px solid #ddd;">
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="updateUI()">Filtrele</button>
+            </div>
+
+            <div style="background: white; border-radius: 15px; border: 1px solid #eee; padding: 2px; overflow-x: auto;">
+                <table id="archive-table">
+                    <thead>
+                        <tr>
+                            <th>Müşteri</th>
+                            <th>Tarihler</th>
+                            <th>Tutar / Ödeme</th>
+                            <th>Durum</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody id="archive-list">
+                        <tr><td colspan="5" style="text-align:center;">Yükleniyor...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     </div>
 
@@ -1244,7 +1282,47 @@
                     <label style="display: flex; justify-content: space-between; align-items: center;">
                         Notlar (Transfer detayları vb.)
                     </label>
-                    <textarea id="notes" rows="3" onpaste="handlePlainPaste(event)"></textarea>
+                    <textarea id="notes" rows="2" onpaste="handlePlainPaste(event)"></textarea>
+                </div>
+
+                <!-- Financial Tracking Section (New) -->
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #e9ecef;">
+                    <h4 style="margin-top: 0; color: #4A4A4A; font-size: 0.9rem;">💰 Financial Tracking (Archive Only)</h4>
+                    <div class="form-group" style="display: flex; gap: 10px;">
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.75rem;">Amt Received (€)</label>
+                            <input type="number" step="0.01" id="paymentAmount">
+                        </div>
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.75rem;">Payment Date</label>
+                            <input type="date" id="paymentDate">
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: flex; gap: 10px;">
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.75rem;">Method</label>
+                            <select id="paymentMethod">
+                                <option value="unspecified">Unspecified</option>
+                                <option value="cash">Cash</option>
+                                <option value="bank_transfer">Bank Transfer</option>
+                                <option value="tikkie">Tikkie</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.75rem;">Payment Status</label>
+                            <select id="paymentStatus">
+                                <option value="unpaid">🔴 Unpaid</option>
+                                <option value="partial">🟡 Partial</option>
+                                <option value="paid">🟢 Paid</option>
+                                <option value="refunded">⚪ Refunded</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size: 0.75rem;">Payment Reference / Internal Notes</label>
+                        <textarea id="internalNotes" rows="2" style="font-size: 0.8rem;"></textarea>
+                    </div>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-top: 20px;">
                     <button type="button" class="btn btn-secondary" onclick="closeModal()">Kapat</button>
@@ -1305,17 +1383,31 @@
 
                 initCalendar();
                 fetchData();
+
+                // Show Export button for admin
+                const exportBtn = document.getElementById('export-csv-btn');
+                if (exportBtn) exportBtn.style.display = 'block';
             } else {
                 currentUser = null;
                 document.getElementById('loading-screen').style.display = 'none';
                 document.getElementById('login-screen').style.display = 'block';
                 document.getElementById('app').style.display = 'none';
+                
+                // Hide Export button
+                const exportBtn = document.getElementById('export-csv-btn');
+                if (exportBtn) exportBtn.style.display = 'none';
             }
         });
 
         // Enter key support for login
         document.getElementById('password').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') performLogin();
+        });
+
+        // Set default archive filter
+        document.addEventListener('DOMContentLoaded', () => {
+            const archiveFrom = document.getElementById('archive-date-from');
+            if (archiveFrom) archiveFrom.value = '2026-04-01';
         });
 
         // Login logic
@@ -1536,6 +1628,9 @@
             // POPULATE REMINDERS
             populateReminders(realList);
 
+            // POPULATE ARCHIVE / FINANCIALS
+            populateArchive(reservations);
+
             // Render Test Table
             if (allTests.length === 0) {
                 testTbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">Test kaydı bulunmuyor.</td></tr>';
@@ -1724,8 +1819,16 @@
             }
 
             toggleModalButtons(false);
-            document.getElementById('editButtons').style.display = "flex";
-            document.getElementById('bookingModal').style.display = "flex";
+            document.getElementById('notes').value = r.message || '';
+            
+            // Financials
+            document.getElementById('paymentAmount').value = r.payment_amount || 0;
+            document.getElementById('paymentDate').value = r.payment_date || '';
+            document.getElementById('paymentMethod').value = r.payment_method || 'unspecified';
+            document.getElementById('paymentStatus').value = r.payment_status || 'unpaid';
+            document.getElementById('internalNotes').value = r.internal_notes || '';
+
+            document.getElementById('bookingModal').style.display = 'flex';
         }
 
         function openNewBookingModal(startStr = '', endStr = '') {
@@ -1740,6 +1843,11 @@
             document.getElementById('price').value = "";
             document.getElementById('notes').value = "";
             document.getElementById('bookingLanguage').value = "EN"; // Default to English for manual dashboard bookings
+            document.getElementById('paymentAmount').value = "0";
+            document.getElementById('paymentDate').value = "";
+            document.getElementById('paymentMethod').value = "unspecified";
+            document.getElementById('paymentStatus').value = "unpaid";
+            document.getElementById('internalNotes').value = "";
 
             window._manualEditActive = false; // Fresh start
             syncNotesWithTemplate();
@@ -1880,7 +1988,12 @@
                     total_price: parseFloat(document.getElementById('price').value) || 0,
                     message: document.getElementById('notes').value,
                     cat_count: parseInt(document.getElementById('catCount').value) || 1,
-                    language: document.getElementById('bookingLanguage').value
+                    language: document.getElementById('bookingLanguage').value,
+                    payment_amount: parseFloat(document.getElementById('paymentAmount').value) || 0,
+                    payment_date: document.getElementById('paymentDate').value || null,
+                    payment_method: document.getElementById('paymentMethod').value,
+                    payment_status: document.getElementById('paymentStatus').value,
+                    internal_notes: document.getElementById('internalNotes').value
                 };
 
                 let result;
@@ -1957,7 +2070,12 @@
                 pickup_date: document.getElementById('endDate').value,
                 total_price: document.getElementById('price').value,
                 message: document.getElementById('notes').value,
-                language: document.getElementById('bookingLanguage').value
+                language: document.getElementById('bookingLanguage').value,
+                payment_amount: parseFloat(document.getElementById('paymentAmount').value) || 0,
+                payment_date: document.getElementById('paymentDate').value || null,
+                payment_method: document.getElementById('paymentMethod').value,
+                payment_status: document.getElementById('paymentStatus').value,
+                internal_notes: document.getElementById('internalNotes').value
             };
             sendWhatsAppFor(id, updates);
         }
@@ -2013,8 +2131,10 @@
                 // Check if button text matches target tab
                 const text = btn.innerText.toLowerCase();
                 if (tabName === 'reservations' && text.includes('rezervasyon')) btn.classList.add('active');
+                else if (tabName === 'financials' && text.includes('arşiv')) btn.classList.add('active');
                 else if (tabName === 'gallery' && text.includes('galeri')) btn.classList.add('active');
                 else if (tabName === 'guests' && text.includes('misafir')) btn.classList.add('active');
+                else if (tabName === 'security' && text.includes('güvenlik')) btn.classList.add('active');
             });
 
             // Update Panels
@@ -2032,6 +2152,9 @@
                 fetchGuests();
             } else if (tabName === 'security') {
                 fetchSecurityData();
+            } else if (tabName === 'financials') {
+                document.getElementById('archive-date-from').value = '2026-04-01';
+                populateArchive(reservations);
             }
         }
 
@@ -2093,6 +2216,76 @@
                 urlGroup.style.display = 'block';
                 fileGroup.style.display = 'none';
             }
+        }
+
+        function populateArchive(data) {
+            const list = document.getElementById('archive-list');
+            const from = document.getElementById('archive-date-from').value;
+            const to = document.getElementById('archive-date-to').value;
+
+            list.innerHTML = '';
+            
+            let filtered = data.filter(r => r.status !== 'test');
+            if (from) filtered = filtered.filter(r => r.dropoff_date >= from);
+            if (to) filtered = filtered.filter(r => r.dropoff_date <= to);
+
+            if (filtered.length === 0) {
+                list.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#888;">Filtreye uygun kayıt bulunamadı.</td></tr>';
+                return;
+            }
+
+            filtered.sort((a, b) => new Date(b.dropoff_date) - new Date(a.dropoff_date));
+
+            filtered.forEach(r => {
+                const tr = document.createElement('tr');
+                const paymentBadge = `<span class="badge ${r.payment_status === 'paid' ? 'confirmed' : 'pending'}" style="background: ${r.payment_status === 'paid' ? '#2ecc71' : (r.payment_status === 'partial' ? '#f39c12' : '#e74c3c')};">${r.payment_status.toUpperCase()}</span>`;
+                
+                tr.innerHTML = `
+                    <td><b>${r.customer_name}</b><br><small>${r.customer_contact || ''}</small></td>
+                    <td>${r.dropoff_date}<br>${r.pickup_date}</td>
+                    <td>€${r.total_price}<br><small>Rec: €${r.payment_amount || 0}</small></td>
+                    <td>${paymentBadge}<br><small>${r.payment_method || ''}</small></td>
+                    <td><button class="btn" style="padding:4px 8px; font-size:0.75rem;" onclick="editBooking('${r.id}')">İncele</button></td>
+                `;
+                list.appendChild(tr);
+            });
+        }
+
+        async function exportToCSV() {
+            if (!currentUser) return alert("Yetkiniz yok.");
+            
+            const from = document.getElementById('archive-date-from').value;
+            const to = document.getElementById('archive-date-to').value;
+            
+            let data = reservations.filter(r => r.status !== 'test');
+            if (from) data = data.filter(r => r.dropoff_date >= from);
+            if (to) data = data.filter(r => r.dropoff_date <= to);
+
+            if (data.length === 0) return alert("Dışa aktarılacak veri yok.");
+
+            const headers = ["Customer", "Cat Count", "Drop-off", "Pick-up", "Total Price", "Paid Amount", "Method", "Status", "Payment Date", "Notes"];
+            const rows = data.map(r => [
+                r.customer_name,
+                r.cat_count,
+                r.dropoff_date,
+                r.pickup_date,
+                r.total_price,
+                r.payment_amount,
+                r.payment_method,
+                r.payment_status,
+                r.payment_date || '',
+                (r.internal_notes || '').replace(/,/g, ';')
+            ]);
+
+            const csvContent = [headers, ...rows].map(e => e.join(",")).join("\n");
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", `catboarding_archive_${from || 'all'}_to_${to || 'now'}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         async function fetchGalleryItems() {
