@@ -1367,13 +1367,26 @@
         let calendar;
         let currentUser = null;
 
-        // Supabase Auth Check
-        supabase.auth.onAuthStateChange((event, session) => {
+        // Supabase Auth Check (Hardened)
+        supabase.auth.onAuthStateChange(async (event, session) => {
+            const loginScreen = document.getElementById('login-screen');
+            const app = document.getElementById('app');
+            const loadingScreen = document.getElementById('loading-screen');
+            const exportBtn = document.getElementById('export-csv-btn');
+
             if (session) {
+                // Critical: Verify identity
+                if (session.user.email !== 'admin@catboardingalmere.nl') {
+                    console.warn("Unauthorized access attempt by:", session.user.email);
+                    await supabase.auth.signOut();
+                    alert("Yetkisiz erişim denemesi! Sadece yönetici girişi yapabilir.");
+                    return;
+                }
+
                 currentUser = session.user;
-                document.getElementById('loading-screen').style.display = 'none';
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('app').style.display = 'block';
+                loadingScreen.style.display = 'none';
+                loginScreen.style.display = 'none';
+                app.style.display = 'block';
 
                 // Restore last active tab
                 const lastTab = localStorage.getItem('adminActiveTab') || 'reservations';
@@ -1382,17 +1395,12 @@
                 initCalendar();
                 fetchData();
 
-                // Show Export button for admin
-                const exportBtn = document.getElementById('export-csv-btn');
                 if (exportBtn) exportBtn.style.display = 'block';
             } else {
                 currentUser = null;
-                document.getElementById('loading-screen').style.display = 'none';
-                document.getElementById('login-screen').style.display = 'block';
-                document.getElementById('app').style.display = 'none';
-                
-                // Hide Export button
-                const exportBtn = document.getElementById('export-csv-btn');
+                loadingScreen.style.display = 'none';
+                loginScreen.style.display = 'block';
+                app.style.display = 'none';
                 if (exportBtn) exportBtn.style.display = 'none';
             }
         });
@@ -1426,10 +1434,8 @@
 
             btn.innerHTML = "Giriş Yap"; btn.disabled = false;
             if (error) {
-                console.error("Giriş Hatası:", error);
-                err.innerText = "Giriş başarısız: " + (error.message || "Bilinmeyen hata");
+                err.innerText = "Giriş başarısız. Lütfen bilgilerinizi kontrol edin.";
                 err.style.display = "block";
-                alert("Giriş Hatası: " + error.message);
             } else {
                 console.log("Giriş başarılı, güvenlik kontrolü yapılıyor...");
                 // Security Check for New Device
