@@ -364,6 +364,77 @@ h1, h2, h3 {
     }
     .masonry-item img { cursor: zoom-in; }
 
+    /* Carousel Nav Styles */
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: white;
+      font-size: 40px;
+      padding: 20px 15px;
+      cursor: pointer;
+      z-index: 10002;
+      transition: all 0.3s;
+      border-radius: 10px;
+      backdrop-filter: blur(5px);
+    }
+    .lightbox-nav:hover { background: rgba(217,163,163,0.8); }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+    
+    .lightbox-counter {
+      position: absolute;
+      top: 30px;
+      left: 40px;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: rgba(0,0,0,0.5);
+      padding: 5px 15px;
+      border-radius: 20px;
+      z-index: 10002;
+    }
+
+    .lightbox-thumbs {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      max-width: 90%;
+      overflow-x: auto;
+      z-index: 10002;
+      scrollbar-width: none;
+    }
+    .lightbox-thumbs::-webkit-scrollbar { display: none; }
+    .thumb-item {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+    }
+    .thumb-item.active {
+      opacity: 1;
+      border-color: #D9A3A3;
+      transform: scale(1.1);
+    }
+
+    @media (max-width: 768px) {
+      .lightbox-nav { padding: 15px 10px; font-size: 30px; }
+      .lightbox-prev { left: 5px; }
+      .lightbox-next { right: 5px; }
+      .thumb-item { width: 45px; height: 45px; }
+    }
+
+
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Courgette&family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
 
@@ -524,10 +595,17 @@ body::before {
 <script src="assets/js/bg-music.js"></script>
 <script src="assets/js/site-announcement.js"></script>
 
-    <!-- Lightbox Structure -->
+    <!-- Lightbox Carousel Structure -->
     <div id="gallery-lightbox" class="lightbox-overlay">
+        <div class="lightbox-counter">0 / 0</div>
         <span class="lightbox-close">&times;</span>
+        
+        <button class="lightbox-nav lightbox-prev">&lsaquo;</button>
+        <button class="lightbox-nav lightbox-next">&rsaquo;</button>
+        
         <img class="lightbox-img" id="lightbox-img" src="" alt="Cat Boarding Almere Gallery">
+        
+        <div class="lightbox-thumbs" id="lightbox-thumbs"></div>
     </div>
 
     <script>
@@ -535,21 +613,69 @@ body::before {
             const lightbox = document.getElementById('gallery-lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
             const closeBtn = document.querySelector('.lightbox-close');
+            const prevBtn = document.querySelector('.lightbox-prev');
+            const nextBtn = document.querySelector('.lightbox-next');
+            const counter = document.querySelector('.lightbox-counter');
+            const thumbsContainer = document.getElementById('lightbox-thumbs');
             const container = document.querySelector('.masonry-container');
 
-            if (!container) return;
+            let images = [];
+            let currentIndex = 0;
 
-            // Open Lightbox (Event Delegation)
+            const updateGalleryImages = () => {
+                images = Array.from(container.querySelectorAll('.masonry-item img')).map(img => img.src);
+                
+                // Regenerate thumbnails
+                thumbsContainer.innerHTML = '';
+                images.forEach((src, index) => {
+                    const thumb = document.createElement('img');
+                    thumb.src = src;
+                    thumb.className = 'thumb-item';
+                    thumb.onclick = () => showImage(index);
+                    thumbsContainer.appendChild(thumb);
+                });
+            };
+
+            const showImage = (index) => {
+                if (index < 0) index = images.length - 1;
+                if (index >= images.length) index = 0;
+                
+                currentIndex = index;
+                lightboxImg.style.opacity = '0';
+                
+                setTimeout(() => {
+                    lightboxImg.src = images[currentIndex];
+                    lightboxImg.onload = () => { lightboxImg.style.opacity = '1'; };
+                    counter.textContent = `${currentIndex + 1} / ${images.length}`;
+                    
+                    // Update thumbnails
+                    document.querySelectorAll('.thumb-item').forEach((t, i) => {
+                        t.classList.toggle('active', i === currentIndex);
+                        if (i === currentIndex) t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    });
+                }, 100);
+            };
+
+            // Open Lightbox
             container.addEventListener('click', (e) => {
                 const img = e.target.closest('.masonry-item img');
                 if (img) {
-                    lightboxImg.src = img.src;
+                    updateGalleryImages();
+                    const index = images.indexOf(img.src);
                     lightbox.classList.add('active');
-                    document.body.style.overflow = 'hidden'; // Prevent scroll
+                    document.body.style.overflow = 'hidden';
+                    showImage(index);
                 }
             });
 
-            // Close Logic
+            // Navigation
+            const showNext = (e) => { e?.stopPropagation(); showImage(currentIndex + 1); };
+            const showPrev = (e) => { e?.stopPropagation(); showImage(currentIndex - 1); };
+
+            nextBtn.addEventListener('click', showNext);
+            prevBtn.addEventListener('click', showPrev);
+
+            // Close
             const closeLightbox = () => {
                 lightbox.classList.remove('active');
                 document.body.style.overflow = '';
@@ -558,14 +684,16 @@ body::before {
 
             closeBtn.addEventListener('click', closeLightbox);
             lightbox.addEventListener('click', (e) => {
-                if (e.target === lightbox) closeLightbox();
+                if (e.target === lightbox || e.target.classList.contains('lightbox-overlay')) closeLightbox();
             });
 
-            // ESC Key support
+            // Keyboard support
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-                    closeLightbox();
-                }
+                if (!lightbox.classList.contains('active')) return;
+                
+                if (e.key === 'ArrowRight') showNext();
+                if (e.key === 'ArrowLeft') showPrev();
+                if (e.key === 'Escape') closeLightbox();
             });
         });
     </script>
