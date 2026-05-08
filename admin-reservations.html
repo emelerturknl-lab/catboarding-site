@@ -2704,7 +2704,7 @@
                             <div>${d.device_name || 'Bilinmeyen Cihaz'} ${d.fingerprint === currentFingerprint ? '<span class="device-current">(Bu Cihaz)</span>' : ''}</div>
                             <div class="ip">Son Giriş: ${new Date(d.last_login).toLocaleString()}</div>
                         </div>
-                        ${d.fingerprint !== currentFingerprint ? \`<button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.7rem;" onclick="revokeDevice('${d.id}')">Unut</button>\` : ''}
+                        ${d.fingerprint !== currentFingerprint ? `<button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.7rem;" onclick="revokeDevice('${d.id}')">Unut</button>` : ''}
                     </div>
                 `).join('');
             } else {
@@ -2716,8 +2716,8 @@
             if (logs && logs.length > 0) {
                 logsList.innerHTML = logs.map(l => `
                     <div style="padding: 8px 0; border-bottom: 1px solid #f9f9f9;">
-                        <div style="font-weight: 500;">\${formatAction(l.action)}</div>
-                        <div style="font-size: 0.75rem; color: #888;">\${new Date(l.created_at).toLocaleString()}</div>
+                        <div style="font-weight: 500;">${formatAction(l.action)}</div>
+                        <div style="font-size: 0.75rem; color: #888;">${new Date(l.created_at).toLocaleString()}</div>
                     </div>
                 `).join('');
             } else {
