@@ -1819,14 +1819,13 @@
             }
 
             toggleModalButtons(false);
-            document.getElementById('notes').value = r.message || '';
             
             // Financials
-            document.getElementById('paymentAmount').value = r.payment_amount || 0;
-            document.getElementById('paymentDate').value = r.payment_date || '';
-            document.getElementById('paymentMethod').value = r.payment_method || 'unspecified';
-            document.getElementById('paymentStatus').value = r.payment_status || 'unpaid';
-            document.getElementById('internalNotes').value = r.internal_notes || '';
+            document.getElementById('paymentAmount').value = res.payment_amount || 0;
+            document.getElementById('paymentDate').value = res.payment_date || '';
+            document.getElementById('paymentMethod').value = res.payment_method || 'unspecified';
+            document.getElementById('paymentStatus').value = res.payment_status || 'unpaid';
+            document.getElementById('internalNotes').value = res.internal_notes || '';
 
             document.getElementById('bookingModal').style.display = 'flex';
         }
