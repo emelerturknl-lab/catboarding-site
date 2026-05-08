@@ -315,6 +315,54 @@ h1, h2, h3 {
     }
     .premium-nav a:hover::after, .premium-nav a.active::after, .main-nav a:hover::after, .main-nav a.active::after { width: 100% !important; }
     .premium-nav a:hover, .premium-nav a.active, .main-nav a:hover, .main-nav a.active { color: #D9A3A3 !important; }
+    
+    /* Lightbox Premium Styles */
+    .lightbox-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .lightbox-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .lightbox-img {
+      max-width: 90%;
+      max-height: 85vh;
+      border-radius: 20px;
+      box-shadow: 0 0 60px rgba(0,0,0,0.5);
+      transform: scale(0.9);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 4px solid rgba(255,255,255,0.1);
+    }
+    .lightbox-overlay.active .lightbox-img {
+      transform: scale(1);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      color: #fff;
+      font-size: 50px;
+      cursor: pointer;
+      z-index: 10001;
+      transition: all 0.3s;
+      line-height: 1;
+    }
+    .lightbox-close:hover {
+      color: #D9A3A3;
+      transform: rotate(90deg) scale(1.2);
+    }
+    .masonry-item img { cursor: zoom-in; }
 
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Courgette&family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
@@ -476,6 +524,51 @@ body::before {
 <script src="assets/js/bg-music.js"></script>
 <script src="assets/js/site-announcement.js"></script>
 
+    <!-- Lightbox Structure -->
+    <div id="gallery-lightbox" class="lightbox-overlay">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-img" id="lightbox-img" src="" alt="Cat Boarding Almere Gallery">
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const lightbox = document.getElementById('gallery-lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const closeBtn = document.querySelector('.lightbox-close');
+            const container = document.querySelector('.masonry-container');
+
+            if (!container) return;
+
+            // Open Lightbox (Event Delegation)
+            container.addEventListener('click', (e) => {
+                const img = e.target.closest('.masonry-item img');
+                if (img) {
+                    lightboxImg.src = img.src;
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden'; // Prevent scroll
+                }
+            });
+
+            // Close Logic
+            const closeLightbox = () => {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+                setTimeout(() => { lightboxImg.src = ''; }, 400);
+            };
+
+            closeBtn.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) closeLightbox();
+            });
+
+            // ESC Key support
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                    closeLightbox();
+                }
+            });
+        });
+    </script>
     <script src="/assets/js/global-widgets.js"></script>
 </body>
 </html>
