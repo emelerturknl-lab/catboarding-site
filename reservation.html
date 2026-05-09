@@ -2314,9 +2314,11 @@
           if (!document.getElementById('transfer-' + type).checked) return null;
           const locSelect = document.getElementById(type + '-location-select');
           const loc = locSelect.value;
-          const fullLabel = locSelect.options[locSelect.selectedIndex].text.split(' (€')[0];
+          const selectedOption = locSelect.options[locSelect.selectedIndex];
+          const cleanLabel = selectedOption.textContent.replace(/\s*\(€.*?\)\s*$/, '').trim();
           const fixedPrice = HomeEngine.getFixedTransferPrice(loc);
-          if (fixedPrice !== null) return { cost: fixedPrice, label: fullLabel };
+          if (fixedPrice !== null) return { cost: fixedPrice, label: cleanLabel };
+
 
           if (loc === 'Custom') {
             const street = document.getElementById(type + '-street').value;
