@@ -20,25 +20,24 @@
     `;
     document.body.appendChild(waBtn);
 
-    // 3. Add Warning Popup
-    if (!localStorage.getItem('site_warning_accepted')) {
-        const overlay = document.createElement('div');
-        overlay.className = 'warning-popup-overlay';
-        overlay.style.display = 'flex';
-        overlay.innerHTML = `
-            <div class="warning-popup-content">
-                <h2>🐾 Important Notice</h2>
-                <p>Our website is currently under development.<br><br>
-                To ensure your reservation is received and confirmed, please contact us directly via WhatsApp.<br><br>
-                You can still explore our website for information.</p>
-                <button class="warning-popup-btn">OK</button>
-            </div>
-        `;
-        document.body.appendChild(overlay);
+    // 3. Add Warning Popup (Always show on load, no persistence)
+    const overlay = document.createElement('div');
+    overlay.className = 'warning-popup-overlay';
+    overlay.style.display = 'flex';
+    overlay.innerHTML = `
+        <div class="warning-popup-content">
+            <h2>🐾 Important Notice</h2>
+            <p>Our website is currently under development.<br><br>
+            To ensure your reservation is received and confirmed, please contact us directly via WhatsApp.<br><br>
+            You can still explore our website for information.</p>
+            <button class="warning-popup-btn">OK</button>
+        </div>
+    `;
+    document.body.appendChild(overlay);
 
-        overlay.querySelector('.warning-popup-btn').addEventListener('click', function() {
-            overlay.style.display = 'none';
-            localStorage.setItem('site_warning_accepted', 'true');
-        });
-    }
+    overlay.querySelector('.warning-popup-btn').addEventListener('click', function() {
+        overlay.style.display = 'none';
+        // No localStorage set, show again on refresh
+    });
+
 })();

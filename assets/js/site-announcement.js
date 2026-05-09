@@ -6,6 +6,15 @@
     const waNumber = '31615677962';
     const message = 'Our website is currently under development. If you encounter any issues or need information, please reach out to us via WhatsApp!';
     const storageKey = 'site_announcement_dismissed';
+    
+    // Don't show banner on the homepage
+    const isHomepage = window.location.pathname === '/' || 
+                       window.location.pathname === '/index.html' || 
+                       window.location.pathname.endsWith('/index.html') ||
+                       window.location.pathname === '';
+    
+    if (isHomepage) return;
+
 
     const showBanner = () => {
         // Don't show if already hidden or already exists
