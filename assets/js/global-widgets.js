@@ -20,26 +20,27 @@
     `;
     document.body.appendChild(waBtn);
 
-    // 3. Add Warning Popup (Always show on load, no persistence)
-    console.log('🐾 Important Notice Modal: Forced Load triggered.');
-    const overlay = document.createElement('div');
+    // 3. Add Warning Popup (Show once per session)
+    if (!sessionStorage.getItem('bp_notice_seen_session')) {
+        console.log('🐾 Important Notice Modal: Showing for this session.');
+        const overlay = document.createElement('div');
+        overlay.className = 'warning-popup-overlay';
+        overlay.style.display = 'flex';
+        overlay.innerHTML = `
+            <div class="warning-popup-content">
+                <h2>🐾 Important Notice</h2>
+                <p>Our website is currently under development.<br><br>
+                To ensure your reservation is received and confirmed, please contact us directly via WhatsApp.<br><br>
+                You can still explore our website for information.</p>
+                <button class="warning-popup-btn">OK</button>
+            </div>
+        `;
+        document.body.appendChild(overlay);
 
-    overlay.className = 'warning-popup-overlay';
-    overlay.style.display = 'flex';
-    overlay.innerHTML = `
-        <div class="warning-popup-content">
-            <h2>🐾 Important Notice</h2>
-            <p>Our website is currently under development.<br><br>
-            To ensure your reservation is received and confirmed, please contact us directly via WhatsApp.<br><br>
-            You can still explore our website for information.</p>
-            <button class="warning-popup-btn">OK</button>
-        </div>
-    `;
-    document.body.appendChild(overlay);
-
-    overlay.querySelector('.warning-popup-btn').addEventListener('click', function() {
-        overlay.style.display = 'none';
-        // No localStorage set, show again on refresh
-    });
+        overlay.querySelector('.warning-popup-btn').addEventListener('click', function() {
+            overlay.style.display = 'none';
+            sessionStorage.setItem('bp_notice_seen_session', 'true');
+        });
+    }
 
 })();
