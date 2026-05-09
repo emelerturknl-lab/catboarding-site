@@ -2263,7 +2263,7 @@
           for (let i = 1; i <= count; i++) {
             const catHtml = `
               <div style="background: rgba(217,163,163,0.05); padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(217,163,163,0.15);">
-                <strong style="color: #D9A3A3; display: block; margin-bottom: 10px;">🐱 Cat ${i} Details</strong>
+                <strong style="color: #D9A3A3; display: block; margin-bottom: 10px;">Cat ${i} Details</strong>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                   <input type="text" name="cat-name-${i}" id="cat-name-${i}" placeholder="Cat Name (Required)" required style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
                   <input type="text" name="cat-age-${i}" id="cat-age-${i}" placeholder="Age" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
@@ -2431,42 +2431,42 @@
               const age = formData.get(`cat-age-${i}`) || 'N/A';
               const breed = formData.get(`cat-breed-${i}`) || 'N/A';
               const personality = formData.get(`cat-personality-${i}`) || 'None';
-              catsInfo += `\uD83D\uDC31 *Cat ${i}:* ${name} (${age}, ${breed})\n   _Notes: ${personality}_\n`;
+              catsInfo += `Cat ${i}: ${name} (${age}, ${breed})\nNotes: ${personality}\n`;
             }
             
             const hAddr = "Black Princess & White Prince, Flevostraat 32, 1315 CC Almere";
             
             let transferBlocks = "";
             // Drop-off Block
-            transferBlocks += `\uD83D\uDE97 *Drop-off Service*\n`;
+            transferBlocks += `DROP-OFF SERVICE\n`;
             if (pricing.dropT) {
               const dFrom = pricing.dropT.address || pricing.dropT.label;
-              transferBlocks += `- Status: Yes\n- From: ${dFrom}\n- To: ${hAddr}\n- Fee: \u20AC${pricing.dropT.cost.toFixed(2)}\n\n`;
+              transferBlocks += `- Status: Yes\n- From: ${dFrom}\n- To: ${hAddr}\n- Fee: €${pricing.dropT.cost.toFixed(2)}\n\n`;
             } else {
               transferBlocks += `- Status: No\n\n`;
             }
             
             // Pick-up Block
-            transferBlocks += `\uD83D\uDE97 *Pick-up Service*\n`;
+            transferBlocks += `PICK-UP SERVICE\n`;
             if (pricing.pickT) {
               const pTo = pricing.pickT.address || pricing.pickT.label;
-              transferBlocks += `- Status: Yes\n- From: ${hAddr}\n- To: ${pTo}\n- Fee: \u20AC${pricing.pickT.cost.toFixed(2)}\n\n`;
+              transferBlocks += `- Status: Yes\n- From: ${hAddr}\n- To: ${pTo}\n- Fee: €${pricing.pickT.cost.toFixed(2)}\n\n`;
             } else {
               transferBlocks += `- Status: No\n\n`;
             }
             
-            let message = `\uD83D\uDC3E *NEW RESERVATION REQUEST*\n\n`;
-            message += `\uD83D\uDC64 *Guest*\n- Name: ${fullName}\n- Phone: ${formData.get('phone')}\n- Email: ${formData.get('email') || 'Not provided'}\n\n`;
-            message += `${catsInfo}\n`;
-            message += `\uD83D\uDCC5 *Stay Details*\n- Check-in: ${formData.get('dropoff-date')}\n- Check-out: ${formData.get('pickup-date')}\n- Total Nights: ${pricing.nights}\n\n`;
+            let message = `NEW RESERVATION REQUEST\n\n`;
+            message += `GUEST INFORMATION\n- Name: ${fullName}\n- Phone: ${formData.get('phone')}\n- Email: ${formData.get('email') || 'Not provided'}\n\n`;
+            message += `CATS STAYING\n${catsInfo}\n`;
+            message += `STAY DETAILS\n- Check-in: ${formData.get('dropoff-date')}\n- Check-out: ${formData.get('pickup-date')}\n- Total Nights: ${pricing.nights}\n\n`;
             message += `${transferBlocks}`;
-            message += `\uD83D\uDC8E *Reservation Summary*\n`;
-            message += `- Boarding Subtotal: \u20AC${pricing.boardingSubtotal.toFixed(2)}\n`;
-            if (pricing.additionalCatFee > 0) message += `- Additional Cat Fee: \u20AC${pricing.additionalCatFee.toFixed(2)}\n`;
-            if (pricing.transferTotal > 0) message += `- Transfer Total: \u20AC${pricing.transferTotal.toFixed(2)}\n`;
-            if (pricing.specialRoomFee > 0) message += `- Special Room Upgrade: \u20AC${pricing.specialRoomFee.toFixed(2)}\n`;
-            if (pricing.medicationFee > 0) message += `- Medication Care Fee: \u20AC${pricing.medicationFee.toFixed(2)}\n`;
-            message += `*TOTAL ESTIMATED: \u20AC${pricing.total.toFixed(2)}*`;
+            message += `RESERVATION SUMMARY\n`;
+            message += `- Boarding Subtotal: €${pricing.boardingSubtotal.toFixed(2)}\n`;
+            if (pricing.additionalCatFee > 0) message += `- Additional Cat Fee: €${pricing.additionalCatFee.toFixed(2)}\n`;
+            if (pricing.transferTotal > 0) message += `- Transfer Total: €${pricing.transferTotal.toFixed(2)}\n`;
+            if (pricing.specialRoomFee > 0) message += `- Special Room Upgrade: €${pricing.specialRoomFee.toFixed(2)}\n`;
+            if (pricing.medicationFee > 0) message += `- Medication Care Fee: €${pricing.medicationFee.toFixed(2)}\n`;
+            message += `TOTAL ESTIMATED: €${pricing.total.toFixed(2)}`;
             
             const whatsappUrl = `https://wa.me/31615677962?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
