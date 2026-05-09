@@ -1921,8 +1921,7 @@
                   <label
                     style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Drop-off
                     Time</label>
-                  <input type="time" name="dropoff-time" id="dropoff-time" value="14:00" onchange="calculatePricing()"
-                    style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box; background: white;">
+                  <input type="time" name="dropoff-time" id="dropoff-time" value="14:00" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-family: sans-serif;">
                   <p style="font-size: 0.8rem; color: #888; margin-top: 5px;">* Default window: 14:00 - 15:00</p>
                 </div>
               </div>
@@ -1930,8 +1929,7 @@
               <div style=" margin-bottom: 1rem;">
                 <label
                   style="display: flex; align-items: center; gap: 0.5rem; font-family: sans-serif; font-size: 0.95rem; color: #4A4A4A; cursor: pointer;">
-                  <input type="checkbox" name="transfer-dropoff" id="transfer-dropoff"
-                    onchange="document.getElementById('transfer-dropoff-options').style.display=this.checked?'block':'none'; if(typeof calculatePricing==='function') calculatePricing();">
+                  <input type="checkbox" name="transfer-dropoff" id="transfer-dropoff">
                   Need Transfer Service for Drop-off?
                 </label>
                 <div id="transfer-dropoff-options"
@@ -1940,7 +1938,6 @@
                     style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; font-size: 0.9rem;">Drop-off
                     Location</label>
                   <select name="dropoff-location-select" id="dropoff-location-select"
-                    onchange="document.getElementById('dropoff-custom-address').style.display=this.value==='Custom'?'block':'none'; if(typeof calculatePricing==='function') calculatePricing();"
                     style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem; background: white; margin-bottom: 0.5rem;">
                     <option value="">Select Location</option>
                     <option value="Schiphol">Schiphol Airport (€65)</option>
@@ -1994,8 +1991,7 @@
                   <label
                     style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Pick-up
                     Time</label>
-                  <input type="time" name="pickup-time" id="pickup-time" value="14:00" onchange="calculatePricing()"
-                    style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box; background: white;">
+                  <input type="time" name="pickup-time" id="pickup-time" value="14:00" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-family: sans-serif;">
                   <p style="font-size: 0.8rem; color: #888; margin-top: 5px;">* Default window: 14:00 - 15:00</p>
                 </div>
               </div>
@@ -2003,8 +1999,7 @@
               <div style=" margin-bottom: 1rem;">
                 <label
                   style="display: flex; align-items: center; gap: 0.5rem; font-family: sans-serif; font-size: 0.95rem; color: #4A4A4A; cursor: pointer;">
-                  <input type="checkbox" name="transfer-pickup" id="transfer-pickup"
-                    onchange="document.getElementById('transfer-pickup-options').style.display=this.checked?'block':'none'; if(typeof calculatePricing==='function') calculatePricing();">
+                  <input type="checkbox" name="transfer-pickup" id="transfer-pickup">
                   Need Transfer Service for Pick-up?
                 </label>
                 <div id="transfer-pickup-options"
@@ -2013,7 +2008,6 @@
                     style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; font-size: 0.9rem;">Pick-up
                     Location</label>
                   <select name="pickup-location-select" id="pickup-location-select"
-                    onchange="document.getElementById('pickup-custom-address').style.display=this.value==='Custom'?'block':'none'; if(typeof calculatePricing==='function') calculatePricing();"
                     style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem; background: white; margin-bottom: 0.5rem;">
                     <option value="">Select location</option>
                     <option value="Schiphol">Schiphol Airport (€65)</option>
@@ -2058,7 +2052,7 @@
                 <label
                   style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Number
                   of Cats</label>
-                <select name="cat-count" id="cat-count" onchange="calculatePricing(); updateDynamicCatFields();"
+                <select name="cat-count" id="cat-count"
                   style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box; background: white;">
                   <option value="1">1 Cat (€20/night)</option>
                   <option value="2">2 Cats (€35/night)</option>
@@ -2310,7 +2304,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+          // Initial render
           updateDynamicCatFields();
+          calculatePricing();
           
           const pickupInput = document.getElementById('pickup-date');
           const dropoffInput = document.getElementById('dropoff-date');
@@ -2401,9 +2397,19 @@
 
           // Wire up change events
           document.getElementById('cat-count').addEventListener('change', updateDynamicCatFields);
+          
+          document.getElementById('transfer-dropoff').addEventListener('change', () => toggleTransfer('dropoff'));
+          document.getElementById('transfer-pickup').addEventListener('change', () => toggleTransfer('pickup'));
+          
+          document.getElementById('dropoff-location-select').addEventListener('change', () => handleLocationChange('dropoff'));
+          document.getElementById('pickup-location-select').addEventListener('change', () => handleLocationChange('pickup'));
+          
           document.querySelectorAll('input[name="special-need"]').forEach(cb => {
             cb.addEventListener('change', calculatePricing);
           });
+          
+          document.getElementById('dropoff-time').addEventListener('change', calculatePricing);
+          document.getElementById('pickup-time').addEventListener('change', calculatePricing);
         });
         </script>
 
