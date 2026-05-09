@@ -2312,9 +2312,12 @@
 
         async function computeTransfer(type) {
           if (!document.getElementById('transfer-' + type).checked) return null;
-          const loc = document.getElementById(type + '-location-select').value;
+          const locSelect = document.getElementById(type + '-location-select');
+          const loc = locSelect.value;
+          const fullLabel = locSelect.options[locSelect.selectedIndex].text.split(' (€')[0];
           const fixedPrice = HomeEngine.getFixedTransferPrice(loc);
-          if (fixedPrice !== null) return { cost: fixedPrice, label: loc };
+          if (fixedPrice !== null) return { cost: fixedPrice, label: fullLabel };
+
           if (loc === 'Custom') {
             const street = document.getElementById(type + '-street').value;
             const no = document.getElementById(type + '-houseno').value;
