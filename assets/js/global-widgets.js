@@ -21,7 +21,9 @@
     document.body.appendChild(waBtn);
 
     // 3. Add Warning Popup (Always show on load, no persistence)
+    console.log('🐾 Important Notice Modal: Forced Load triggered.');
     const overlay = document.createElement('div');
+
     overlay.className = 'warning-popup-overlay';
     overlay.style.display = 'flex';
     overlay.innerHTML = `
