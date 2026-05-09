@@ -7,7 +7,7 @@ const HomeEngine = {
         return diffDays;
     },
 
-    calculateAccommodation: function(nights, catCount) {
+    calculateAccommodation: function (nights, catCount) {
         let ratePerNight = (catCount === 1) ? 20 : 35;
         let undiscountedTotal = nights * ratePerNight;
         let nightsFree = 0;

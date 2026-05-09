@@ -2058,12 +2058,15 @@
                 <label
                   style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Number
                   of Cats</label>
-                <select name="cat-count" id="cat-count" onchange="calculatePricing()"
+                <select name="cat-count" id="cat-count" onchange="calculatePricing(); updateDynamicCatFields();"
                   style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box; background: white;">
                   <option value="1">1 Cat (€20/night)</option>
                   <option value="2">2 Cats (€35/night)</option>
                 </select>
               </div>
+
+              <!-- Dynamic Cat Details Container -->
+              <div id="dynamic-cat-details" style="margin-top: 1rem;"></div>
 
               <!-- Pricing Summary Section -->
               <div id="pricing-summary"
@@ -2080,23 +2083,27 @@
               <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 200px;">
                   <label
-                    style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Your
-                    Name</label>
-                  <input type="text" name="name" required
+                    style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">First Name</label>
+                  <input type="text" name="firstname" id="firstname" required
                     style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
                 </div>
                 <div style="flex: 1; min-width: 200px;">
                   <label
-                    style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Phone
-                    Number (Mandatory)</label>
+                    style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Last Name</label>
+                  <input type="text" name="lastname" id="lastname" required
+                    style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
+                </div>
+              </div>
+              <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+                <div style="flex: 1; min-width: 200px;">
+                  <label
+                    style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Phone Number</label>
                   <input type="tel" name="phone" required placeholder="06XXXXXXXX"
                     style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
-                  <small style="color: #888; font-size: 0.8rem;">Required for WhatsApp communication.</small>
                 </div>
                 <div style="flex: 1; min-width: 200px;">
                   <label
-                    style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Email
-                    (Optional)</label>
+                    style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Email (Optional)</label>
                   <input type="email" name="email" placeholder="example@mail.com"
                     style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
                 </div>
@@ -2180,18 +2187,14 @@
             </form>
           </div>
 
-        </div>
-      </div>
-
-      <script>
-        // These functions are independent of Maps API - load immediately
+        <script>
         function toggleTransfer(type) {
           const checkbox = document.getElementById('transfer-' + type);
           const optionsDiv = document.getElementById('transfer-' + type + '-options');
           if (optionsDiv) {
             optionsDiv.style.display = checkbox.checked ? 'block' : 'none';
           }
-          if (typeof calculatePricing === 'function') calculatePricing();
+          calculatePricing();
         }
 
         function handleLocationChange(type) {
@@ -2200,319 +2203,209 @@
           if (customDiv) {
             customDiv.style.display = select.value === 'Custom' ? 'block' : 'none';
           }
-          if (typeof calculatePricing === 'function') calculatePricing();
+          calculatePricing();
         }
-      </script>
 
-      <script>
-        let dropoffMap, pickupMap, directionsService, distanceMatrixService;
-        let dropoffRenderer, pickupRenderer;
-        const BOUTIQUE_ADDRESS = "Flevostraat 32, 1315 CC Almere";
-
-        const GREEN_POLYLINE_OPTIONS = {
-          strokeColor: '#28a745',
-          strokeWeight: 6,
-          strokeOpacity: 0.8
-        };
-
-        function initMap() {
-          try {
-            directionsService = new google.maps.DirectionsService();
-            distanceMatrixService = new google.maps.DistanceMatrixService();
-
-            const mapOptions = {
-              zoom: 11,
-              center: { lat: 52.3702, lng: 5.2217 },
-              mapTypeControl: false,
-              streetViewControl: false,
-              fullscreenControl: true
-            };
-
-            dropoffMap = new google.maps.Map(document.getElementById("dropoff-map"), mapOptions);
-            pickupMap = new google.maps.Map(document.getElementById("pickup-map"), mapOptions);
-
-            dropoffRenderer = new google.maps.DirectionsRenderer({
-              map: dropoffMap,
-              polylineOptions: GREEN_POLYLINE_OPTIONS,
-              suppressMarkers: false
-            });
-
-            pickupRenderer = new google.maps.DirectionsRenderer({
-              map: pickupMap,
-              polylineOptions: GREEN_POLYLINE_OPTIONS,
-              suppressMarkers: false
-            });
-
-            console.log("Maps initialized successfully");
-            calculatePricing();
-          } catch (e) {
-            console.error("Map Init Error:", e);
+        function updateDynamicCatFields() {
+          const count = parseInt(document.getElementById('cat-count').value);
+          const container = document.getElementById('dynamic-cat-details');
+          container.innerHTML = '';
+          
+          for (let i = 1; i <= count; i++) {
+            const catHtml = `
+              <div style="background: rgba(217,163,163,0.05); padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(217,163,163,0.15);">
+                <strong style="color: #D9A3A3; display: block; margin-bottom: 10px;">🐱 Cat ${i} Details</strong>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                  <input type="text" name="cat-name-${i}" id="cat-name-${i}" placeholder="Cat Name (Required)" required style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+                  <input type="text" name="cat-age-${i}" id="cat-age-${i}" placeholder="Age" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+                  <input type="text" name="cat-breed-${i}" id="cat-breed-${i}" placeholder="Breed" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+                  <input type="text" name="cat-personality-${i}" id="cat-personality-${i}" placeholder="Personality / Notes" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+                </div>
+              </div>
+            `;
+            container.insertAdjacentHTML('beforeend', catHtml);
           }
+          calculatePricing();
         }
-        window.initMap = initMap;
 
-        async function calculatePricing() {
+        function calculatePricing() {
+          const catCount = parseInt(document.getElementById('cat-count').value);
           const dropDateVal = document.getElementById('dropoff-date').value;
           const pickDateVal = document.getElementById('pickup-date').value;
-          const catCount = parseInt(document.getElementById('cat-count').value);
           const summaryContent = document.getElementById('summary-content');
 
           if (!dropDateVal || !pickDateVal) {
-            summaryContent.innerHTML = '<p style="font-style: italic; color: #888;">Select dates to see pricing breakdown...</p>';
-            return;
+            if (summaryContent) summaryContent.innerHTML = '<p style="font-style: italic; color: #888;">Select dates to see pricing breakdown...</p>';
+            return { total: 0 };
           }
 
-          // 1. CALCULATE NIGHTS (No absolute value, must be positive)
           const d1 = new Date(dropDateVal);
           const d2 = new Date(pickDateVal);
           const diffTime = d2 - d1;
-          const totalNights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-          if (totalNights < 0) {
-            summaryContent.innerHTML = '<p style="color: #E74C3C; font-weight: bold;">⚠️ Pick-up date must be after drop-off date.</p>';
-            return;
+          const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
+          
+          let boardingSubtotal = nights * 20;
+          let additionalCatFee = 0;
+          if (catCount === 2) additionalCatFee = nights * 15;
+          
+          let transferTotal = 0;
+          if (document.getElementById('transfer-dropoff').checked) {
+            const loc = document.getElementById('dropoff-location-select').value;
+            transferTotal += HomeEngine.getFixedTransferPrice(loc) || 0;
           }
-
-          // Special case: Same day (Day care or error)
-          const effectiveNights = totalNights === 0 ? 1 : totalNights;
-
-          // 2. UPDATE ACCOMMODATION IMMEDIATELY (Visual Feedback)
-          const acc = HomeEngine.calculateAccommodation(effectiveNights, catCount);
-          let accommodationHTML = `<div style="margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">
-    <strong style="color: #4A4A4A;">Accommodation (${catCount} Cat${catCount > 1 ? 's' : ''}):</strong><br>
-    ${effectiveNights} night${effectiveNights > 1 ? 's' : ''} x €${acc.ratePerNight} = €${acc.undiscountedTotal}<br>
-    ${acc.nightsFree > 0 ? `<span style="color: #27AE60;">Promotion: -${acc.nightsFree} free night(s)</span><br>` : ''}
-    <span style="font-weight: bold; font-size: 1.1rem;">Accommodation Total: €${acc.total}</span>
-  </div>`;
-
-          // Show partial summary while map/transfer loads
-          summaryContent.innerHTML = accommodationHTML + `<p style="font-size: 0.85rem; color: #D9A3A3;">Calculating transfer fees...</p>`;
-
-          // 3. FETCH TRANSFER PRICES (Async)
-          try {
-            // Trigger map sync without blocking the whole UI if possible
-            syncMapsAndRoutes();
-
-            const dropT = await computeTransfer('dropoff');
-            const pickT = await computeTransfer('pickup');
-
-            let transferTotal = 0;
-            let transferHTML = '';
-            function formatT(val, typeLabel) {
-              if (val && val.cost > 0) {
-                transferTotal += val.cost;
-                const distInfo = val.dist ? ` (${val.dist.toFixed(1)} km)` : '';
-                return `${typeLabel}: €${val.cost.toFixed(2)}${distInfo}<br>`;
-              }
-              return '';
-            }
-
-            const dText = formatT(dropT, 'Transfer (Drop-off)');
-            const pText = formatT(pickT, 'Transfer (Pick-up)');
-
-            if (dText || pText) {
-              transferHTML = `<div style="margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">
-        <strong style="color: #4A4A4A;">Transfer Services:</strong><br>
-        ${dText}${pText}
-        <span style="font-weight: bold; font-size: 1.1rem;">Transfer Total: €${transferTotal.toFixed(2)}</span>
-      </div>`;
-            }
-
-            // 4. FINAL SUMMARY
-            const grandTotal = acc.total + transferTotal;
-            document.getElementById('estimated-total').value = grandTotal.toFixed(2);
-
-            summaryContent.innerHTML = accommodationHTML + transferHTML + `
-      <div style="font-size: 1.4rem; color: #D9A3A3; font-weight: 800; margin-top: 0.5rem;">
-        Estimated Grand Total: €${grandTotal.toFixed(2)}
-      </div>
-      <p style="font-size: 0.8rem; color: #888; margin-top: 5px;">* Final pricing will be confirmed by us.</p>`;
-
-          } catch (e) {
-            console.warn("Transfer calculation error:", e);
-            // Fallback to just accommodation if transfer calculation fails
-            summaryContent.innerHTML = accommodationHTML + `<p style="font-size: 0.8rem; color: #E74C3C;">Notice: Transfer fees will be added manually.</p>`;
+          if (document.getElementById('transfer-pickup').checked) {
+            const loc = document.getElementById('pickup-location-select').value;
+            transferTotal += HomeEngine.getFixedTransferPrice(loc) || 0;
           }
-        }
-
-        async function syncMapsAndRoutes() {
-          function isAddressComplete(type) {
-            const street = (document.getElementById(type + '-street').value || "").trim();
-            const no = (document.getElementById(type + '-houseno').value || "").trim();
-            const pc = (document.getElementById(type + '-postcode').value || "").trim();
-            const city = (document.getElementById(type + '-city').value || "").trim();
-            return street.length > 0 && no.length > 0 && pc.length >= 4 && city.length > 0;
-          }
-
-          function getFormattedAddress(type) {
-            const street = document.getElementById(type + '-street').value;
-            const no = document.getElementById(type + '-houseno').value;
-            let pc = (document.getElementById(type + '-postcode').value || "").trim();
-            const city = document.getElementById(type + '-city').value;
-            if (pc.length === 6 && /^[0-9]{4}[A-Z]{2}$/i.test(pc)) {
-              pc = pc.substring(0, 4) + ' ' + pc.substring(4).toUpperCase();
-            }
-            return `${street} ${no}, ${pc} ${city}, Netherlands`;
-          }
-
-          const types = ['dropoff', 'pickup'];
-          for (const type of types) {
-            const isTransfer = document.getElementById('transfer-' + type).checked;
-            const isCustom = document.getElementById(type + '-location-select').value === 'Custom';
-            const complete = isTransfer && isCustom && isAddressComplete(type);
-
-            const container = document.getElementById(type + '-map-container');
-            if (container) container.style.display = complete ? 'block' : 'none';
-
-            if (complete) {
-              const addr = getFormattedAddress(type);
-              const res = await getGoogleDistance(addr, type);
-              if (res) {
-                updateRoute(addr, type);
-                const distEl = document.getElementById(type + '-dist');
-                if (distEl) distEl.innerText = `Distance: ${res.km.toFixed(1)} km`;
-              }
-            }
-          }
-        }
-
-        async function computeTransfer(type) {
-          if (!document.getElementById('transfer-' + type).checked) return null;
-          const loc = document.getElementById(type + '-location-select').value;
-
-          const fixedPrice = HomeEngine.getFixedTransferPrice(loc);
-          if (fixedPrice !== null) return { cost: fixedPrice, label: loc };
-
-          if (loc === 'Custom') {
-            const pc = document.getElementById(type + '-postcode').value;
-            if (!pc || pc.length < 4) return null;
-            const addr = `${document.getElementById(type + '-street').value} ${document.getElementById(type + '-houseno').value}, ${document.getElementById(type + '-postcode').value} ${document.getElementById(type + '-city').value}`;
-
-            const res = await getGoogleDistance(addr, type);
-            if (res) {
-              const cost = HomeEngine.calculateDistanceTransfer(res.km);
-              return { cost: cost, dist: res.km, label: 'Distance-based' };
-            }
-          }
-          return null;
-        }
-
-        let calcDebounce;
-        function debouncedCalculate() {
-          clearTimeout(calcDebounce);
-          calcDebounce = setTimeout(calculatePricing, 800);
-        }
-
-        async function getGoogleDistance(address, type) {
-          const statusEl = document.getElementById(type + '-status');
-          if (statusEl) statusEl.innerText = "Calculating distance...";
-
-          if (typeof google === 'undefined' || !distanceMatrixService) {
-            console.warn("Google Maps not loaded. Using estimated distance.");
-            if (statusEl) statusEl.innerText = "Maps not loaded, using estimate.";
-            return { km: 30 }; // Fallback distance
-          }
-
-          return new Promise((resolve) => {
-            distanceMatrixService.getDistanceMatrix({
-              origins: [address],
-              destinations: [BOUTIQUE_ADDRESS],
-              travelMode: 'DRIVING',
-            }, (response, status) => {
-              if (status === 'OK' && response.rows[0].elements[0].status === 'OK') {
-                const distance = response.rows[0].elements[0].distance;
-                if (distance) {
-                  if (statusEl) statusEl.innerText = "Distance calculated.";
-                  resolve({ km: distance.value / 1000 });
-                  return;
-                }
-              }
-              console.warn("Distance Matrix failed:", status, response.rows[0].elements[0].status);
-              if (statusEl) statusEl.innerText = "Could not find route. Using default fee.";
-              resolve({ km: 30 }); // Fallback instead of null
-            });
+          
+          const checkboxes = document.querySelectorAll('input[name="special-need"]:checked');
+          let specialRoomFee = 0;
+          let medicationFee = 0;
+          checkboxes.forEach(cb => {
+            if (cb.value === 'Special room') specialRoomFee = nights * 5;
+            if (cb.value === 'Medication required') medicationFee = nights * 2.5;
           });
+          
+          const total = boardingSubtotal + additionalCatFee + transferTotal + specialRoomFee + medicationFee;
+          
+          // Sync hidden input for legacy/compatibility
+          const hiddenTotal = document.getElementById('estimated-total');
+          if (hiddenTotal) hiddenTotal.value = total.toFixed(2);
+          
+          if (summaryContent) {
+            summaryContent.innerHTML = `
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span>Boarding Subtotal (${nights} nights)</span>
+                <span>€${boardingSubtotal.toFixed(2)}</span>
+              </div>
+              ${additionalCatFee > 0 ? `
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span>Additional Cat Fee</span>
+                <span>€${additionalCatFee.toFixed(2)}</span>
+              </div>` : ''}
+              ${transferTotal > 0 ? `
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span>Transfer Service</span>
+                <span>€${transferTotal.toFixed(2)}</span>
+              </div>` : ''}
+              ${specialRoomFee > 0 ? `
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span>Special Room Upgrade</span>
+                <span>€${specialRoomFee.toFixed(2)}</span>
+              </div>` : ''}
+              ${medicationFee > 0 ? `
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span>Medication Care Fee</span>
+                <span>€${medicationFee.toFixed(2)}</span>
+              </div>` : ''}
+              <div style="border-top: 1px dashed #D9A3A3; margin-top: 10px; padding-top: 10px; display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2em; color: #D9A3A3;">
+                <span>Estimated Total</span>
+                <span>€${total.toFixed(2)}</span>
+              </div>
+              <p style="font-size: 0.8rem; color: #888; margin-top: 5px;">* Final pricing will be confirmed by us.</p>
+            `;
+          }
+          
+          return { boardingSubtotal, additionalCatFee, transferTotal, specialRoomFee, medicationFee, total, nights };
         }
 
-        function updateRoute(address, type) {
-          if (typeof google === 'undefined' || !directionsService) return;
-          const renderer = (type === 'dropoff') ? dropoffRenderer : pickupRenderer;
-          const map = (type === 'dropoff') ? dropoffMap : pickupMap;
-          const statusEl = document.getElementById(type + '-status');
-          if (!renderer || !map) return;
+        document.addEventListener('DOMContentLoaded', function() {
+          updateDynamicCatFields();
+          
+          const pickupInput = document.getElementById('pickup-date');
+          const dropoffInput = document.getElementById('dropoff-date');
 
-          directionsService.route({
-            origin: address,
-            destination: BOUTIQUE_ADDRESS + ", Netherlands",
-            travelMode: 'DRIVING'
-          }, (result, status) => {
-            if (status === 'OK') {
-              renderer.setDirections(result);
-              if (statusEl) statusEl.innerText = "";
-            } else {
-              console.warn("Directions failed (API likely disabled):", status);
-              if (statusEl) statusEl.innerText = "";
+          const pickupPicker = flatpickr("#pickup-date", {
+            dateFormat: "Y-m-d",
+            showMonths: window.innerWidth > 768 ? 2 : 1,
+            onChange: function() { calculatePricing(); }
+          });
 
-              // Fallback: Show markers if route fails
-              if (typeof google.maps.Geocoder === 'function') {
-                const geocoder = new google.maps.Geocoder();
-                geocoder.geocode({ address: address }, (results, gStatus) => {
-                  if (gStatus === 'OK' && results[0]) {
-                    const pos = results[0].geometry.location;
-                    new google.maps.Marker({ position: pos, map: map, title: "Customer" });
-
-                    // Also mark Home
-                    geocoder.geocode({ address: BOUTIQUE_ADDRESS }, (bResults, bStatus) => {
-                      if (bStatus === 'OK' && bResults[0]) {
-                        const bPos = bResults[0].geometry.location;
-                        new google.maps.Marker({ position: bPos, map: map, title: "Home" });
-                        const bounds = new google.maps.LatLngBounds();
-                        bounds.extend(pos);
-                        bounds.extend(bPos);
-                        map.fitBounds(bounds);
-                      }
-                    });
-                  }
-                });
+          const dropoffPicker = flatpickr("#dropoff-date", {
+            minDate: "today",
+            dateFormat: "Y-m-d",
+            showMonths: window.innerWidth > 768 ? 2 : 1,
+            onChange: function(selectedDates) {
+              if (selectedDates.length > 0) {
+                pickupInput.disabled = false;
+                pickupInput.style.backgroundColor = "white";
+                const minPickup = new Date(selectedDates[0]);
+                minPickup.setDate(minPickup.getDate() + 1);
+                pickupPicker.set('minDate', minPickup);
+                pickupPicker.setDate(minPickup, true);
               }
+              calculatePricing();
             }
           });
-        }
 
-        window.onload = function () {
-          calculatePricing();
-        };
-
-        let geocoder;
-        async function handlePostcodeLookup(type) {
-          const pc = document.getElementById(type + '-postcode').value.replace(/\s/g, '').toUpperCase();
-          if (pc.length >= 4) {
-            lookupCity(pc, type);
-          }
-          debouncedCalculate();
-        }
-
-        function lookupCity(postcode, type) {
-          if (typeof google === 'undefined') return;
-          if (!geocoder) geocoder = new google.maps.Geocoder();
-
-          geocoder.geocode({
-            address: postcode,
-            componentRestrictions: { country: 'NL' }
-          }, (results, status) => {
-            if (status === 'OK' && results[0]) {
-              const cityComp = results[0].address_components.find(c => c.types.includes('locality'));
-              if (cityComp) {
-                const cityInput = document.getElementById(type + '-city');
-                if (cityInput && !cityInput.value) {
-                  cityInput.value = cityComp.long_name;
-                  calculatePricing();
-                }
-              }
+          const form = document.querySelector('form[name="reservation"]');
+          form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const pricing = calculatePricing();
+            const formData = new FormData(form);
+            const fullName = `${formData.get('firstname')} ${formData.get('lastname')}`;
+            const phone = formData.get('phone');
+            const email = formData.get('email') || 'Not provided';
+            const catCount = parseInt(formData.get('cat-count'));
+            
+            if (catCount > 2) {
+              alert("Error: Maximum 2 cats allowed per reservation.");
+              return;
             }
+            
+            let catsInfo = "";
+            for (let i = 1; i <= parseInt(catCount); i++) {
+              const name = formData.get(`cat-name-${i}`);
+              const age = formData.get(`cat-age-${i}`) || 'N/A';
+              const breed = formData.get(`cat-breed-${i}`) || 'N/A';
+              const personality = formData.get(`cat-personality-${i}`) || 'None';
+              catsInfo += `🐱 *Cat ${i}:* ${name} (${age}, ${breed})\n   _Notes: ${personality}_\n`;
+            }
+            
+            const dropOffStatus = document.getElementById('transfer-dropoff').checked ? 'Yes' : 'No';
+            const pickUpStatus = document.getElementById('transfer-pickup').checked ? 'Yes' : 'No';
+            
+            let message = `🐾 *NEW RESERVATION REQUEST*\n\n`;
+            message += `👤 *Guest Information*\n`;
+            message += `- Name: ${fullName}\n`;
+            message += `- Phone: ${phone}\n`;
+            message += `- Email: ${email}\n\n`;
+            
+            message += `🐱 *Cats Staying*\n`;
+            message += catsInfo + `\n`;
+            
+            message += `📅 *Stay Details*\n`;
+            message += `- Check-in: ${formData.get('dropoff-date')}\n`;
+            message += `- Check-out: ${formData.get('pickup-date')}\n`;
+            message += `- Total nights: ${pricing.nights}\n\n`;
+            
+            message += `🚗 *Transfer Service*\n`;
+            message += `- Drop-off: ${dropOffStatus}\n`;
+            message += `- Pick-up: ${pickUpStatus}\n\n`;
+            
+            message += `💎 *Reservation Summary*\n`;
+            message += `- Boarding Subtotal: €${pricing.boardingSubtotal.toFixed(2)}\n`;
+            if (pricing.additionalCatFee > 0) message += `- Additional Cat Fee: €${pricing.additionalCatFee.toFixed(2)}\n`;
+            if (pricing.transferTotal > 0) message += `- Transfer Fee: €${pricing.transferTotal.toFixed(2)}\n`;
+            if (pricing.specialRoomFee > 0) message += `- Special Room Fee: €${pricing.specialRoomFee.toFixed(2)}\n`;
+            if (pricing.medicationFee > 0) message += `- Medication Care Fee: €${pricing.medicationFee.toFixed(2)}\n`;
+            message += `*TOTAL ESTIMATED: €${pricing.total.toFixed(2)}*`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/31615677962?text=${encodedMessage}`;
+            
+            alert("Your reservation request will now open in WhatsApp. Please send the message there to complete your request.");
+            window.open(whatsappUrl, '_blank');
           });
-        }
-      </script>
+
+          // Wire up change events
+          document.getElementById('cat-count').addEventListener('change', updateDynamicCatFields);
+          document.querySelectorAll('input[name="special-need"]').forEach(cb => {
+            cb.addEventListener('change', calculatePricing);
+          });
+        });
+        </script>
 
 
       <footer
@@ -2548,145 +2441,6 @@
 
       <!-- Flatpickr JS -->
       <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-      <script>
-        document.addEventListener('DOMContentLoaded', async function () {
-
-          // 1. Initialize Flatpickr (Separate Instances for strict validation)
-          let dropoffPicker, pickupPicker;
-
-          function checkPreReservation() {
-            const d1 = dropoffPicker ? dropoffPicker.selectedDates[0] : null;
-            const d2 = pickupPicker ? pickupPicker.selectedDates[0] : null;
-            const latestDate = d2 || d1;
-            if (!latestDate) return;
-
-            const today = new Date();
-            const maxNormalDate = new Date();
-            maxNormalDate.setMonth(today.getMonth() + 2);
-
-            const isPreReservation = latestDate > maxNormalDate;
-
-            const typeField = document.getElementById("reservation-type");
-            if (typeField) typeField.value = isPreReservation ? "pre_reservation_request" : "normal_booking";
-
-            console.log("Reservation type:", typeField ? typeField.value : "unknown");
-          }
-
-          const pickupInput = document.getElementById('pickup-date');
-          pickupInput.value = ""; // Force clear any browser cached value
-          pickupInput.disabled = true; // Disable until dropoff is selected
-          pickupInput.style.backgroundColor = "#f0f0f0"; // Visual cue
-          pickupInput.placeholder = "Select drop-off first...";
-
-          pickupPicker = flatpickr("#pickup-date", {
-            dateFormat: "Y-m-d",
-            showMonths: window.innerWidth > 768 ? 2 : 1,
-            onChange: function (selectedDates) {
-              checkPreReservation();
-              calculatePricing();
-            }
-          });
-          pickupPicker.clear(); // Ensure flatpickr instance is empty on load
-
-          dropoffPicker = flatpickr("#dropoff-date", {
-            minDate: "today",
-            dateFormat: "Y-m-d",
-            showMonths: window.innerWidth > 768 ? 2 : 1,
-            onChange: function (selectedDates) {
-              if (!selectedDates || selectedDates.length === 0) return;
-
-              pickupInput.disabled = false;
-              pickupInput.style.backgroundColor = "white";
-              pickupInput.placeholder = "Select date...";
-
-              // Set pickup minDate to dropoff + 1 day
-              const dropDate = selectedDates[0];
-              const minPickup = new Date(dropDate);
-              minPickup.setDate(minPickup.getDate() + 1);
-
-              pickupPicker.set('minDate', minPickup);
-
-              // ALWAYS force pickup date to drop-off + 1 day when drop-off changes
-              pickupPicker.setDate(minPickup, true);
-
-            }
-          });
-
-          // 2. Form Submit Redirect to WhatsApp
-          const form = document.querySelector('form[name="reservation"]');
-          form.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            // Validation
-            const dDrop = dropoffPicker.selectedDates[0];
-            const dPick = pickupPicker.selectedDates[0];
-            if (!dDrop || !dPick || dPick <= dDrop) {
-              alert("Error: Pick-up date must be at least 1 day after Drop-off date.");
-              return;
-            }
-
-            const formData = new FormData(form);
-            const name = formData.get('name');
-            const phone = formData.get('phone');
-            const email = formData.get('email') || 'Not provided';
-            const dropoffDate = formData.get('dropoff-date');
-            const dropoffTime = formData.get('dropoff-time');
-            const pickupDate = formData.get('pickup-date');
-            const pickupTime = formData.get('pickup-time');
-            const catCount = formData.get('cat-count');
-            
-            // Transfer info
-            const transferDropoff = formData.get('transfer-dropoff') === 'on' ? 'Yes' : 'No';
-            const dropoffLoc = formData.get('dropoff-location-select') || '';
-            const dropoffAddr = transferDropoff === 'Yes' && dropoffLoc === 'Custom' 
-                ? `${formData.get('dropoff-street')} ${formData.get('dropoff-houseno')}, ${formData.get('dropoff-postcode')} ${formData.get('dropoff-city')}` 
-                : dropoffLoc;
-
-            const transferPickup = formData.get('transfer-pickup') === 'on' ? 'Yes' : 'No';
-            const pickupLoc = formData.get('pickup-location-select') || '';
-            const pickupAddr = transferPickup === 'Yes' && pickupLoc === 'Custom' 
-                ? `${formData.get('pickup-street')} ${formData.get('pickup-houseno')}, ${formData.get('pickup-postcode')} ${formData.get('pickup-city')}` 
-                : pickupLoc;
-
-            // Cat Care Items
-            const items = formData.getAll('cat-item').join(', ') || 'None';
-            const otherItems = formData.get('cat-item-other') ? ` (Other: ${formData.get('cat-item-other')})` : '';
-            
-            // Special Needs
-            const needs = formData.getAll('special-need').join(', ') || 'None';
-            const needDetails = formData.get('special-need-details') ? ` (Details: ${formData.get('special-need-details')})` : '';
-
-            const notes = formData.get('additional-notes') || 'No additional notes';
-
-            // Construct Message (Strictly following user request list)
-            let message = `🐾 *New Reservation Request*\n\n`;
-            message += `👤 *Customer name:* ${name}\n`;
-            message += `📞 *Phone:* ${phone}\n`;
-            message += `📧 *Email:* ${email}\n\n`;
-            message += `📅 *Drop-off date and time:* ${dropoffDate} at ${dropoffTime}\n`;
-            message += `📅 *Pick-up date and time:* ${pickupDate} at ${pickupTime}\n\n`;
-            message += `🐈 *Cat count:* ${catCount}\n`;
-            message += `🎒 *Cat details / special needs:* ${items}${otherItems}, ${needs}${needDetails}\n\n`;
-            message += `🚗 *Transfer choices:* Drop-off: ${transferDropoff}, Pick-up: ${transferPickup}\n`;
-            if (transferDropoff === 'Yes' || transferPickup === 'Yes') {
-                message += `📍 *Addresses:* \n`;
-                if (transferDropoff === 'Yes') message += `   - Drop-off: ${dropoffAddr}\n`;
-                if (transferPickup === 'Yes') message += `   - Pick-up: ${pickupAddr}\n`;
-                message += `\n`;
-            }
-            message += `📝 *Additional notes:* ${notes}\n\n`;
-            message += `💰 *Estimated total:* €${document.getElementById('estimated-total').value}`;
-
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappUrl = `https://wa.me/31615677962?text=${encodedMessage}`;
-
-            alert("Your reservation request will now open in WhatsApp. Please send the message there to complete your request.");
-            
-            window.location.href = whatsappUrl;
-          });
-
-        });
-      </script>
       <script async
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8PdQzSDHqUhpd8dPfMAYHdoS63Pey9yY&libraries=places,geometry&callback=initMap"></script>
       <script src="assets/js/bg-music.js"></script>
