@@ -2077,14 +2077,19 @@
               <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 200px;">
                   <label
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                  <label
                     style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">First Name</label>
                   <input type="text" name="firstname" id="firstname" required
+                    placeholder="Enter your first name"
                     style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
                 </div>
                 <div style="flex: 1; min-width: 200px;">
                   <label
                     style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Last Name</label>
                   <input type="text" name="lastname" id="lastname" required
+                    placeholder="Enter your last name"
                     style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
                 </div>
               </div>
@@ -2094,13 +2099,35 @@
                     style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Phone Number</label>
                   <div style="display: flex; gap: 0.5rem;">
                     <select name="phone-country-code" id="phone-country-code"
-                      style="width: 100px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.9rem; background: white;">
-                      <option value="+31" selected>+31 NL</option>
-                      <option value="+90">+90 TR</option>
-                      <option value="+49">+49 DE</option>
-                      <option value="+32">+32 BE</option>
-                      <option value="+33">+33 FR</option>
-                      <option value="+44">+44 UK</option>
+                      style="width: 120px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.9rem; background: white;">
+                      <option value="+31" selected>🇳🇱 +31 NL</option>
+                      <option value="+90">🇹🇷 +90 TR</option>
+                      <option value="+49">🇩🇪 +49 DE</option>
+                      <option value="+32">🇧🇪 +32 BE</option>
+                      <option value="+33">🇫🇷 +33 FR</option>
+                      <option value="+44">🇬🇧 +44 UK</option>
+                      <option value="+1">🇺🇸 +1 US</option>
+                      <option value="+1">🇨🇦 +1 CA</option>
+                      <option value="+34">🇪🇸 +34 ES</option>
+                      <option value="+39">🇮🇹 +39 IT</option>
+                      <option value="+41">🇨H +41 CH</option>
+                      <option value="+43">🇦🇹 +43 AT</option>
+                      <option value="+45">🇩🇰 +45 DK</option>
+                      <option value="+46">🇸🇪 +46 SE</option>
+                      <option value="+47">🇳🇴 +47 NO</option>
+                      <option value="+48">🇵🇱 +48 PL</option>
+                      <option value="+351">🇵🇹 +351 PT</option>
+                      <option value="+353">🇮🇪 +353 IE</option>
+                      <option value="+358">🇫🇮 +358 FI</option>
+                      <option value="+30">🇬🇷 +3 griechisch GR</option>
+                      <option value="+352">🇱🇺 +352 LU</option>
+                      <option value="+61">🇦🇺 +61 AU</option>
+                      <option value="+64">🇳🇿 +64 NZ</option>
+                      <option value="+81">🇯🇵 +81 JP</option>
+                      <option value="+82">🇰🇷 +82 KR</option>
+                      <option value="+86">🇨🇳 +86 CN</option>
+                      <option value="+971">🇦🇪 +971 AE</option>
+                      <option value="+966">🇸🇦 +966 SA</option>
                     </select>
                     <input type="tel" name="phone" id="phone" required placeholder="612345678"
                       style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
@@ -2426,7 +2453,16 @@
             e.preventDefault();
             const pricing = await calculatePricing();
             const formData = new FormData(form);
-            const fullName = `${formData.get('firstname')} ${formData.get('lastname')}`;
+            const firstname = formData.get('firstname')?.trim();
+            const lastname = formData.get('lastname')?.trim();
+            
+            if (!firstname || !lastname) {
+              alert("Please enter both First Name and Last Name.");
+              return;
+            }
+
+            const fullName = `${firstname} ${lastname}`;
+
             const catCount = parseInt(formData.get('cat-count'));
             
             if (catCount > 2) { alert("Max 2 cats."); return; }
