@@ -2182,6 +2182,61 @@
           </div>
 
         <script>
+        const BOUTIQUE_ADDRESS = "Flevostraat 32, 1315 CC Almere";
+        const GREEN_POLYLINE_OPTIONS = { strokeColor: '#27AE60', strokeOpacity: 0.8, strokeWeight: 4 };
+
+        let dropoffMap, pickupMap, directionsService, distanceMatrixService, dropoffRenderer, pickupRenderer;
+
+        function initMap() {
+          try {
+            directionsService = new google.maps.DirectionsService();
+            distanceMatrixService = new google.maps.DistanceMatrixService();
+            const mapOptions = { zoom: 11, center: { lat: 52.373, lng: 5.215 } };
+            dropoffMap = new google.maps.Map(document.getElementById('dropoff-map'), mapOptions);
+            pickupMap = new google.maps.Map(document.getElementById('pickup-map'), mapOptions);
+            dropoffRenderer = new google.maps.DirectionsRenderer({ map: dropoffMap, polylineOptions: GREEN_POLYLINE_OPTIONS });
+            pickupRenderer = new google.maps.DirectionsRenderer({ map: pickupMap, polylineOptions: GREEN_POLYLINE_OPTIONS });
+            window.initMap = initMap;
+          } catch (e) { console.error("Map Init Error:", e); }
+        }
+
+        async function getGoogleDistance(address, type) {
+          const statusEl = document.getElementById(type + '-status');
+          if (statusEl) statusEl.innerText = "Calculating distance...";
+          if (typeof google === 'undefined' || !distanceMatrixService) return { km: 30 };
+          return new Promise((resolve) => {
+            distanceMatrixService.getDistanceMatrix({ origins: [address], destinations: [BOUTIQUE_ADDRESS], travelMode: 'DRIVING' }, (response, status) => {
+              if (status === 'OK' && response.rows[0].elements[0].status === 'OK') {
+                const dist = response.rows[0].elements[0].distance;
+                if (dist) { resolve({ km: dist.value / 1000 }); return; }
+              }
+              resolve({ km: 30 });
+            });
+          });
+        }
+
+        function updateRoute(address, type) {
+          if (typeof google === 'undefined' || !directionsService) return;
+          const renderer = (type === 'dropoff') ? dropoffRenderer : pickupRenderer;
+          directionsService.route({ origin: address, destination: BOUTIQUE_ADDRESS, travelMode: 'DRIVING' }, (result, status) => {
+            if (status === 'OK') renderer.setDirections(result);
+          });
+        }
+
+        async function handlePostcodeLookup(type) {
+          const pc = document.getElementById(type + '-postcode').value.replace(/\s/g, '').toUpperCase();
+          if (pc.length >= 4) {
+            // City lookup logic could go here, for now just calculate
+          }
+          debouncedCalculate();
+        }
+
+        let calcDebounce;
+        function debouncedCalculate() {
+          clearTimeout(calcDebounce);
+          calcDebounce = setTimeout(calculatePricing, 800);
+        }
+
         function toggleTransfer(type) {
           const checkbox = document.getElementById('transfer-' + type);
           const optionsDiv = document.getElementById('transfer-' + type + '-options');
@@ -2222,7 +2277,32 @@
           calculatePricing();
         }
 
-        function calculatePricing() {
+        async function computeTransfer(type) {
+          if (!document.getElementById('transfer-' + type).checked) return null;
+          const loc = document.getElementById(type + '-location-select').value;
+          const fixedPrice = HomeEngine.getFixedTransferPrice(loc);
+          if (fixedPrice !== null) return { cost: fixedPrice, label: loc };
+          if (loc === 'Custom') {
+            const street = document.getElementById(type + '-street').value;
+            const no = document.getElementById(type + '-houseno').value;
+            const pc = document.getElementById(type + '-postcode').value;
+            const city = document.getElementById(type + '-city').value;
+            if (!street || !no || !pc || !city) return null;
+            const addr = `${street} ${no}, ${pc} ${city}`;
+            const res = await getGoogleDistance(addr, type);
+            if (res) {
+              updateRoute(addr, type);
+              const container = document.getElementById(type + '-map-container');
+              if (container) container.style.display = 'block';
+              const distEl = document.getElementById(type + '-dist');
+              if (distEl) distEl.innerText = `Distance: ${res.km.toFixed(1)} km`;
+              return { cost: HomeEngine.calculateDistanceTransfer(res.km), label: 'Custom Address', dist: res.km, address: addr };
+            }
+          }
+          return null;
+        }
+
+        async function calculatePricing() {
           const catCount = parseInt(document.getElementById('cat-count').value);
           const dropDateVal = document.getElementById('dropoff-date').value;
           const pickDateVal = document.getElementById('pickup-date').value;
@@ -2242,15 +2322,9 @@
           let additionalCatFee = 0;
           if (catCount === 2) additionalCatFee = nights * 15;
           
-          let transferTotal = 0;
-          if (document.getElementById('transfer-dropoff').checked) {
-            const loc = document.getElementById('dropoff-location-select').value;
-            transferTotal += HomeEngine.getFixedTransferPrice(loc) || 0;
-          }
-          if (document.getElementById('transfer-pickup').checked) {
-            const loc = document.getElementById('pickup-location-select').value;
-            transferTotal += HomeEngine.getFixedTransferPrice(loc) || 0;
-          }
+          const dropT = await computeTransfer('dropoff');
+          const pickT = await computeTransfer('pickup');
+          let transferTotal = (dropT ? dropT.cost : 0) + (pickT ? pickT.cost : 0);
           
           const checkboxes = document.querySelectorAll('input[name="special-need"]:checked');
           let specialRoomFee = 0;
@@ -2262,7 +2336,6 @@
           
           const total = boardingSubtotal + additionalCatFee + transferTotal + specialRoomFee + medicationFee;
           
-          // Sync hidden input for legacy/compatibility
           const hiddenTotal = document.getElementById('estimated-total');
           if (hiddenTotal) hiddenTotal.value = total.toFixed(2);
           
@@ -2277,10 +2350,17 @@
                 <span>Additional Cat Fee</span>
                 <span>€${additionalCatFee.toFixed(2)}</span>
               </div>` : ''}
-              ${transferTotal > 0 ? `
-              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                <span>Transfer Service</span>
-                <span>€${transferTotal.toFixed(2)}</span>
+              ${(dropT || pickT) ? `
+              <div style="margin-bottom: 8px; border-top: 1px solid #f0f0f0; padding-top: 5px;">
+                <strong style="font-size: 0.9rem;">Transfer Services:</strong>
+                ${dropT ? `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-top: 4px;">
+                  <span>- Drop-off (${dropT.label})</span>
+                  <span>€${dropT.cost.toFixed(2)}</span>
+                </div>` : ''}
+                ${pickT ? `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-top: 4px;">
+                  <span>- Pick-up (${pickT.label})</span>
+                  <span>€${pickT.cost.toFixed(2)}</span>
+                </div>` : ''}
               </div>` : ''}
               ${specialRoomFee > 0 ? `
               <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
@@ -2300,8 +2380,9 @@
             `;
           }
           
-          return { boardingSubtotal, additionalCatFee, transferTotal, specialRoomFee, medicationFee, total, nights };
+          return { boardingSubtotal, additionalCatFee, transferTotal, specialRoomFee, medicationFee, total, nights, dropT, pickT };
         }
+
 
         document.addEventListener('DOMContentLoaded', function() {
           // Initial render
@@ -2335,23 +2416,17 @@
           });
 
           const form = document.querySelector('form[name="reservation"]');
-          form.addEventListener('submit', function(e) {
+          form.addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            const pricing = calculatePricing();
+            const pricing = await calculatePricing();
             const formData = new FormData(form);
             const fullName = `${formData.get('firstname')} ${formData.get('lastname')}`;
-            const phone = formData.get('phone');
-            const email = formData.get('email') || 'Not provided';
             const catCount = parseInt(formData.get('cat-count'));
             
-            if (catCount > 2) {
-              alert("Error: Maximum 2 cats allowed per reservation.");
-              return;
-            }
+            if (catCount > 2) { alert("Max 2 cats."); return; }
             
             let catsInfo = "";
-            for (let i = 1; i <= parseInt(catCount); i++) {
+            for (let i = 1; i <= catCount; i++) {
               const name = formData.get(`cat-name-${i}`);
               const age = formData.get(`cat-age-${i}`) || 'N/A';
               const breed = formData.get(`cat-breed-${i}`) || 'N/A';
@@ -2359,42 +2434,43 @@
               catsInfo += `🐱 *Cat ${i}:* ${name} (${age}, ${breed})\n   _Notes: ${personality}_\n`;
             }
             
-            const dropOffStatus = document.getElementById('transfer-dropoff').checked ? 'Yes' : 'No';
-            const pickUpStatus = document.getElementById('transfer-pickup').checked ? 'Yes' : 'No';
+            const hAddr = "Black Princess & White Prince, Flevostraat 32, 1315 CC Almere";
+            
+            let transferBlocks = "";
+            // Drop-off Block
+            transferBlocks += `🚗 *Drop-off Service*\n`;
+            if (pricing.dropT) {
+              const dFrom = pricing.dropT.address || pricing.dropT.label;
+              transferBlocks += `- Status: Yes\n- From: ${dFrom}\n- To: ${hAddr}\n- Fee: €${pricing.dropT.cost.toFixed(2)}\n\n`;
+            } else {
+              transferBlocks += `- Status: No\n\n`;
+            }
+            
+            // Pick-up Block
+            transferBlocks += `🚗 *Pick-up Service*\n`;
+            if (pricing.pickT) {
+              const pTo = pricing.pickT.address || pricing.pickT.label;
+              transferBlocks += `- Status: Yes\n- From: ${hAddr}\n- To: ${pTo}\n- Fee: €${pricing.pickT.cost.toFixed(2)}\n\n`;
+            } else {
+              transferBlocks += `- Status: No\n\n`;
+            }
             
             let message = `🐾 *NEW RESERVATION REQUEST*\n\n`;
-            message += `👤 *Guest Information*\n`;
-            message += `- Name: ${fullName}\n`;
-            message += `- Phone: ${phone}\n`;
-            message += `- Email: ${email}\n\n`;
-            
-            message += `🐱 *Cats Staying*\n`;
-            message += catsInfo + `\n`;
-            
-            message += `📅 *Stay Details*\n`;
-            message += `- Check-in: ${formData.get('dropoff-date')}\n`;
-            message += `- Check-out: ${formData.get('pickup-date')}\n`;
-            message += `- Total nights: ${pricing.nights}\n\n`;
-            
-            message += `🚗 *Transfer Service*\n`;
-            message += `- Drop-off: ${dropOffStatus}\n`;
-            message += `- Pick-up: ${pickUpStatus}\n\n`;
-            
+            message += `👤 *Guest*\n- Name: ${fullName}\n- Phone: ${formData.get('phone')}\n- Email: ${formData.get('email') || 'Not provided'}\n\n`;
+            message += `${catsInfo}\n`;
+            message += `📅 *Stay Details*\n- Check-in: ${formData.get('dropoff-date')}\n- Check-out: ${formData.get('pickup-date')}\n- Total Nights: ${pricing.nights}\n\n`;
+            message += `${transferBlocks}`;
             message += `💎 *Reservation Summary*\n`;
             message += `- Boarding Subtotal: €${pricing.boardingSubtotal.toFixed(2)}\n`;
             if (pricing.additionalCatFee > 0) message += `- Additional Cat Fee: €${pricing.additionalCatFee.toFixed(2)}\n`;
-            if (pricing.transferTotal > 0) message += `- Transfer Fee: €${pricing.transferTotal.toFixed(2)}\n`;
-            if (pricing.specialRoomFee > 0) message += `- Special Room Fee: €${pricing.specialRoomFee.toFixed(2)}\n`;
+            if (pricing.transferTotal > 0) message += `- Transfer Total: €${pricing.transferTotal.toFixed(2)}\n`;
+            if (pricing.specialRoomFee > 0) message += `- Special Room Upgrade: €${pricing.specialRoomFee.toFixed(2)}\n`;
             if (pricing.medicationFee > 0) message += `- Medication Care Fee: €${pricing.medicationFee.toFixed(2)}\n`;
             message += `*TOTAL ESTIMATED: €${pricing.total.toFixed(2)}*`;
-
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappUrl = `https://wa.me/31615677962?text=${encodedMessage}`;
             
-            alert("Your reservation request will now open in WhatsApp. Please send the message there to complete your request.");
+            const whatsappUrl = `https://wa.me/31615677962?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
           });
-
           // Wire up change events
           document.getElementById('cat-count').addEventListener('change', updateDynamicCatFields);
           
