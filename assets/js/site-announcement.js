@@ -7,13 +7,17 @@
     const message = 'Our website is currently under development. If you encounter any issues or need information, please reach out to us via WhatsApp!';
     const storageKey = 'site_announcement_dismissed';
     
-    // Don't show banner on the homepage
-    const isHomepage = window.location.pathname === '/' || 
-                       window.location.pathname === '/index.html' || 
-                       window.location.pathname.endsWith('/index.html') ||
-                       window.location.pathname === '';
+    // Robust Homepage Detection
+    const path = window.location.pathname.toLowerCase();
+    const isHomepage = path === '/' || 
+                       path === '/index.html' || 
+                       path.endsWith('/index.html') ||
+                       path === '';
     
-    if (isHomepage) return;
+    if (isHomepage) {
+        console.log("Homepage detected - announcement bar skipped");
+        return;
+    }
 
 
     const showBanner = () => {
