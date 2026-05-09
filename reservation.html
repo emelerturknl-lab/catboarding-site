@@ -2434,10 +2434,40 @@
               catsInfo += `Cat ${i}: ${name} (${age}, ${breed})\nNotes: ${personality}\n`;
             }
             
+            // Cat Care Info
+            const catItems = formData.getAll('cat-item');
+            const catItemsOther = formData.get('cat-item-other');
+            let careInfo = "CAT CARE INFORMATION\n";
+            if (catItems.length > 0) {
+              careInfo += catItems.map(item => `- ${item}`).join('\n') + '\n';
+            }
+            if (catItemsOther) careInfo += `- Other: ${catItemsOther}\n`;
+            if (catItems.length === 0 && !catItemsOther) careInfo += "- None\n";
+            
+            // Special Needs
+            const specialNeeds = formData.getAll('special-need');
+            const specialDetails = formData.get('special-need-details');
+            let sNeedsInfo = "SPECIAL NEEDS\n";
+            if (specialNeeds.length > 0) {
+              sNeedsInfo += specialNeeds.map(n => `- ${n}`).join('\n') + '\n';
+            }
+            if (specialDetails) sNeedsInfo += `Details: ${specialDetails}\n`;
+            if (specialNeeds.length === 0 && !specialDetails) sNeedsInfo += "- None\n";
+            
+            // Additional Notes
+            const addNotes = formData.get('additional-notes');
+            const mainMessage = formData.get('message');
+            let notesBlock = "";
+            if (addNotes || mainMessage) {
+              notesBlock = "ADDITIONAL NOTES\n";
+              if (addNotes) notesBlock += `- ${addNotes}\n`;
+              if (mainMessage) notesBlock += `- ${mainMessage}\n`;
+              notesBlock += "\n";
+            }
+
             const hAddr = "Black Princess & White Prince, Flevostraat 32, 1315 CC Almere";
             
             let transferBlocks = "";
-            // Drop-off Block
             transferBlocks += `DROP-OFF SERVICE\n`;
             if (pricing.dropT) {
               const dFrom = pricing.dropT.address || pricing.dropT.label;
@@ -2446,7 +2476,6 @@
               transferBlocks += `- Status: No\n\n`;
             }
             
-            // Pick-up Block
             transferBlocks += `PICK-UP SERVICE\n`;
             if (pricing.pickT) {
               const pTo = pricing.pickT.address || pricing.pickT.label;
@@ -2458,6 +2487,7 @@
             let message = `NEW RESERVATION REQUEST\n\n`;
             message += `GUEST INFORMATION\n- Name: ${fullName}\n- Phone: ${formData.get('phone')}\n- Email: ${formData.get('email') || 'Not provided'}\n\n`;
             message += `CATS STAYING\n${catsInfo}\n`;
+            message += `${careInfo}\n${sNeedsInfo}\n${notesBlock}`;
             message += `STAY DETAILS\n- Check-in: ${formData.get('dropoff-date')}\n- Check-out: ${formData.get('pickup-date')}\n- Total Nights: ${pricing.nights}\n\n`;
             message += `${transferBlocks}`;
             message += `RESERVATION SUMMARY\n`;
