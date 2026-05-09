@@ -2359,15 +2359,7 @@
           const pickT = await computeTransfer('pickup');
           let transferTotal = (dropT ? dropT.cost : 0) + (pickT ? pickT.cost : 0);
           
-          const checkboxes = document.querySelectorAll('input[name="special-need"]:checked');
-          let specialRoomFee = 0;
-          let medicationFee = 0;
-          checkboxes.forEach(cb => {
-            if (cb.value === 'Special room') specialRoomFee = nights * 5;
-            if (cb.value === 'Medication required') medicationFee = nights * 2.5;
-          });
-          
-          const total = boardingSubtotal + additionalCatFee + transferTotal + specialRoomFee + medicationFee;
+          const total = boardingSubtotal + additionalCatFee + transferTotal;
           
           const hiddenTotal = document.getElementById('estimated-total');
           if (hiddenTotal) hiddenTotal.value = total.toFixed(2);
@@ -2394,17 +2386,8 @@
                   <span>- Pick-up (${pickT.label})</span>
                   <span>€${pickT.cost.toFixed(2)}</span>
                 </div>` : ''}
-              </div>` : ''}
-              ${specialRoomFee > 0 ? `
-              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                <span>Special Room Upgrade</span>
-                <span>€${specialRoomFee.toFixed(2)}</span>
-              </div>` : ''}
-              ${medicationFee > 0 ? `
-              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                <span>Medication Care Fee</span>
-                <span>€${medicationFee.toFixed(2)}</span>
-              </div>` : ''}
+                </div>` : ''}
+
               <div style="border-top: 1px dashed #D9A3A3; margin-top: 10px; padding-top: 10px; display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2em; color: #D9A3A3;">
                 <span>Estimated Total</span>
                 <span>€${total.toFixed(2)}</span>
@@ -2412,8 +2395,10 @@
               <p style="font-size: 0.8rem; color: #888; margin-top: 5px;">* Final pricing will be confirmed by us.</p>
             `;
           }
+
           
-          return { boardingSubtotal, additionalCatFee, transferTotal, specialRoomFee, medicationFee, total, nights, dropT, pickT };
+          return { boardingSubtotal, additionalCatFee, transferTotal, total, nights, dropT, pickT };
+
         }
 
 
@@ -2537,8 +2522,6 @@
             message += `- Boarding Subtotal: €${pricing.boardingSubtotal.toFixed(2)}\n`;
             if (pricing.additionalCatFee > 0) message += `- Additional Cat Fee: €${pricing.additionalCatFee.toFixed(2)}\n`;
             if (pricing.transferTotal > 0) message += `- Transfer Total: €${pricing.transferTotal.toFixed(2)}\n`;
-            if (pricing.specialRoomFee > 0) message += `- Special Room Upgrade: €${pricing.specialRoomFee.toFixed(2)}\n`;
-            if (pricing.medicationFee > 0) message += `- Medication Care Fee: €${pricing.medicationFee.toFixed(2)}\n`;
             message += `TOTAL ESTIMATED: €${pricing.total.toFixed(2)}`;
             
             const whatsappUrl = `https://wa.me/31615677962?text=${encodeURIComponent(message)}`;
