@@ -7,7 +7,7 @@
     const message = 'Our website is currently under development. If you encounter any issues or need information, please reach out to us via WhatsApp!';
     const storageKey = 'site_announcement_dismissed';
     
-    // Robust Homepage Detection
+    // Robust Homepage Detection (Self-Destruct if on homepage)
     const path = window.location.pathname.toLowerCase();
     const isHomepage = path === '/' || 
                        path === '/index.html' || 
@@ -15,9 +15,10 @@
                        path === '';
     
     if (isHomepage) {
-        console.log("Homepage detected - announcement bar skipped");
+        console.warn("🐾 site-announcement.js: Homepage detected. Self-destructing to prevent banner render.");
         return;
     }
+
 
 
     const showBanner = () => {
