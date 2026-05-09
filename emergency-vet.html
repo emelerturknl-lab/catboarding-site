@@ -337,23 +337,58 @@
         font-size: 1.4rem;
       }
     }
+
+    /* Premium Navigation Bar Styling */
+    .premium-nav {
+      position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 80px !important;
+      background: rgba(255, 255, 255, 0.7) !important; backdrop-filter: blur(15px) !important; -webkit-backdrop-filter: blur(15px) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+      display: flex !important; align-items: center !important; justify-content: center !important;
+      z-index: 9999 !important; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05) !important;
+    }
+    .premium-nav ul {
+      display: flex !important; list-style: none !important; margin: 0 !important; padding: 0 1.5rem !important;
+      width: auto !important; gap: 1.5rem !important; overflow-x: auto !important; justify-content: center !important;
+      scrollbar-width: none !important; -ms-overflow-style: none !important; align-items: center !important;
+    }
+    .premium-nav ul::-webkit-scrollbar { display: none !important; }
+    .premium-nav a {
+      text-decoration: none !important; color: #4A4A4A !important; font-size: 1.1rem !important;
+      letter-spacing: 0px !important; text-transform: none !important; transition: color 0.3s ease !important; position: relative !important;
+      white-space: nowrap !important; opacity: 1 !important; visibility: visible !important;
+      font-weight: bold !important;
+    }
+    .premium-nav a::after {
+      content: '' !important; position: absolute !important; width: 0 !important; height: 3px !important; bottom: -6px !important; left: 0 !important;
+      background-color: #D9A3A3 !important; transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important; border-radius: 2px !important;
+    }
+    .premium-nav a:hover::after, .premium-nav a.active::after { width: 100% !important; }
+    .premium-nav a:hover, .premium-nav a.active { color: #D9A3A3 !important; }
+    .nav-book-btn {
+      background: #D9A3A3 !important; color: white !important; padding: 8px 16px !important; border-radius: 50px !important;
+    }
+    .nav-book-btn:hover { background: #C28E8E !important; color: white !important; }
+    .nav-book-btn::after { display: none !important; }
   </style>
 </head>
 
 <body>
-  <header class="main-header">
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="services.html">Services</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="rules.html">Rules</a>
-      <a href="emergency-vet.html">Emergency</a>
-      <a href="reservation.html">Availability</a>
-    </nav>
-  </header>
+  <nav class="premium-nav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">Our Story</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="rules.html">Rules</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="guests.html">Our Guests</a></li>
+      <li><a href="emergency-vet.html" class="active">Emergency Vet</a></li>
+      <li><a href="reservation.html" class="nav-book-btn">Check Availability</a></li>
+    </ul>
+  </nav>
 
-  <div class="container">
+  <div class="container" style="padding-top: 100px;">
     <!-- Header -->
     <header class="hero">
       <h1 class="brand-font">Emergency Veterinary Help</h1>
@@ -578,7 +613,7 @@
 
   <script src="assets/js/bg-music.js"></script>
 
-    <script src="/assets/js/global-widgets.js"></script>
+    <script src="/assets/js/global-widgets.js?v=session1"></script>
 </body>
 
 </html>
