@@ -1,36 +1,113 @@
-
 (function() {
-    const playlist = [
-        "playlist/another_spring.mp3",
-        "playlist/azure_ozones.mp3",
-        "playlist/better_days_ahead.mp3",
-        "playlist/casa_placido.mp3",
-        "playlist/coasting.mp3",
-        "playlist/freezing_hands_piano.mp3",
-        "playlist/in_a_distant_future.mp3",
-        "playlist/laranja.mp3",
-        "playlist/lazy_day.mp3",
-        "playlist/leaving_home.mp3",
-        "playlist/luna_track.mp3",
-        "playlist/maracuja.mp3",
-        "playlist/overstone.mp3",
-        "playlist/playful_pianist.mp3",
-        "playlist/playful_piano.mp3",
-        "playlist/river_run_dry.mp3",
-        "playlist/sanity.mp3",
-        "playlist/silent_story.mp3",
-        "playlist/smiling_sun.mp3",
-        "playlist/sos.mp3",
-        "playlist/summer_lilac.mp3",
-        "playlist/sunshine_stroll.mp3",
-        "playlist/terra.mp3",
-        "playlist/the_script.mp3",
-        "playlist/tiny_tumble.mp3",
-        "playlist/tukan.mp3",
-        "playlist/winding_paths.mp3"
-    ];
+    const basePath = 'assets/audio/playlist/';
+    const rawPlaylist = [
+        "ES_A Day to Remember - River Run Dry.mp3",
+        "ES_A Tiny Tumble - Josef Falkenskold.mp3",
+        "ES_All About Toys - Stationary Sign.mp3",
+        "ES_Alleys of Buenos Aires - Tiki Tiki.mp3",
+        "ES_Another Spring Will Come - Sight of Wonders.mp3",
+        "ES_Ay Amor (Instrumental Version) - Caro Luna.mp3",
+        "ES_Azure Ozones - MIUT.mp3",
+        "ES_Better Days Ahead - Dez Moran.mp3",
+        "ES_Break Fast - Jules Gaia.mp3",
+        "ES_Bulls - Mary Riddle.mp3",
+        "ES_Bumper Car Ride - The Fly Guy Five.mp3",
+        "ES_Campfire Blues - Erik Fernholm.mp3",
+        "ES_Casa Placido - Tusabe.mp3",
+        "ES_Charazak - Rymdklang Soundtracks.mp3",
+        "ES_Charlie on Baker Street - Eight Bits.mp3",
+        "ES_Chased by the Dog - Stationary Sign.mp3",
+        "ES_Ciao Ciao - Trabant 33.mp3",
+        "ES_Clever Girl - Jules Gaia.mp3",
+        "ES_Coasting the Coast - Martin Klem.mp3",
+        "ES_Desert Heat - Mike Franklyn.mp3",
+        "ES_Divertimento In F Major, K. 138 'Salzburg Symphony No. 3'_ III. Presto - W. A. Mozart.mp3",
+        "ES_Don't Look at Me - Tiki Tiki.mp3",
+        "ES_Don't Take Me Seriously - Claude Signet.mp3",
+        "ES_Excalibur - Kevin Dailey.mp3",
+        "ES_Extravaganza - Jules Gaia.mp3",
+        "ES_Fat and Muscles - Martin Landstrom.mp3",
+        "ES_Freezing Hands Meet Piano - Harry Edvino.mp3",
+        "ES_Funny Discoveries - J.F. Gloss.mp3",
+        "ES_Glitz At The Ritz - Jules Gaia.mp3",
+        "ES_Hot Air Balloons - Erik Fernholm.mp3",
+        "ES_Hot Club Deluxe - Rune Dale.mp3",
+        "ES_In a Distant Future - Rikard From.mp3",
+        "ES_Laranja - Tusabe.mp3",
+        "ES_Lazy Day (Instrumental Version) - Nashional.mp3",
+        "ES_Leaving Home - Sam Rankin.mp3",
+        "ES_Let's Bounce - Jules Gaia.mp3",
+        "ES_Maracuja - Tusabe.mp3",
+        "ES_Martha's Song (Instrumental Version) - Roy Williams.mp3",
+        "ES_Midnight Swing - Jules Gaia.mp3",
+        "ES_Monkey Business - Mike Franklyn.mp3",
+        "ES_Move Like This - Jules Gaia.mp3",
+        "ES_My Kitty Cat (Instrumental Version) - Luna The Cat.mp3",
+        "ES_Oumou - Balafola Suedi.mp3",
+        "ES_Overstone - West & Zander.mp3",
+        "ES_Own Tonight - Craig Reever.mp3",
+        "ES_Pardon My French - Eva Hummingbird.mp3",
+        "ES_Playful Pianist - Radio Night.mp3",
+        "ES_Preschool - Josef Falkenskold.mp3",
+        "ES_Rodeo Rookie - The Fly Guy Five.mp3",
+        "ES_SOS - Tusabe.mp3",
+        "ES_Sanity - Mansa.mp3",
+        "ES_Silent Story Unfolding - Sight of Wonders (1).mp3",
+        "ES_Silent Story Unfolding - Sight of Wonders.mp3",
+        "ES_Smiling Sun - Mike Franklyn.mp3",
+        "ES_Strings and Savories - Jo Wandrini.mp3",
+        "ES_Summer Lilac - Bonsaye.mp3",
+        "ES_Sunny Days Ahead - Speedy The Spider.mp3",
+        "ES_Sunshine Stroll - Mike Franklyn.mp3",
+        "ES_Swagger Stagger - Lucas Pittman.mp3",
+        "ES_Terra - Lukas Got Lucky.mp3",
+        "ES_That's Fine (Instrumental Version) - Nashional.mp3",
+        "ES_The Flow - Martin Landstrom.mp3",
+        "ES_The Happy Customer - The Fly Guy Five.mp3",
+        "ES_The Script - Plain Strolls.mp3",
+        "ES_Thieving Squirrels - The Fly Guy Five.mp3",
+        "ES_Tiny Pockets - The Fly Guy Five.mp3",
+        "ES_Tukan - West & Zander.mp3",
+        "ES_Up for Grabs - Mike Franklyn.mp3",
+        "ES_Vivaldi_ The Four Seasons, Violin Concerto in F Major, Op. 8 No. 3, RV 293 _Autumn__ III. Allegro _La caccia_ - Michelle Ross.mp3",
+        "ES_Where the Flowers Grow - Dez Moran.mp3",
+        "ES_Who Took My Tooth_ - The Fly Guy Five.mp3",
+        "ES_Winding Paths - J.F. Gloss.mp3",
+        "ES_Wishy Washy - Jerry Lacey.mp3",
+        "ES_You See My Soul - Lukas Amil.mp3",
+        "ES_hjortron - bomull.mp3",
+        "Yeni Kayıt 76.m4a",
+        "Yeni Kayıt 77.m4a",
+        "another_spring.mp3",
+        "azure_ozones.mp3",
+        "better_days_ahead.mp3",
+        "casa_placido.mp3",
+        "coasting.mp3",
+        "freezing_hands_piano.mp3",
+        "in_a_distant_future.mp3",
+        "laranja.mp3",
+        "lazy_day.mp3",
+        "leaving_home.mp3",
+        "luna_track.mp3",
+        "maracuja.mp3",
+        "overstone.mp3",
+        "playful_pianist.mp3",
+        "playful_piano.mp3",
+        "river_run_dry.mp3",
+        "sanity.mp3",
+        "silent_story.mp3",
+        "smiling_sun.mp3",
+        "sos.mp3",
+        "summer_lilac.mp3",
+        "sunshine_stroll.mp3",
+        "terra.mp3",
+        "the_script.mp3",
+        "tiny_tumble.mp3",
+        "tukan.mp3",
+        "winding_paths.mp3"
+    ].map(name => basePath + name);
 
-    // Shuffle logic to ensure variety
+    // Shuffle logic: Fisher-Yates
     function shuffle(array) {
         let currentIndex = array.length, randomIndex;
         while (currentIndex != 0) {
@@ -41,160 +118,133 @@
         return array;
     }
 
-    // Shuffle the playlist once per session if not already set
-    let shuffledPlaylist = JSON.parse(sessionStorage.getItem('bgMusic_shuffledPlaylist'));
-    if (!shuffledPlaylist) {
-        shuffledPlaylist = shuffle([...playlist]);
-        sessionStorage.setItem('bgMusic_shuffledPlaylist', JSON.stringify(shuffledPlaylist));
+    // Persist shuffled playlist in localStorage so it doesn't reshuffle on every page load
+    // but ensures all tracks are played before a full reshuffle.
+    let shuffledPlaylist = JSON.parse(localStorage.getItem('bgMusic_shuffledPlaylist'));
+    if (!shuffledPlaylist || shuffledPlaylist.length !== rawPlaylist.length) {
+        shuffledPlaylist = shuffle([...rawPlaylist]);
+        localStorage.setItem('bgMusic_shuffledPlaylist', JSON.stringify(shuffledPlaylist));
+        console.log("🎵 Music Player: New shuffled playlist generated.");
+    } else {
+        console.log("🎵 Music Player: Resuming existing shuffled playlist.");
     }
-    
-    const activePlaylist = shuffledPlaylist;
+
+    console.log("🎵 Music Player: Total tracks in playlist:", shuffledPlaylist.length);
+    console.log("🎵 Music Player: Initial shuffle order:", shuffledPlaylist.map(p => p.split('/').pop()));
 
     let currentTrackIndex = parseInt(localStorage.getItem('bgMusic_index')) || 0;
-    let audio = new Audio();
-    audio.src = activePlaylist[currentTrackIndex];
+    if (currentTrackIndex >= shuffledPlaylist.length) {
+        currentTrackIndex = 0;
+        // Optional: Reshuffle when list ends
+        shuffledPlaylist = shuffle([...rawPlaylist]);
+        localStorage.setItem('bgMusic_shuffledPlaylist', JSON.stringify(shuffledPlaylist));
+        localStorage.setItem('bgMusic_index', 0);
+    }
+
+    const audio = new Audio();
+    audio.volume = 0.4;
     audio.loop = false;
-    audio.volume = 0.4; // Subtle volume
 
-    // Load saved state
+    // Load initial track
+    audio.src = shuffledPlaylist[currentTrackIndex];
+
+    // Persistence logic
     const savedTime = parseFloat(localStorage.getItem('bgMusic_time')) || 0;
-    const isPlaying = localStorage.getItem('bgMusic_playing') === 'true';
+    const wasPlaying = localStorage.getItem('bgMusic_playing') === 'true';
+    const isManualPause = sessionStorage.getItem('bgMusic_manual_pause') === 'true';
 
-    // UI Element for Control
+    // UI Element
     const musicBtn = document.createElement('div');
     musicBtn.id = 'bg-music-control';
-    musicBtn.innerHTML = '<span class="icon">🎵</span>';
+    musicBtn.innerHTML = '<span>🎵</span>';
     musicBtn.style.cssText = `
-        position: fixed;
-        bottom: 20px;
-        left: 20px;
-        width: 45px;
-        height: 45px;
-        background: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(217, 163, 163, 0.5);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 9999;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
-        font-size: 20px;
+        position: fixed; bottom: 20px; left: 20px; width: 45px; height: 45px;
+        background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);
+        border: 1px solid rgba(217, 163, 163, 0.5); border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; z-index: 9999; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease; font-size: 20px;
     `;
-
     document.body.appendChild(musicBtn);
 
-    function updateIcon() {
+    function updateUI() {
         musicBtn.innerHTML = audio.paused ? '<span>🔇</span>' : '<span class="music-playing">🎵</span>';
-        if (!audio.paused) {
-            musicBtn.style.background = 'rgba(217, 163, 163, 0.2)';
-            musicBtn.classList.add('playing');
-        } else {
-            musicBtn.style.background = 'rgba(255, 255, 255, 0.8)';
-            musicBtn.classList.remove('playing');
+        musicBtn.style.background = audio.paused ? 'rgba(255, 255, 255, 0.8)' : 'rgba(217, 163, 163, 0.2)';
+    }
+
+    function playNext() {
+        currentTrackIndex++;
+        if (currentTrackIndex >= shuffledPlaylist.length) {
+            console.log("🎵 Music Player: Playlist ended. Reshuffling...");
+            currentTrackIndex = 0;
+            shuffledPlaylist = shuffle([...rawPlaylist]);
+            localStorage.setItem('bgMusic_shuffledPlaylist', JSON.stringify(shuffledPlaylist));
         }
+        console.log("🎵 Music Player: Moving to next track:", shuffledPlaylist[currentTrackIndex].split('/').pop());
+        audio.src = shuffledPlaylist[currentTrackIndex];
+        localStorage.setItem('bgMusic_index', currentTrackIndex);
+        localStorage.setItem('bgMusic_time', 0);
+        audio.play().catch(() => {
+            console.log("🎵 Music Player: Autoplay blocked. Waiting for interaction.");
+            localStorage.setItem('bgMusic_playing', 'false');
+            updateUI();
+        });
     }
 
-    function playTrack(index) {
-        if (index >= activePlaylist.length) index = 0;
-        currentTrackIndex = index;
-        audio.src = activePlaylist[index];
-        localStorage.setItem('bgMusic_index', index);
-        audio.play().catch(e => console.log("Playback delayed until interaction."));
-    }
+    audio.addEventListener('ended', playNext);
 
-    audio.addEventListener('ended', function() {
-        playTrack(currentTrackIndex + 1);
-    });
-
-    // Save state periodically
+    // Periodic state save
     setInterval(() => {
         if (!audio.paused) {
             localStorage.setItem('bgMusic_time', audio.currentTime);
             localStorage.setItem('bgMusic_playing', 'true');
-        } else {
-            localStorage.setItem('bgMusic_playing', 'false');
         }
     }, 1000);
 
-    // Initial Play on Interaction
-    const startMusic = () => {
-        // If it was explicitly paused by user in this session, don't auto-start
-        if (sessionStorage.getItem('bgMusic_manual_pause') === 'true') {
-            return;
-        }
-
-        if (audio.paused) {
-            audio.play().then(() => {
-                updateIcon();
-                localStorage.setItem('bgMusic_playing', 'true');
-                localStorage.setItem('bgMusic_interaction', 'true');
-                removeListeners();
-            }).catch(e => {
-                // Autoplay still blocked or failed, keep listeners
-            });
-        } else {
-            // Already playing, can remove listeners
-            removeListeners();
-        }
-    };
-
-    const removeListeners = () => {
-        ['click', 'touchstart', 'keydown', 'mousedown'].forEach(evt => {
-            window.removeEventListener(evt, startMusic);
-        });
-    };
-
-    // Attach listeners for first interaction
-    ['click', 'touchstart', 'keydown', 'mousedown'].forEach(evt => {
-        window.addEventListener(evt, startMusic, { once: false });
-    });
-
-    // Try to play immediately on load (some browsers might allow it if recently interacted)
+    // Initial load handling
     window.addEventListener('load', () => {
         audio.currentTime = savedTime;
-        // If it was playing on previous page, try to resume
-        if (isPlaying) {
-            audio.play().then(updateIcon).catch(e => {
-                console.log("Autoplay blocked on load. Waiting for interaction.");
+        if (wasPlaying && !isManualPause) {
+            audio.play().then(updateUI).catch(() => {
+                console.log("🎵 Music Player: Autoplay blocked on load.");
             });
         }
+        updateUI();
     });
 
-    musicBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
+    // Control toggle
+    musicBtn.addEventListener('click', () => {
         if (audio.paused) {
             audio.play().then(() => {
                 localStorage.setItem('bgMusic_playing', 'true');
                 sessionStorage.setItem('bgMusic_manual_pause', 'false');
-                updateIcon();
+                updateUI();
             });
         } else {
             audio.pause();
             localStorage.setItem('bgMusic_playing', 'false');
             sessionStorage.setItem('bgMusic_manual_pause', 'true');
-            updateIcon();
+            updateUI();
         }
     });
 
-    // CSS Animation for the icon
+    // Interaction auto-start (if not manually paused)
+    const handleInteraction = () => {
+        if (audio.paused && wasPlaying && !isManualPause) {
+            audio.play().then(() => {
+                updateUI();
+                ['click', 'touchstart', 'keydown'].forEach(evt => window.removeEventListener(evt, handleInteraction));
+            }).catch(() => {});
+        }
+    };
+    ['click', 'touchstart', 'keydown'].forEach(evt => window.addEventListener(evt, handleInteraction));
+
+    // CSS for animation
     const style = document.createElement('style');
     style.innerHTML = `
-        @keyframes musicWave {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-        .music-playing {
-            display: inline-block;
-            animation: musicWave 1.5s infinite ease-in-out;
-        }
-        #bg-music-control:hover {
-            transform: scale(1.1);
-            border-color: #D9A3A3;
-        }
+        @keyframes musicWave { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        .music-playing { display: inline-block; animation: musicWave 1.5s infinite ease-in-out; }
+        #bg-music-control:hover { transform: scale(1.1); border-color: #D9A3A3; }
     `;
     document.head.appendChild(style);
 
