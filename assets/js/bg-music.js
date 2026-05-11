@@ -1,5 +1,5 @@
 (function() {
-    const MUSIC_VERSION = "music-v6";
+    const MUSIC_VERSION = "music-v7";
 
     // 1. VERSION RESET & MIGRATION
     if (localStorage.getItem("bgMusic_version") !== MUSIC_VERSION) {
