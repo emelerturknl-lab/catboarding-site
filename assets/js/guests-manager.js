@@ -34,8 +34,8 @@ async function fetchPublicGuests() {
             let displayStory = guest.description || '';
             const catName = guest.cat_name;
             if (displayStory.toLowerCase().startsWith(catName.toLowerCase())) {
-                // Remove name and potential separators/emojis at the start
-                const regex = new RegExp('^\\s*' + catName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*[✨\\s-]*', 'i');
+                // Remove name and potential separators/emojis at the start (\u2728 is sparkle emoji)
+                const regex = new RegExp('^\\s*' + catName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*[\u2728\\s-]*', 'i');
                 displayStory = displayStory.replace(regex, '');
             }
 
