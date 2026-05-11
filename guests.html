@@ -146,7 +146,7 @@
             font-size: 1.15rem;
             color: #555;
             margin: 0;
-            line-height: 1.8;
+            line-height: 1.6;
             font-family: 'Courgette', cursive !important;
         }
 
@@ -167,37 +167,38 @@
             border: 1px solid rgba(217, 163, 163, 0.2);
         }
 
-        /* Desktop Adjustments - Wider Layout */
+        /* Desktop Adjustments - Wider Layout & Polish */
         @media (min-width: 992px) {
             .guests-grid .guest-card {
                 flex-direction: row; 
-                min-height: 450px;
-                align-items: stretch;
+                min-height: 380px;
+                align-items: center; /* Vertically center content */
             }
             .guests-grid .guest-image-wrapper {
                 flex: 0 0 450px;
                 width: 450px;
-                height: 450px;
+                height: 380px; /* Reduced height as requested */
                 border-right: 1px solid rgba(217, 163, 163, 0.1);
             }
             .guests-grid .guest-info {
-                padding: 60px;
+                padding: 40px 60px; /* Refined padding */
             }
         }
 
         @media (max-width: 991px) and (min-width: 769px) {
             .guests-grid .guest-card {
                 flex-direction: row;
-                min-height: 400px;
+                min-height: 360px;
+                align-items: center;
             }
             .guests-grid .guest-image-wrapper {
                 flex: 0 0 350px;
                 width: 350px;
-                height: 400px;
+                height: 360px;
                 border-right: 1px solid rgba(217, 163, 163, 0.1);
             }
             .guests-grid .guest-info {
-                padding: 40px;
+                padding: 30px 40px;
             }
             .guest-name { font-size: 2.5rem; }
         }
