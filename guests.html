@@ -81,7 +81,7 @@
             .page-title { font-size: 2.5rem; }
         }
 
-        /* Guest Card - Vertical List Style */
+        /* Guest Card - Clean Modern Style */
         .guest-card {
             background: white;
             border-radius: 40px;
@@ -90,9 +90,9 @@
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             text-align: left;
             display: flex;
-            flex-direction: row;
-            min-height: 450px;
+            flex-direction: column; /* Default for mobile: Stacked */
             width: 100%;
+            min-height: auto;
         }
 
         .guest-card:hover {
@@ -101,10 +101,11 @@
         }
 
         .guest-image-wrapper {
-            flex: 0 0 400px;
-            height: auto;
+            width: 100%;
+            height: 350px;
             overflow: hidden;
             position: relative;
+            flex-shrink: 0;
         }
 
         .guest-image {
@@ -165,15 +166,40 @@
             border: 1px solid rgba(217, 163, 163, 0.2);
         }
 
-        @media (max-width: 900px) {
-            .guest-image-wrapper { flex: 0 0 300px; }
-            .guest-info { padding: 30px; }
+        /* Desktop Adjustments */
+        @media (min-width: 901px) {
+            .guest-card {
+                flex-direction: row; /* Side-by-side on desktop */
+                min-height: 450px;
+            }
+            .guest-image-wrapper {
+                flex: 0 0 400px;
+                width: 400px;
+                height: auto;
+            }
+            .guest-info {
+                padding: 50px;
+            }
+        }
+
+        @media (max-width: 900px) and (min-width: 769px) {
+            .guest-card {
+                flex-direction: row;
+                min-height: 400px;
+            }
+            .guest-image-wrapper {
+                flex: 0 0 300px;
+                width: 300px;
+                height: auto;
+            }
+            .guest-info {
+                padding: 30px;
+            }
             .guest-name { font-size: 2.5rem; }
         }
 
         @media (max-width: 768px) {
-            .guest-card { flex-direction: column; min-height: auto; }
-            .guest-image-wrapper { flex: 0 0 350px; width: 100%; }
+            .page-title { font-size: 2.5rem; }
             .guest-info { padding: 40px 30px; }
         }
 

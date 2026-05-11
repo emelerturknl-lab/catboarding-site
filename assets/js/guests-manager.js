@@ -30,6 +30,15 @@ async function fetchPublicGuests() {
             const tagsArray = guest.tags ? guest.tags.split(',').map(t => t.trim()).filter(t => t) : [];
             const tagsHtml = tagsArray.map(t => `<span class="guest-tag">${t}</span>`).join('');
 
+            // Clean up description if it starts with the cat's name
+            let displayStory = guest.description || '';
+            const catName = guest.cat_name;
+            if (displayStory.toLowerCase().startsWith(catName.toLowerCase())) {
+                // Remove name and potential separators/emojis at the start
+                const regex = new RegExp('^\\s*' + catName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*[✨\\s-]*', 'i');
+                displayStory = displayStory.replace(regex, '');
+            }
+
             card.innerHTML = `
                 <div class="guest-image-wrapper">
                     <img src="${guest.photo_url || 'assets/images/placeholder.jpg'}" alt="${guest.cat_name}" class="guest-image" onerror="this.src='assets/images/placeholder.jpg'">
@@ -39,7 +48,7 @@ async function fetchPublicGuests() {
                         <h3 class="guest-name">${guest.cat_name}</h3>
                         <div class="guest-dates">${guest.stay_dates || ''}</div>
                     </div>
-                    <p class="guest-story">${guest.description || ''}</p>
+                    <p class="guest-story">${displayStory}</p>
                     <div class="guest-tags">${tagsHtml}</div>
                 </div>
             `;
