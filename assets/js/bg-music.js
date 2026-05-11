@@ -1,5 +1,5 @@
 (function() {
-    const MUSIC_VERSION = "music-v5";
+    const MUSIC_VERSION = "music-v6";
 
     // 1. VERSION RESET & MIGRATION
     if (localStorage.getItem("bgMusic_version") !== MUSIC_VERSION) {
@@ -166,20 +166,21 @@
 
     function updateUI() {
         const isManualPause = sessionStorage.getItem('bgMusic_manual_pause') === 'true';
-        // ICON GOAL: Only show 🔇 if user explicitly paused it.
-        // Otherwise show 🎵 even if it's waiting for interaction.
         musicBtn.innerHTML = isManualPause ? '<span style="pointer-events:none;">🔇</span>' : '<span class="music-playing" style="pointer-events:none;">🎵</span>';
         musicBtn.style.background = isManualPause ? 'rgba(255, 255, 255, 0.8)' : 'rgba(217, 163, 163, 0.2)';
     }
 
     // 5. CORE PLAYBACK
     async function safePlay() {
-        if (sessionStorage.getItem('bgMusic_manual_pause') === 'true') return;
+        if (sessionStorage.getItem('bgMusic_manual_pause') === 'true') return false;
         try {
             await audio.play();
             updateUI();
+            return true;
         } catch (err) {
-            updateUI(); // Keep 🎵 icon even if failed
+            console.warn("🎵 Music Player: Playback failed/blocked:", err.message);
+            updateUI();
+            return false;
         }
     }
 
@@ -205,25 +206,36 @@
     }, 1000);
 
     // 6. INTERACTION FALLBACK
-    const startOnInteraction = () => {
-        if (audio.paused && sessionStorage.getItem('bgMusic_manual_pause') !== 'true') {
-            safePlay();
+    const interactionEvents = ['click', 'touchstart', 'keydown', 'pointerdown'];
+    
+    const startOnInteraction = async () => {
+        if (sessionStorage.getItem('bgMusic_manual_pause') === 'true') {
+            removeInteractionListeners();
+            return;
         }
-        // One-time triggers
-        ['click', 'touchstart', 'keydown', 'scroll', 'mousemove'].forEach(evt => window.removeEventListener(evt, startOnInteraction));
+
+        const success = await safePlay();
+        if (success) {
+            console.log("🎵 Music Player: Started via user interaction.");
+            removeInteractionListeners();
+        }
     };
-    ['click', 'touchstart', 'keydown', 'scroll', 'mousemove'].forEach(evt => window.addEventListener(evt, startOnInteraction));
+
+    function removeInteractionListeners() {
+        interactionEvents.forEach(evt => window.removeEventListener(evt, startOnInteraction));
+    }
+
+    interactionEvents.forEach(evt => window.addEventListener(evt, startOnInteraction));
 
     // 7. CONTROL TOGGLE
     musicBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
         if (audio.paused) {
             sessionStorage.removeItem("bgMusic_manual_pause");
-            try {
-                await audio.play();
-            } catch (err) {
+            const success = await safePlay();
+            if (!success) {
                 audio.load();
-                await audio.play();
+                await safePlay();
             }
         } else {
             audio.pause();
