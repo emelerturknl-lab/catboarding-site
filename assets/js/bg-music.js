@@ -1,5 +1,5 @@
 (function() {
-    const MUSIC_VERSION = "music-v4";
+    const MUSIC_VERSION = "music-v5";
 
     // 1. VERSION RESET & MIGRATION
     if (localStorage.getItem("bgMusic_version") !== MUSIC_VERSION) {
@@ -10,14 +10,13 @@
         localStorage.removeItem("bgMusic_shuffledPlaylist");
         sessionStorage.removeItem("bgMusic_manual_pause");
         localStorage.setItem("bgMusic_version", MUSIC_VERSION);
-        console.log("🎵 Music Player: Version reset to " + MUSIC_VERSION);
     }
 
     // 2. PREVENT DUPLICATE UI
     const existing = document.getElementById('bg-music-control');
     if (existing) existing.remove();
 
-    const basePath = '/assets/audio/playlist/'; // ABSOLUTE PATH
+    const basePath = '/assets/audio/playlist/';
     const rawPlaylist = [
         "ES_A Day to Remember - River Run Dry.mp3",
         "ES_A Tiny Tumble - Josef Falkenskold.mp3",
@@ -166,20 +165,21 @@
     document.body.appendChild(musicBtn);
 
     function updateUI() {
-        const isPaused = audio.paused;
-        musicBtn.innerHTML = isPaused ? '<span style="pointer-events:none;">🔇</span>' : '<span class="music-playing" style="pointer-events:none;">🎵</span>';
-        musicBtn.style.background = isPaused ? 'rgba(255, 255, 255, 0.8)' : 'rgba(217, 163, 163, 0.2)';
+        const isManualPause = sessionStorage.getItem('bgMusic_manual_pause') === 'true';
+        // ICON GOAL: Only show 🔇 if user explicitly paused it.
+        // Otherwise show 🎵 even if it's waiting for interaction.
+        musicBtn.innerHTML = isManualPause ? '<span style="pointer-events:none;">🔇</span>' : '<span class="music-playing" style="pointer-events:none;">🎵</span>';
+        musicBtn.style.background = isManualPause ? 'rgba(255, 255, 255, 0.8)' : 'rgba(217, 163, 163, 0.2)';
     }
 
-    // 5. RELIABLE PLAYBACK
+    // 5. CORE PLAYBACK
     async function safePlay() {
         if (sessionStorage.getItem('bgMusic_manual_pause') === 'true') return;
         try {
             await audio.play();
             updateUI();
         } catch (err) {
-            updateUI();
-            console.log("🎵 Music Player: Autoplay blocked. Waiting for interaction.");
+            updateUI(); // Keep 🎵 icon even if failed
         }
     }
 
@@ -204,27 +204,35 @@
         }
     }, 1000);
 
-    // 6. CONTROL HANDLER
+    // 6. INTERACTION FALLBACK
+    const startOnInteraction = () => {
+        if (audio.paused && sessionStorage.getItem('bgMusic_manual_pause') !== 'true') {
+            safePlay();
+        }
+        // One-time triggers
+        ['click', 'touchstart', 'keydown', 'scroll', 'mousemove'].forEach(evt => window.removeEventListener(evt, startOnInteraction));
+    };
+    ['click', 'touchstart', 'keydown', 'scroll', 'mousemove'].forEach(evt => window.addEventListener(evt, startOnInteraction));
+
+    // 7. CONTROL TOGGLE
     musicBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
         if (audio.paused) {
             sessionStorage.removeItem("bgMusic_manual_pause");
-            if (!audio.src) audio.src = shuffledPlaylist[currentTrackIndex];
             try {
                 await audio.play();
             } catch (err) {
                 audio.load();
                 await audio.play();
             }
-            updateUI();
         } else {
             audio.pause();
             sessionStorage.setItem("bgMusic_manual_pause", "true");
-            updateUI();
         }
+        updateUI();
     });
 
-    // 7. INITIALIZATION & AUTOPLAY
+    // 8. INITIAL LOAD
     window.addEventListener('load', () => {
         audio.currentTime = savedTime;
         safePlay();
@@ -232,15 +240,7 @@
         console.log("🎵 Music Player: VERSION " + MUSIC_VERSION + " active.");
     });
 
-    const startOnInteraction = () => {
-        if (audio.paused && sessionStorage.getItem('bgMusic_manual_pause') !== 'true') {
-            safePlay();
-        }
-        ['click', 'touchstart', 'keydown'].forEach(evt => window.removeEventListener(evt, startOnInteraction));
-    };
-    ['click', 'touchstart', 'keydown'].forEach(evt => window.addEventListener(evt, startOnInteraction));
-
-    // STYLING
+    // CSS STYLING
     const style = document.createElement('style');
     style.innerHTML = `
         @keyframes musicWave { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
