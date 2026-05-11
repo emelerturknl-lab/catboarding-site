@@ -122,7 +122,7 @@
         "tiny_tumble.mp3",
         "tukan.mp3",
         "winding_paths.mp3"
-    ].map(name => basePath + name);
+    ].map(name => encodeURI(basePath + name));
 
     function shuffle(array) {
         let currentIndex = array.length, randomIndex;
@@ -174,6 +174,9 @@
     async function safePlay() {
         if (sessionStorage.getItem('bgMusic_manual_pause') === 'true') return false;
         try {
+            // Ensure audio is loaded if it's in an error/stuck state
+            if (audio.readyState === 0) audio.load();
+            
             await audio.play();
             updateUI();
             return true;
@@ -244,9 +247,14 @@
         updateUI();
     });
 
-    // 8. INITIAL LOAD
+    // 8. INITIAL LOAD & SEEK
+    audio.addEventListener('loadedmetadata', () => {
+        if (savedTime > 0 && audio.currentTime === 0) {
+            audio.currentTime = savedTime;
+        }
+    }, { once: true });
+
     window.addEventListener('load', () => {
-        audio.currentTime = savedTime;
         safePlay();
         updateUI();
         console.log("🎵 Music Player: VERSION " + MUSIC_VERSION + " active.");
