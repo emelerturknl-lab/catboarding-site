@@ -68,40 +68,41 @@
         .page-title { font-family: 'Dancing Script', cursive !important; font-size: 3.5rem; color: #4A4A4A; margin-bottom: 10px; }
         .page-subtitle { font-size: 1.2rem; color: #888; max-width: 700px; margin: 0 auto 50px auto; }
 
-        /* Guest Grid */
         .guests-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
             width: 100%;
-            margin-top: 20px;
+            max-width: 1000px;
+            margin-top: 40px;
         }
 
         @media (max-width: 768px) {
-            .guests-grid { grid-template-columns: 1fr; }
             .page-title { font-size: 2.5rem; }
         }
 
-        /* Guest Card */
+        /* Guest Card - Vertical List Style */
         .guest-card {
             background: white;
-            border-radius: 30px;
+            border-radius: 40px;
             overflow: hidden;
-            box-shadow: 0 15px 45px rgba(217, 163, 163, 0.15);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+            box-shadow: 0 15px 45px rgba(217, 163, 163, 0.12);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
             text-align: left;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            min-height: 450px;
+            width: 100%;
         }
 
         .guest-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 60px rgba(217, 163, 163, 0.25);
+            transform: translateY(-5px);
+            box-shadow: 0 25px 60px rgba(217, 163, 163, 0.2);
         }
 
         .guest-image-wrapper {
-            width: 100%;
-            height: 350px;
+            flex: 0 0 400px;
+            height: auto;
             overflow: hidden;
             position: relative;
         }
@@ -113,27 +114,25 @@
             transition: transform 0.6s ease;
         }
 
-        .guest-card:hover .guest-image {
-            transform: scale(1.08);
-        }
-
         .guest-info {
-            padding: 30px;
+            flex: 1;
+            padding: 50px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            justify-content: center;
+            gap: 20px;
         }
 
         .guest-name {
             font-family: 'Dancing Script', cursive !important;
-            font-size: 2.2rem;
+            font-size: 3rem;
             color: #D9A3A3;
             margin: 0;
             line-height: 1;
         }
 
         .guest-dates {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: #D9A3A3;
             font-weight: bold;
             text-transform: uppercase;
@@ -142,364 +141,46 @@
         }
 
         .guest-story {
-            font-size: 1rem;
-            color: #666;
+            font-size: 1.15rem;
+            color: #555;
             margin: 0;
-            display: -webkit-box;
-            -webkit-line-clamp: 4;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            line-height: 1.8;
+            font-family: 'Courgette', cursive !important;
         }
 
         .guest-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
             margin-top: 10px;
         }
 
         .guest-tag {
             background: #fff5f5;
             color: #D9A3A3;
-            padding: 5px 12px;
+            padding: 6px 15px;
             border-radius: 50px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: bold;
             border: 1px solid rgba(217, 163, 163, 0.2);
         }
 
-        footer {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 60px 20px;
-            text-align: center;
-            border-top: 1px solid rgba(217,163,163,0.3);
-            margin-top: 80px;
-            width: 100%;
-        }
-        footer a { color: #4A4A4A; text-decoration: none; margin: 0 10px; font-size: 0.9em; }
-
-        /* Corner Paws Deco */
-        .corner-paw {
-            position: fixed;
-            width: 180px;
-            height: 180px;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0.6;
-        }
-        .corner-paw.top-left { top: 15%; left: 5%; transform: rotate(-15deg); }
-        .corner-paw.bottom-right { bottom: 5%; right: 5%; transform: rotate(20deg); }
-
-        /* Automated Guest Cards Premium Style */
-        .automated-guest-card {
-            background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-            border: 1px solid rgba(217,163,163,0.2);
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .automated-guest-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 45px rgba(217,163,163,0.3);
-            border: 1px solid rgba(217,163,163,0.5);
-        }
-        .cover-wrapper {
-            position: relative;
-            width: 100%;
-            height: 300px;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .guest-cover {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        .cover-wrapper:hover .guest-cover {
-            transform: scale(1.05);
-        }
-        .cover-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .cover-wrapper:hover .cover-overlay {
-            opacity: 1;
-        }
-        .zoom-icon {
-            color: #D9A3A3;
-            font-size: 1.2rem;
-            font-family: sans-serif !important;
-            font-weight: bold;
-            border: 2px solid #D9A3A3;
-            padding: 8px 20px;
-            border-radius: 30px;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
-        }
-        .guest-details {
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-        }
-        .guest-title {
-            font-family: 'Dancing Script', cursive !important;
-            font-size: 2.2rem;
-            color: #D9A3A3;
-            margin: 0 0 10px 0;
-            text-align: center;
-        }
-        .guest-separator {
-            height: 2px;
-            width: 50px;
-            background: #D9A3A3;
-            margin: 0 auto 15px auto;
-        }
-        .guest-description {
-            color: #ccc;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            text-align: center;
-            font-family: 'Inter', sans-serif !important;
-        }
-        .guest-gallery-section {
-            margin-top: auto;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 15px;
-        }
-        .gallery-scroll-container {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            scrollbar-width: thin;
-            scrollbar-color: #D9A3A3 #1a1a1a;
-        }
-        .gallery-scroll-container::-webkit-scrollbar {
-            height: 6px;
-        }
-        .gallery-scroll-container::-webkit-scrollbar-track {
-            background: #1a1a1a;
-            border-radius: 10px;
-        }
-        .gallery-scroll-container::-webkit-scrollbar-thumb {
-            background-color: #D9A3A3;
-            border-radius: 10px;
-        }
-        .gallery-thumb-wrapper {
-            flex: 0 0 80px;
-            height: 80px;
-            border-radius: 10px;
-            overflow: hidden;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: border-color 0.3s ease;
-        }
-        .gallery-thumb-wrapper:hover {
-            border-color: #D9A3A3;
-        }
-        .gallery-thumb {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        
-        /* Lightbox */
-        .lightbox-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        .lightbox-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        .lightbox-img {
-            max-width: 90%;
-            max-height: 90vh;
-            border-radius: 10px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
-        }
-        .lightbox-overlay.active .lightbox-img {
-            transform: scale(1);
-        }
-        .lightbox-close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: #fff;
-            font-size: 40px;
-            font-family: sans-serif !important;
-            cursor: pointer;
-            z-index: 10001;
-        }
-        .lightbox-close:hover {
-            color: #D9A3A3;
-        }
-
-        /* --- Guest Detail Modal --- */
-        .guest-modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            z-index: 10005;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 20px;
-        }
-        .guest-modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        .guest-modal-content {
-            background: white;
-            width: 100%;
-            max-width: 900px;
-            max-height: 90vh;
-            border-radius: 40px;
-            position: relative;
-            overflow-y: auto;
-            transform: scale(0.9) translateY(20px);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 30px 70px rgba(0,0,0,0.3);
-            scrollbar-width: thin;
-            scrollbar-color: #D9A3A3 transparent;
-        }
-        .guest-modal-overlay.active .guest-modal-content {
-            transform: scale(1) translateY(0);
-        }
-        .guest-modal-close {
-            position: absolute;
-            top: 25px;
-            right: 30px;
-            width: 45px;
-            height: 45px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #4A4A4A;
-            cursor: pointer;
-            z-index: 10;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(217, 163, 163, 0.2);
-        }
-        .guest-modal-close:hover {
-            transform: rotate(90deg);
-            background: #D9A3A3;
-            color: white;
-        }
-        .modal-body {
-            display: flex;
-            flex-direction: column;
-        }
-        .modal-hero {
-            width: 100%;
-            height: 450px;
-            position: relative;
-        }
-        .modal-hero-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .modal-details {
-            padding: 40px;
-            text-align: left;
-        }
-        .modal-header {
-            margin-bottom: 25px;
-        }
-        .modal-name {
-            font-family: 'Dancing Script', cursive !important;
-            font-size: 3.5rem;
-            color: #D9A3A3;
-            margin: 0 0 10px 0;
-            line-height: 1;
-        }
-        .modal-dates {
-            font-size: 1.1rem;
-            color: #D9A3A3;
-            font-weight: bold;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        .modal-story {
-            font-family: 'Courgette', cursive !important;
-            font-size: 1.2rem;
-            color: #555;
-            line-height: 1.8;
-            margin-bottom: 30px;
-            white-space: pre-wrap; /* Preserve line breaks if any */
-        }
-        .modal-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .modal-tag {
-            background: #fff5f5;
-            color: #D9A3A3;
-            padding: 8px 18px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            border: 1px solid rgba(217, 163, 163, 0.3);
+        @media (max-width: 900px) {
+            .guest-image-wrapper { flex: 0 0 300px; }
+            .guest-info { padding: 30px; }
+            .guest-name { font-size: 2.5rem; }
         }
 
         @media (max-width: 768px) {
-            .guest-modal-content { border-radius: 30px; }
-            .modal-hero { height: 300px; }
-            .modal-details { padding: 30px 20px; }
-            .modal-name { font-size: 2.5rem; }
-            .modal-story { font-size: 1.1rem; }
+            .guest-card { flex-direction: column; min-height: auto; }
+            .guest-image-wrapper { flex: 0 0 350px; width: 100%; }
+            .guest-info { padding: 40px 30px; }
         }
 
     </style>
 </head>
 
 <body>
-    <!-- Guest Modal Structure -->
-    <div id="guest-modal" class="guest-modal-overlay">
-        <div class="guest-modal-content">
-            <div class="guest-modal-close">&times;</div>
-            <div class="modal-body" id="modal-content-area">
-                <!-- Injected via JS -->
-            </div>
-        </div>
-    </div>
-
     <nav class="premium-nav">
   <ul>
     <li><a href="/index.html">Home</a></li>
@@ -524,7 +205,7 @@
             
             <div id="guests-container" class="guests-grid">
                 <!-- Guests will be loaded here -->
-                <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #888;">
+                <div style="text-align: center; padding: 40px; color: #888;">
                     Loading beautiful memories...
                 </div>
             </div>
