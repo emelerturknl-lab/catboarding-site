@@ -1,4 +1,9 @@
 (function() {
+    // 1. CLEAR STALE STATE FROM PREVIOUS VERSIONS
+    // We strictly use sessionStorage for manual pause to reset on new site visit
+    localStorage.removeItem('bgMusic_playing'); 
+    localStorage.removeItem('bgMusic_manual_pause');
+
     const basePath = 'assets/audio/playlist/';
     const rawPlaylist = [
         "ES_A Day to Remember - River Run Dry.mp3",
@@ -107,7 +112,7 @@
         "winding_paths.mp3"
     ].map(name => basePath + name);
 
-    // Shuffle logic: Fisher-Yates
+    // Fisher-Yates Shuffle
     function shuffle(array) {
         let currentIndex = array.length, randomIndex;
         while (currentIndex != 0) {
@@ -118,45 +123,27 @@
         return array;
     }
 
-    // Persist shuffled playlist in localStorage so it doesn't reshuffle on every page load
-    // but ensures all tracks are played before a full reshuffle.
+    // 2. PLAYLIST & INDEX MANAGEMENT
     let shuffledPlaylist = JSON.parse(localStorage.getItem('bgMusic_shuffledPlaylist'));
     if (!shuffledPlaylist || shuffledPlaylist.length !== rawPlaylist.length) {
         shuffledPlaylist = shuffle([...rawPlaylist]);
         localStorage.setItem('bgMusic_shuffledPlaylist', JSON.stringify(shuffledPlaylist));
-        console.log("🎵 Music Player: New shuffled playlist generated.");
-    } else {
-        console.log("🎵 Music Player: Resuming existing shuffled playlist.");
     }
-
-    console.log("🎵 Music Player: Total tracks in playlist:", shuffledPlaylist.length);
-    console.log("🎵 Music Player: Initial shuffle order:", shuffledPlaylist.map(p => p.split('/').pop()));
 
     let currentTrackIndex = parseInt(localStorage.getItem('bgMusic_index')) || 0;
-    if (currentTrackIndex >= shuffledPlaylist.length) {
-        currentTrackIndex = 0;
-        // Optional: Reshuffle when list ends
-        shuffledPlaylist = shuffle([...rawPlaylist]);
-        localStorage.setItem('bgMusic_shuffledPlaylist', JSON.stringify(shuffledPlaylist));
-        localStorage.setItem('bgMusic_index', 0);
-    }
+    if (currentTrackIndex >= shuffledPlaylist.length) currentTrackIndex = 0;
 
+    // 3. AUDIO INITIALIZATION
     const audio = new Audio();
     audio.volume = 0.4;
     audio.loop = false;
-
-    // Load initial track
     audio.src = shuffledPlaylist[currentTrackIndex];
 
-    // Persistence logic
     const savedTime = parseFloat(localStorage.getItem('bgMusic_time')) || 0;
-    const wasPlaying = localStorage.getItem('bgMusic_playing') === 'true';
-    const isManualPause = sessionStorage.getItem('bgMusic_manual_pause') === 'true';
-
-    // UI Element
+    
+    // UI CONTROL
     const musicBtn = document.createElement('div');
     musicBtn.id = 'bg-music-control';
-    musicBtn.innerHTML = '<span>🎵</span>';
     musicBtn.style.cssText = `
         position: fixed; bottom: 20px; left: 20px; width: 45px; height: 45px;
         background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);
@@ -168,78 +155,83 @@
     document.body.appendChild(musicBtn);
 
     function updateUI() {
-        musicBtn.innerHTML = audio.paused ? '<span>🔇</span>' : '<span class="music-playing">🎵</span>';
-        musicBtn.style.background = audio.paused ? 'rgba(255, 255, 255, 0.8)' : 'rgba(217, 163, 163, 0.2)';
+        const isPaused = audio.paused;
+        musicBtn.innerHTML = isPaused ? '<span>🔇</span>' : '<span class="music-playing">🎵</span>';
+        musicBtn.style.background = isPaused ? 'rgba(255, 255, 255, 0.8)' : 'rgba(217, 163, 163, 0.2)';
+    }
+
+    // 4. CORE PLAYBACK LOGIC
+    async function safePlay() {
+        // Only try to play if NOT manually paused in this session
+        if (sessionStorage.getItem('bgMusic_manual_pause') === 'true') return;
+
+        try {
+            await audio.play();
+            updateUI();
+        } catch (err) {
+            // Autoplay blocked - expected behavior in some browsers
+            updateUI();
+        }
     }
 
     function playNext() {
         currentTrackIndex++;
         if (currentTrackIndex >= shuffledPlaylist.length) {
-            console.log("🎵 Music Player: Playlist ended. Reshuffling...");
             currentTrackIndex = 0;
             shuffledPlaylist = shuffle([...rawPlaylist]);
             localStorage.setItem('bgMusic_shuffledPlaylist', JSON.stringify(shuffledPlaylist));
         }
-        console.log("🎵 Music Player: Moving to next track:", shuffledPlaylist[currentTrackIndex].split('/').pop());
         audio.src = shuffledPlaylist[currentTrackIndex];
         localStorage.setItem('bgMusic_index', currentTrackIndex);
         localStorage.setItem('bgMusic_time', 0);
-        audio.play().catch(() => {
-            console.log("🎵 Music Player: Autoplay blocked. Waiting for interaction.");
-            localStorage.setItem('bgMusic_playing', 'false');
-            updateUI();
-        });
+        safePlay();
     }
 
     audio.addEventListener('ended', playNext);
 
-    // Periodic state save
+    // Save progress periodically
     setInterval(() => {
         if (!audio.paused) {
             localStorage.setItem('bgMusic_time', audio.currentTime);
-            localStorage.setItem('bgMusic_playing', 'true');
         }
     }, 1000);
 
-    // Initial load handling
-    window.addEventListener('load', () => {
-        audio.currentTime = savedTime;
-        if (wasPlaying && !isManualPause) {
-            audio.play().then(updateUI).catch(() => {
-                console.log("🎵 Music Player: Autoplay blocked on load.");
-            });
-        }
-        updateUI();
-    });
-
-    // Control toggle
-    musicBtn.addEventListener('click', () => {
+    // 5. EVENT LISTENERS
+    
+    // Toggle on click
+    musicBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         if (audio.paused) {
-            audio.play().then(() => {
-                localStorage.setItem('bgMusic_playing', 'true');
-                sessionStorage.setItem('bgMusic_manual_pause', 'false');
-                updateUI();
-            });
+            sessionStorage.setItem('bgMusic_manual_pause', 'false');
+            safePlay();
         } else {
             audio.pause();
-            localStorage.setItem('bgMusic_playing', 'false');
             sessionStorage.setItem('bgMusic_manual_pause', 'true');
             updateUI();
         }
     });
 
-    // Interaction auto-start (if not manually paused)
-    const handleInteraction = () => {
-        if (audio.paused && wasPlaying && !isManualPause) {
-            audio.play().then(() => {
-                updateUI();
-                ['click', 'touchstart', 'keydown'].forEach(evt => window.removeEventListener(evt, handleInteraction));
-            }).catch(() => {});
-        }
-    };
-    ['click', 'touchstart', 'keydown'].forEach(evt => window.addEventListener(evt, handleInteraction));
+    // Auto-start on load
+    window.addEventListener('load', () => {
+        audio.currentTime = savedTime;
+        safePlay();
+        updateUI();
+        
+        // Log info for verification
+        console.log("🎵 Music Player: Resumed at", savedTime, "seconds. Index:", currentTrackIndex);
+    });
 
-    // CSS for animation
+    // Fallback: start on first interaction if blocked on load
+    const startOnInteraction = () => {
+        if (audio.paused && sessionStorage.getItem('bgMusic_manual_pause') !== 'true') {
+            safePlay();
+        }
+        // Remove listeners once we've successfully interacted or confirmed manual pause
+        ['click', 'touchstart', 'keydown'].forEach(evt => window.removeEventListener(evt, startOnInteraction));
+    };
+    ['click', 'touchstart', 'keydown'].forEach(evt => window.addEventListener(evt, startOnInteraction));
+
+    // 6. STYLING
     const style = document.createElement('style');
     style.innerHTML = `
         @keyframes musicWave { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
