@@ -358,10 +358,148 @@
             color: #D9A3A3;
         }
 
+        /* --- Guest Detail Modal --- */
+        .guest-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 10005;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 20px;
+        }
+        .guest-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .guest-modal-content {
+            background: white;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            border-radius: 40px;
+            position: relative;
+            overflow-y: auto;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.3);
+            scrollbar-width: thin;
+            scrollbar-color: #D9A3A3 transparent;
+        }
+        .guest-modal-overlay.active .guest-modal-content {
+            transform: scale(1) translateY(0);
+        }
+        .guest-modal-close {
+            position: absolute;
+            top: 25px;
+            right: 30px;
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #4A4A4A;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(217, 163, 163, 0.2);
+        }
+        .guest-modal-close:hover {
+            transform: rotate(90deg);
+            background: #D9A3A3;
+            color: white;
+        }
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-hero {
+            width: 100%;
+            height: 450px;
+            position: relative;
+        }
+        .modal-hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .modal-details {
+            padding: 40px;
+            text-align: left;
+        }
+        .modal-header {
+            margin-bottom: 25px;
+        }
+        .modal-name {
+            font-family: 'Dancing Script', cursive !important;
+            font-size: 3.5rem;
+            color: #D9A3A3;
+            margin: 0 0 10px 0;
+            line-height: 1;
+        }
+        .modal-dates {
+            font-size: 1.1rem;
+            color: #D9A3A3;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .modal-story {
+            font-family: 'Courgette', cursive !important;
+            font-size: 1.2rem;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            white-space: pre-wrap; /* Preserve line breaks if any */
+        }
+        .modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .modal-tag {
+            background: #fff5f5;
+            color: #D9A3A3;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border: 1px solid rgba(217, 163, 163, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .guest-modal-content { border-radius: 30px; }
+            .modal-hero { height: 300px; }
+            .modal-details { padding: 30px 20px; }
+            .modal-name { font-size: 2.5rem; }
+            .modal-story { font-size: 1.1rem; }
+        }
+
     </style>
 </head>
 
 <body>
+    <!-- Guest Modal Structure -->
+    <div id="guest-modal" class="guest-modal-overlay">
+        <div class="guest-modal-content">
+            <div class="guest-modal-close">&times;</div>
+            <div class="modal-body" id="modal-content-area">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
     <nav class="premium-nav">
   <ul>
     <li><a href="/index.html">Home</a></li>

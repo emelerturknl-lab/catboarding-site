@@ -1,13 +1,35 @@
+let allGuests = [];
+
 document.addEventListener('DOMContentLoaded', () => {
     fetchPublicGuests();
+    setupModalEvents();
 });
+
+function setupModalEvents() {
+    const modal = document.getElementById('guest-modal');
+    const closeBtn = document.querySelector('.guest-modal-close');
+    
+    if (closeBtn) {
+        closeBtn.onclick = closeGuestModal;
+    }
+    
+    if (modal) {
+        modal.onclick = (e) => {
+            if (e.target === modal) closeGuestModal();
+        };
+    }
+    
+    // ESC key to close
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeGuestModal();
+    });
+}
 
 async function fetchPublicGuests() {
     const container = document.getElementById('guests-container');
     if (!container) return;
 
     try {
-        // Fetch from Supabase
         const { data, error } = await supabase
             .from('guests')
             .select('*')
@@ -16,18 +38,21 @@ async function fetchPublicGuests() {
 
         if (error) throw error;
 
-        if (!data || data.length === 0) {
+        allGuests = data || [];
+
+        if (allGuests.length === 0) {
             showComingSoon(container);
             return;
         }
 
         container.innerHTML = '';
         
-        data.forEach(guest => {
+        allGuests.forEach(guest => {
             const card = document.createElement('div');
             card.className = 'guest-card';
+            card.style.cursor = 'pointer';
+            card.onclick = () => openGuestModal(guest.id);
             
-            // Handle tags as comma-separated string from Supabase
             const tagsArray = guest.tags ? guest.tags.split(',').map(t => t.trim()).filter(t => t) : [];
             const tagsHtml = tagsArray.map(t => `<span class="guest-tag">${t}</span>`).join('');
 
@@ -49,6 +74,44 @@ async function fetchPublicGuests() {
     } catch (error) {
         console.error("Error fetching guests:", error);
         showComingSoon(container);
+    }
+}
+
+function openGuestModal(id) {
+    const guest = allGuests.find(g => g.id === id);
+    if (!guest) return;
+
+    const modal = document.getElementById('guest-modal');
+    const contentArea = document.getElementById('modal-content-area');
+    
+    if (!modal || !contentArea) return;
+
+    const tagsArray = guest.tags ? guest.tags.split(',').map(t => t.trim()).filter(t => t) : [];
+    const tagsHtml = tagsArray.map(t => `<span class="modal-tag">${t}</span>`).join('');
+
+    contentArea.innerHTML = `
+        <div class="modal-hero">
+            <img src="${guest.photo_url || 'assets/images/placeholder.jpg'}" alt="${guest.cat_name}" class="modal-hero-img" onerror="this.src='assets/images/placeholder.jpg'">
+        </div>
+        <div class="modal-details">
+            <div class="modal-header">
+                <h2 class="modal-name">${guest.cat_name}</h2>
+                <div class="modal-dates">${guest.stay_dates || ''}</div>
+            </div>
+            <p class="modal-story">${guest.description || ''}</p>
+            <div class="modal-tags">${tagsHtml}</div>
+        </div>
+    `;
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent scroll
+}
+
+function closeGuestModal() {
+    const modal = document.getElementById('guest-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scroll
     }
 }
 
