@@ -220,100 +220,109 @@ body.is-instant::after {display: none !important;transition: none !important;}
 /* Premium Services Grid Styles */
 .services-section {
     width: 100%;
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 2rem 0;
+    padding: 3rem 0;
 }
 .service-block {
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.85);
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-    margin-bottom: 3rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 24px;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.05);
+    margin-bottom: 4rem;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
 }
 .service-block:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(217, 163, 163, 0.2);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(217, 163, 163, 0.15);
 }
 .service-block.reverse {
     flex-direction: row-reverse;
 }
 .service-img-wrapper {
-    flex: 1;
-    min-width: 300px;
-    height: 350px;
+    flex: 1.1;
+    min-width: 400px;
+    height: 420px;
     overflow: hidden;
 }
 .service-img-wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    object-position: center;
+    transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .service-block:hover .service-img-wrapper img {
-    transform: scale(1.05);
+    transform: scale(1.03);
 }
 .service-content {
-    flex: 1.2;
-    padding: 3rem;
+    flex: 1;
+    padding: 4rem;
     text-align: left;
 }
 .service-number {
     font-family: 'Dancing Script', cursive !important;
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: 700;
     color: #D9A3A3;
-    opacity: 0.3;
+    opacity: 0.25;
     line-height: 1;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 .service-title {
     font-family: 'Dancing Script', cursive !important;
-    font-size: 1.8rem;
+    font-size: 2.2rem;
     font-weight: 700;
     color: #4A4A4A;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 .service-desc {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #666;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #555;
+    font-weight: 400;
 }
 .services-header {
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 5rem;
 }
 .services-h1 {
     font-family: 'Dancing Script', cursive !important;
-    font-size: 3.5rem;
+    font-size: 4rem;
     color: #4A4A4A;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 .services-subtitle {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: #666;
-    max-width: 700px;
+    max-width: 800px;
     margin: 0 auto;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 @media (max-width: 980px) {
     .service-block, .service-block.reverse {
         flex-direction: column;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
     }
     .service-img-wrapper {
         width: 100%;
-        height: 250px;
+        min-width: 100%;
+        height: 300px;
     }
     .service-content {
-        padding: 2rem;
+        padding: 2.5rem;
         text-align: center;
     }
     .services-h1 {
-        font-size: 2.8rem;
+        font-size: 3rem;
+    }
+    .services-subtitle {
+        font-size: 1.1rem;
     }
 }
 
@@ -618,7 +627,7 @@ body::before {
     <!-- Service 1: Accommodation -->
     <div class="service-block">
         <div class="service-img-wrapper">
-            <img src="assets/images/services/room_entry_stock.png" alt="Dedicated Guest Room">
+            <img src="assets/images/services/IMG_0924.jpeg" alt="Dedicated Guest Room">
         </div>
         <div class="service-content">
             <h3 class="service-title">Dedicated Guest Room</h3>
@@ -629,7 +638,7 @@ body::before {
     <!-- Service 2: Amenities -->
     <div class="service-block reverse">
         <div class="service-img-wrapper">
-            <img src="assets/images/services/room_amenities_stock.png" alt="Modern Amenities">
+            <img src="assets/images/services/IMG_0410.jpeg" alt="Modern Amenities">
         </div>
         <div class="service-content">
             <h3 class="service-title">Home Amenities & Care</h3>
@@ -640,7 +649,7 @@ body::before {
     <!-- Service 3: Comfort -->
     <div class="service-block">
         <div class="service-img-wrapper">
-            <img src="assets/images/services/room_comfort_stock.png" alt="Cozy Environment">
+            <img src="assets/images/services/IMG_0670.jpeg" alt="Cozy Environment">
         </div>
         <div class="service-content">
             <h3 class="service-title">Enrichment & Comfort</h3>
@@ -651,7 +660,7 @@ body::before {
     <!-- Service 4: Updates -->
     <div class="service-block reverse">
         <div class="service-img-wrapper">
-            <img src="assets/images/srv_updates.png" alt="Daily Photo & Video Updates">
+            <img src="assets/images/services/IMG_1172.jpeg" alt="Daily Photo & Video Updates">
         </div>
         <div class="service-content">
             <h3 class="service-title">Daily Photo & Video Updates</h3>
