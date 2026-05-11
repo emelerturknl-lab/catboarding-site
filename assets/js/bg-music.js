@@ -1,10 +1,23 @@
 (function() {
-    // 1. CLEAR STALE STATE FROM PREVIOUS VERSIONS
-    // We strictly use sessionStorage for manual pause to reset on new site visit
-    localStorage.removeItem('bgMusic_playing'); 
-    localStorage.removeItem('bgMusic_manual_pause');
+    const MUSIC_VERSION = "music-v4";
 
-    const basePath = 'assets/audio/playlist/';
+    // 1. VERSION RESET & MIGRATION
+    if (localStorage.getItem("bgMusic_version") !== MUSIC_VERSION) {
+        localStorage.removeItem("bgMusic_playing");
+        localStorage.removeItem("bgMusic_manual_pause");
+        localStorage.removeItem("bgMusic_time");
+        localStorage.removeItem("bgMusic_index");
+        localStorage.removeItem("bgMusic_shuffledPlaylist");
+        sessionStorage.removeItem("bgMusic_manual_pause");
+        localStorage.setItem("bgMusic_version", MUSIC_VERSION);
+        console.log("🎵 Music Player: Version reset to " + MUSIC_VERSION);
+    }
+
+    // 2. PREVENT DUPLICATE UI
+    const existing = document.getElementById('bg-music-control');
+    if (existing) existing.remove();
+
+    const basePath = '/assets/audio/playlist/'; // ABSOLUTE PATH
     const rawPlaylist = [
         "ES_A Day to Remember - River Run Dry.mp3",
         "ES_A Tiny Tumble - Josef Falkenskold.mp3",
@@ -112,7 +125,6 @@
         "winding_paths.mp3"
     ].map(name => basePath + name);
 
-    // Fisher-Yates Shuffle
     function shuffle(array) {
         let currentIndex = array.length, randomIndex;
         while (currentIndex != 0) {
@@ -123,7 +135,7 @@
         return array;
     }
 
-    // 2. PLAYLIST & INDEX MANAGEMENT
+    // 3. PERSISTENCE
     let shuffledPlaylist = JSON.parse(localStorage.getItem('bgMusic_shuffledPlaylist'));
     if (!shuffledPlaylist || shuffledPlaylist.length !== rawPlaylist.length) {
         shuffledPlaylist = shuffle([...rawPlaylist]);
@@ -133,15 +145,14 @@
     let currentTrackIndex = parseInt(localStorage.getItem('bgMusic_index')) || 0;
     if (currentTrackIndex >= shuffledPlaylist.length) currentTrackIndex = 0;
 
-    // 3. AUDIO INITIALIZATION
     const audio = new Audio();
     audio.volume = 0.4;
     audio.loop = false;
     audio.src = shuffledPlaylist[currentTrackIndex];
 
     const savedTime = parseFloat(localStorage.getItem('bgMusic_time')) || 0;
-    
-    // UI CONTROL
+
+    // 4. UI CONSTRUCTION
     const musicBtn = document.createElement('div');
     musicBtn.id = 'bg-music-control';
     musicBtn.style.cssText = `
@@ -149,28 +160,26 @@
         background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);
         border: 1px solid rgba(217, 163, 163, 0.5); border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
-        cursor: pointer; z-index: 9999; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        transition: all 0.3s ease; font-size: 20px;
+        cursor: pointer; z-index: 999999; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease; font-size: 20px; pointer-events: auto;
     `;
     document.body.appendChild(musicBtn);
 
     function updateUI() {
         const isPaused = audio.paused;
-        musicBtn.innerHTML = isPaused ? '<span>🔇</span>' : '<span class="music-playing">🎵</span>';
+        musicBtn.innerHTML = isPaused ? '<span style="pointer-events:none;">🔇</span>' : '<span class="music-playing" style="pointer-events:none;">🎵</span>';
         musicBtn.style.background = isPaused ? 'rgba(255, 255, 255, 0.8)' : 'rgba(217, 163, 163, 0.2)';
     }
 
-    // 4. CORE PLAYBACK LOGIC
+    // 5. RELIABLE PLAYBACK
     async function safePlay() {
-        // Only try to play if NOT manually paused in this session
         if (sessionStorage.getItem('bgMusic_manual_pause') === 'true') return;
-
         try {
             await audio.play();
             updateUI();
         } catch (err) {
-            // Autoplay blocked - expected behavior in some browsers
             updateUI();
+            console.log("🎵 Music Player: Autoplay blocked. Waiting for interaction.");
         }
     }
 
@@ -189,49 +198,49 @@
 
     audio.addEventListener('ended', playNext);
 
-    // Save progress periodically
     setInterval(() => {
         if (!audio.paused) {
             localStorage.setItem('bgMusic_time', audio.currentTime);
         }
     }, 1000);
 
-    // 5. EVENT LISTENERS
-    
-    // Toggle on click
-    musicBtn.addEventListener('click', (e) => {
+    // 6. CONTROL HANDLER
+    musicBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
         if (audio.paused) {
-            sessionStorage.setItem('bgMusic_manual_pause', 'false');
-            safePlay();
+            sessionStorage.removeItem("bgMusic_manual_pause");
+            if (!audio.src) audio.src = shuffledPlaylist[currentTrackIndex];
+            try {
+                await audio.play();
+            } catch (err) {
+                audio.load();
+                await audio.play();
+            }
+            updateUI();
         } else {
             audio.pause();
-            sessionStorage.setItem('bgMusic_manual_pause', 'true');
+            sessionStorage.setItem("bgMusic_manual_pause", "true");
             updateUI();
         }
     });
 
-    // Auto-start on load
+    // 7. INITIALIZATION & AUTOPLAY
     window.addEventListener('load', () => {
         audio.currentTime = savedTime;
         safePlay();
         updateUI();
-        
-        // Log info for verification
-        console.log("🎵 Music Player: Resumed at", savedTime, "seconds. Index:", currentTrackIndex);
+        console.log("🎵 Music Player: VERSION " + MUSIC_VERSION + " active.");
     });
 
-    // Fallback: start on first interaction if blocked on load
     const startOnInteraction = () => {
         if (audio.paused && sessionStorage.getItem('bgMusic_manual_pause') !== 'true') {
             safePlay();
         }
-        // Remove listeners once we've successfully interacted or confirmed manual pause
         ['click', 'touchstart', 'keydown'].forEach(evt => window.removeEventListener(evt, startOnInteraction));
     };
     ['click', 'touchstart', 'keydown'].forEach(evt => window.addEventListener(evt, startOnInteraction));
 
-    // 6. STYLING
+    // STYLING
     const style = document.createElement('style');
     style.innerHTML = `
         @keyframes musicWave { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
