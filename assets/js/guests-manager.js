@@ -78,13 +78,20 @@ async function fetchPublicGuests() {
 }
 
 function openGuestModal(id) {
-    const guest = allGuests.find(g => g.id === id);
-    if (!guest) return;
+    // Force ID string comparison just in case
+    const guest = allGuests.find(g => String(g.id) === String(id));
+    if (!guest) {
+        console.error("Guest not found for modal:", id);
+        return;
+    }
 
     const modal = document.getElementById('guest-modal');
     const contentArea = document.getElementById('modal-content-area');
     
-    if (!modal || !contentArea) return;
+    if (!modal || !contentArea) {
+        console.error("Modal elements missing from DOM!");
+        return;
+    }
 
     const tagsArray = guest.tags ? guest.tags.split(',').map(t => t.trim()).filter(t => t) : [];
     const tagsHtml = tagsArray.map(t => `<span class="modal-tag">${t}</span>`).join('');
@@ -107,6 +114,9 @@ function openGuestModal(id) {
     document.body.style.overflow = 'hidden'; // Prevent scroll
 }
 
+// Expose to window for global access
+window.openGuestModal = openGuestModal;
+window.closeGuestModal = closeGuestModal;
 function closeGuestModal() {
     const modal = document.getElementById('guest-modal');
     if (modal) {
