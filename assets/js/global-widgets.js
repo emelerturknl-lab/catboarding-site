@@ -1,4 +1,4 @@
-(function() {
+(function () {
     // 1. Create CSS link if not already present
     if (!document.querySelector('link[href*="global-widgets.css"]')) {
         const link = document.createElement('link');
@@ -9,7 +9,7 @@
 
     // 2. Add WhatsApp Button
     const waBtn = document.createElement('a');
-    waBtn.href = 'https://wa.me/31615677962';
+    waBtn.href = 'https://wa.me/31644205396';
     waBtn.className = 'whatsapp-float';
     waBtn.target = '_blank';
     waBtn.innerHTML = `
@@ -37,7 +37,7 @@
         `;
         document.body.appendChild(overlay);
 
-        overlay.querySelector('.warning-popup-btn').addEventListener('click', function() {
+        overlay.querySelector('.warning-popup-btn').addEventListener('click', function () {
             overlay.style.display = 'none';
             sessionStorage.setItem('bp_notice_seen_session', 'true');
         });
