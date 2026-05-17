@@ -1860,19 +1860,19 @@
 
 
   <nav class="premium-nav">
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">Our Story</a></li>
-      <li><a href="services.html">Services</a></li>
-      <li><a href="pricing.html">Pricing</a></li>
-      <li><a href="rules.html">Rules</a></li>
-      <li><a href="blog.html">Blog</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="guests.html">Our Guests</a></li>
-      <li><a href="emergency-vet.html">Emergency Vet</a></li>
-      <li><a href="reservation.html" class="nav-book-btn active">Check Availability</a></li>
-    </ul>
-  </nav>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">Our Story</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="rules.html">Rules</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="guests.html">Our Guests</a></li>
+    <li><a href="emergency-vet.html">Emergency Vet</a></li>
+    <li><a href="reservation.html" class="nav-book-btn active">Check Availability</a></li>
+  </ul>
+</nav>
   <div class="site-wrapper" style="padding-top: 100px;">
     <div class="site-main">
       <div class="inner">
@@ -1889,8 +1889,7 @@
         </h1>
         <p id="text04" class="text-component instance-4 style-1"
           style="opacity: 1; transform: none; max-width: 800px; margin: 0 auto 2rem auto; line-height: 1.6; color: #4A4A4A;">
-          Select your desired drop-off and pick-up dates and times. We host usually <strong>one household at a
-            time</strong>, so please inquire to confirm availability!
+          Select your desired drop-off and pick-up dates and times. We host usually <strong>one household at a time</strong>, so please inquire to confirm availability!
         </p>
 
         <div id="reservation-layout"
@@ -1898,15 +1897,11 @@
           <!-- Form Side -->
           <div
             style="flex: 1; min-width: 320px; max-width: 600px; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: left;">
-            <div id="reservation-info-notice"
-              style="background: #FFF9F9; border: 1px solid #F2DEDE; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: left; font-family: sans-serif;">
-              <strong
-                style="color: #D9A3A3; display: block; font-size: 1.2rem; margin-bottom: 0.8rem; font-family: 'Dancing Script', cursive !important;">Availability
-                Inquiry</strong>
+            <div id="reservation-info-notice" style="background: #FFF9F9; border: 1px solid #F2DEDE; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: left; font-family: sans-serif;">
+              <strong style="color: #D9A3A3; display: block; font-size: 1.2rem; margin-bottom: 0.8rem; font-family: 'Dancing Script', cursive !important;">Availability Inquiry</strong>
               <p style="margin: 0; color: #4A4A4A; line-height: 1.6; font-size: 1rem;">
                 At the moment, reservations are handled manually.<br><br>
-                To ensure your booking is confirmed, please contact us via WhatsApp after filling in your
-                details.<br><br>
+                To ensure your booking is confirmed, please contact us via WhatsApp after filling in your details.<br><br>
                 Payment is made in cash at the start of the stay.
               </p>
             </div>
@@ -1926,8 +1921,7 @@
                   <label
                     style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Drop-off
                     Time</label>
-                  <input type="time" name="dropoff-time" id="dropoff-time" value="14:00"
-                    style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-family: sans-serif;">
+                  <input type="time" name="dropoff-time" id="dropoff-time" value="14:00" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-family: sans-serif;">
                   <p style="font-size: 0.8rem; color: #888; margin-top: 5px;">* Default window: 14:00 - 15:00</p>
                 </div>
               </div>
@@ -1954,19 +1948,16 @@
                   </select>
                   <div id="dropoff-custom-address" style="display: none; ">
                     <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-                      <input type="text" name="dropoff-street" id="dropoff-street" placeholder="Street"
-                        oninput="debouncedCalculate()"
+                      <input type="text" name="dropoff-street" id="dropoff-street" placeholder="Street" oninput="debouncedCalculate()"
                         style="flex: 3; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem;">
-                      <input type="text" name="dropoff-houseno" id="dropoff-houseno" placeholder="No"
-                        oninput="debouncedCalculate()"
+                      <input type="text" name="dropoff-houseno" id="dropoff-houseno" placeholder="No" oninput="debouncedCalculate()"
                         style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem;">
                     </div>
                     <div style="display: flex; gap: 0.5rem;">
                       <input type="text" name="dropoff-postcode" id="dropoff-postcode" placeholder="Postcode"
                         oninput="handlePostcodeLookup('dropoff')"
                         style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem;">
-                      <input type="text" name="dropoff-city" id="dropoff-city" placeholder="City"
-                        oninput="debouncedCalculate()"
+                      <input type="text" name="dropoff-city" id="dropoff-city" placeholder="City" oninput="debouncedCalculate()"
                         style="flex: 2; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem;">
                     </div>
                     <div id="dropoff-status"
@@ -2000,8 +1991,7 @@
                   <label
                     style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Pick-up
                     Time</label>
-                  <input type="time" name="pickup-time" id="pickup-time" value="14:00"
-                    style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-family: sans-serif;">
+                  <input type="time" name="pickup-time" id="pickup-time" value="14:00" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-family: sans-serif;">
                   <p style="font-size: 0.8rem; color: #888; margin-top: 5px;">* Default window: 14:00 - 15:00</p>
                 </div>
               </div>
@@ -2028,19 +2018,16 @@
                   </select>
                   <div id="pickup-custom-address" style="display: none; ">
                     <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-                      <input type="text" name="pickup-street" id="pickup-street" placeholder="Street"
-                        oninput="debouncedCalculate()"
+                      <input type="text" name="pickup-street" id="pickup-street" placeholder="Street" oninput="debouncedCalculate()"
                         style="flex: 3; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem;">
-                      <input type="text" name="pickup-houseno" id="pickup-houseno" placeholder="No"
-                        oninput="debouncedCalculate()"
+                      <input type="text" name="pickup-houseno" id="pickup-houseno" placeholder="No" oninput="debouncedCalculate()"
                         style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem;">
                     </div>
                     <div style="display: flex; gap: 0.5rem;">
                       <input type="text" name="pickup-postcode" id="pickup-postcode" placeholder="Postcode"
                         oninput="handlePostcodeLookup('pickup')"
                         style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem;">
-                      <input type="text" name="pickup-city" id="pickup-city" placeholder="City"
-                        oninput="debouncedCalculate()"
+                      <input type="text" name="pickup-city" id="pickup-city" placeholder="City" oninput="debouncedCalculate()"
                         style="flex: 2; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.95rem;">
                     </div>
                     <div id="pickup-status"
@@ -2089,229 +2076,225 @@
 
               <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 200px;">
-                  <label <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 200px;">
-                      <label
-                        style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">First
-                        Name</label>
-                      <input type="text" name="firstname" id="firstname" required placeholder="Enter your first name"
-                        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
-                    </div>
-                    <div style="flex: 1; min-width: 200px;">
-                      <label
-                        style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Last
-                        Name</label>
-                      <input type="text" name="lastname" id="lastname" required placeholder="Enter your last name"
-                        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
-                    </div>
+                  <label
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                  <label
+                    style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">First Name</label>
+                  <input type="text" name="firstname" id="firstname" required
+                    placeholder="Enter your first name"
+                    style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
                 </div>
-                <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
-                  <div style="flex: 1; min-width: 280px;">
-                    <label
-                      style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Phone
-                      Number</label>
-                    <div style="display: flex; gap: 0.5rem;">
-                      <select name="phone-country-code" id="phone-country-code"
-                        style="width: 120px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.9rem; background: white;">
-                        <option value="+31" selected>🇳🇱 +31 NL</option>
-                        <option value="+90">🇹🇷 +90 TR</option>
-                        <option value="+49">🇩🇪 +49 DE</option>
-                        <option value="+32">🇧🇪 +32 BE</option>
-                        <option value="+33">🇫🇷 +33 FR</option>
-                        <option value="+44">🇬🇧 +44 UK</option>
-                        <option value="+1">🇺🇸 +1 US</option>
-                        <option value="+1">🇨🇦 +1 CA</option>
-                        <option value="+34">🇪🇸 +34 ES</option>
-                        <option value="+39">🇮🇹 +39 IT</option>
-                        <option value="+41">🇨🇭 +41 CH</option>
-                        <option value="+43">🇦🇹 +43 AT</option>
-                        <option value="+45">🇩🇰 +45 DK</option>
-                        <option value="+46">🇸🇪 +46 SE</option>
-                        <option value="+47">🇳🇴 +47 NO</option>
-                        <option value="+48">🇵🇱 +48 PL</option>
-                        <option value="+351">🇵🇹 +351 PT</option>
-                        <option value="+353">🇮🇪 +353 IE</option>
-                        <option value="+358">🇫🇮 +358 FI</option>
-                        <option value="+30">🇬🇷 +30 GR</option>
-                        <option value="+352">🇱🇺 +352 LU</option>
-                        <option value="+61">🇦🇺 +61 AU</option>
-                        <option value="+64">🇳🇿 +64 NZ</option>
-                        <option value="+81">🇯🇵 +81 JP</option>
-                        <option value="+82">🇰🇷 +82 KR</option>
-                        <option value="+86">🇨🇳 +86 CN</option>
-                        <option value="+971">🇦🇪 +971 AE</option>
-                        <option value="+966">🇸🇦 +966 SA</option>
-                      </select>
-                      <input type="tel" name="phone" id="phone" required placeholder="612345678"
-                        style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
-                    </div>
-                    <p style="font-size: 0.75rem; color: #888; margin-top: 4px;">* Enter without leading 0 (e.g.
-                      612345678)</p>
-                  </div>
-                  <div style="flex: 1; min-width: 200px;">
-                    <label
-                      style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Email
-                      (Optional)</label>
-                    <input type="email" name="email" placeholder="example@mail.com"
-                      style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
-                  </div>
+                <div style="flex: 1; min-width: 200px;">
+                  <label
+                    style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Last Name</label>
+                  <input type="text" name="lastname" id="lastname" required
+                    placeholder="Enter your last name"
+                    style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
                 </div>
-
-                <!-- PART 2: CAT DETAILS & SPECIAL NEEDS -->
-                <div
-                  style="background: rgba(255, 255, 255, 0.5); padding: 25px; border-radius: 15px; margin-bottom: 30px; border: 1px solid rgba(217,163,163,0.2);">
-                  <h3 style="color: #D9A3A3; margin-top: 0; font-family: 'Dancing Script', cursive !important;">Cat Care
-                    Information</h3>
-
-                  <!-- Cat Items -->
-                  <div style="margin-bottom: 1.5rem;">
-                    <label
-                      style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">What
-                      will the cat bring? / Kediniz neler getirecek?</label>
-                    <div
-                      style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; font-family: sans-serif; font-size: 0.9rem; color: #4A4A4A;">
-                      <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
-                          name="cat-item" value="Own food"> Own food</label>
-                      <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
-                          name="cat-item" value="Medication"> Medication</label>
-                      <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
-                          name="cat-item" value="Blanket/Bed"> Blanket / Bed</label>
-                      <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
-                          name="cat-item" value="Toys"> Toys</label>
-                      <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
-                          name="cat-item" value="Litter"> Litter</label>
-                    </div>
-                    <input type="text" name="cat-item-other" placeholder="Other items or details..."
-                      style="margin-top: 10px; width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-family: sans-serif;">
+              </div>
+              <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+                <div style="flex: 1; min-width: 280px;">
+                  <label
+                    style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Phone Number</label>
+                  <div style="display: flex; gap: 0.5rem;">
+                    <select name="phone-country-code" id="phone-country-code"
+                      style="width: 120px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 0.9rem; background: white;">
+                      <option value="+31" selected>🇳🇱 +31 NL</option>
+                      <option value="+90">🇹🇷 +90 TR</option>
+                      <option value="+49">🇩🇪 +49 DE</option>
+                      <option value="+32">🇧🇪 +32 BE</option>
+                      <option value="+33">🇫🇷 +33 FR</option>
+                      <option value="+44">🇬🇧 +44 UK</option>
+                      <option value="+1">🇺🇸 +1 US</option>
+                      <option value="+1">🇨🇦 +1 CA</option>
+                      <option value="+34">🇪🇸 +34 ES</option>
+                      <option value="+39">🇮🇹 +39 IT</option>
+                      <option value="+41">🇨🇭 +41 CH</option>
+                      <option value="+43">🇦🇹 +43 AT</option>
+                      <option value="+45">🇩🇰 +45 DK</option>
+                      <option value="+46">🇸🇪 +46 SE</option>
+                      <option value="+47">🇳🇴 +47 NO</option>
+                      <option value="+48">🇵🇱 +48 PL</option>
+                      <option value="+351">🇵🇹 +351 PT</option>
+                      <option value="+353">🇮🇪 +353 IE</option>
+                      <option value="+358">🇫🇮 +358 FI</option>
+                      <option value="+30">🇬🇷 +30 GR</option>
+                      <option value="+352">🇱🇺 +352 LU</option>
+                      <option value="+61">🇦🇺 +61 AU</option>
+                      <option value="+64">🇳🇿 +64 NZ</option>
+                      <option value="+81">🇯🇵 +81 JP</option>
+                      <option value="+82">🇰🇷 +82 KR</option>
+                      <option value="+86">🇨🇳 +86 CN</option>
+                      <option value="+971">🇦🇪 +971 AE</option>
+                      <option value="+966">🇸🇦 +966 SA</option>
+                    </select>
+                    <input type="tel" name="phone" id="phone" required placeholder="612345678"
+                      style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
                   </div>
+                  <p style="font-size: 0.75rem; color: #888; margin-top: 4px;">* Enter without leading 0 (e.g. 612345678)</p>
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                  <label
+                    style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Email (Optional)</label>
+                  <input type="email" name="email" placeholder="example@mail.com"
+                    style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
+                </div>
+              </div>
 
-                  <!-- Special Needs -->
-                  <div style="margin-bottom: 1.5rem;">
-                    <label
-                      style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Special
-                      needs / Özel ihtiyaçlar</label>
-                    <div
-                      style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; font-family: sans-serif; font-size: 0.9rem; color: #4A4A4A;">
-                      <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
-                          name="special-need" value="Special room"> Special room needed</label>
-                      <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
-                          name="special-need" value="Medication required"> Medication required</label>
-                      <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
-                          name="special-need" value="Special food"> Special food</label>
-                      <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
-                          name="special-need" value="Allergy"> Allergy</label>
-                      <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
-                          name="special-need" value="Anxiety/Shy"> Anxiety / Shy cat</label>
-                      <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
-                          name="special-need" value="Not social"> Not social with cats</label>
-                    </div>
-                    <textarea name="special-need-details"
-                      placeholder="Please provide details about medication, allergies, or behavioral needs..." rows="3"
-                      style="margin-top: 10px; width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-family: sans-serif;"></textarea>
-                  </div>
+              <!-- PART 2: CAT DETAILS & SPECIAL NEEDS -->
+              <div
+                style="background: rgba(255, 255, 255, 0.5); padding: 25px; border-radius: 15px; margin-bottom: 30px; border: 1px solid rgba(217,163,163,0.2);">
+                <h3 style="color: #D9A3A3; margin-top: 0; font-family: 'Dancing Script', cursive !important;">Cat Care
+                  Information</h3>
 
-                  <!-- Additional Notes -->
-                  <div>
-                    <label
-                      style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Additional
-                      Notes / Ek Notlar</label>
-                    <p style="font-size: 0.8rem; color: #888; margin-bottom: 10px; font-family: sans-serif;">Is there
-                      anything important we should know about your cat?</p>
-                    <textarea name="additional-notes" rows="3"
-                      style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-family: sans-serif;"></textarea>
+                <!-- Cat Items -->
+                <div style="margin-bottom: 1.5rem;">
+                  <label
+                    style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">What
+                    will the cat bring? / Kediniz neler getirecek?</label>
+                  <div
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; font-family: sans-serif; font-size: 0.9rem; color: #4A4A4A;">
+                    <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="cat-item"
+                        value="Own food"> Own food</label>
+                    <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="cat-item"
+                        value="Medication"> Medication</label>
+                    <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="cat-item"
+                        value="Blanket/Bed"> Blanket / Bed</label>
+                    <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="cat-item"
+                        value="Toys"> Toys</label>
+                    <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox" name="cat-item"
+                        value="Litter"> Litter</label>
                   </div>
+                  <input type="text" name="cat-item-other" placeholder="Other items or details..."
+                    style="margin-top: 10px; width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-family: sans-serif;">
                 </div>
 
-                <button type="submit"
-                  style="background-color: #D9A3A3; color: white; border: none; padding: 20px; border-radius: 30px; font-size: 1.3rem; font-weight: bold; cursor: pointer; transition: background 0.3s; ">Send
-                  Availability Inquiry</button>
-                <p style="text-align: center; font-size: 0.85rem; color: #D9A3A3; font-weight: bold; margin-top: 10px;">
-                  ⚠️
-                  This is an inquiry, not a confirmed booking.</p>
+                <!-- Special Needs -->
+                <div style="margin-bottom: 1.5rem;">
+                  <label
+                    style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Special
+                    needs / Özel ihtiyaçlar</label>
+                  <div
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; font-family: sans-serif; font-size: 0.9rem; color: #4A4A4A;">
+                    <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
+                        name="special-need" value="Special room"> Special room needed</label>
+                    <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
+                        name="special-need" value="Medication required"> Medication required</label>
+                    <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
+                        name="special-need" value="Special food"> Special food</label>
+                    <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
+                        name="special-need" value="Allergy"> Allergy</label>
+                    <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
+                        name="special-need" value="Anxiety/Shy"> Anxiety / Shy cat</label>
+                    <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox"
+                        name="special-need" value="Not social"> Not social with cats</label>
+                  </div>
+                  <textarea name="special-need-details"
+                    placeholder="Please provide details about medication, allergies, or behavioral needs..." rows="3"
+                    style="margin-top: 10px; width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-family: sans-serif;"></textarea>
+                </div>
+
+                <!-- Additional Notes -->
+                <div>
+                  <label
+                    style="display: block; font-weight: bold; margin-bottom: 0.5rem; font-family: sans-serif; color: #4A4A4A;">Additional
+                    Notes / Ek Notlar</label>
+                  <p style="font-size: 0.8rem; color: #888; margin-bottom: 10px; font-family: sans-serif;">Is there
+                    anything important we should know about your cat?</p>
+                  <textarea name="additional-notes" rows="3"
+                    style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-family: sans-serif;"></textarea>
+                </div>
+              </div>
+
+              <button type="submit"
+                style="background-color: #D9A3A3; color: white; border: none; padding: 20px; border-radius: 30px; font-size: 1.3rem; font-weight: bold; cursor: pointer; transition: background 0.3s; ">Send Availability Inquiry</button>
+              <p style="text-align: center; font-size: 0.85rem; color: #D9A3A3; font-weight: bold; margin-top: 10px;">⚠️
+                This is an inquiry, not a confirmed booking.</p>
             </form>
           </div>
 
-          <script>
-            const BOUTIQUE_ADDRESS = "Flevostraat 32, 1315 CC Almere";
-            const GREEN_POLYLINE_OPTIONS = { strokeColor: '#27AE60', strokeOpacity: 0.8, strokeWeight: 4 };
+        <script>
+        const BOUTIQUE_ADDRESS = "Flevostraat 32, 1315 CC Almere";
+        const GREEN_POLYLINE_OPTIONS = { strokeColor: '#27AE60', strokeOpacity: 0.8, strokeWeight: 4 };
 
-            let dropoffMap, pickupMap, directionsService, distanceMatrixService, dropoffRenderer, pickupRenderer;
+        let dropoffMap, pickupMap, directionsService, distanceMatrixService, dropoffRenderer, pickupRenderer;
 
-            function initMap() {
-              try {
-                directionsService = new google.maps.DirectionsService();
-                distanceMatrixService = new google.maps.DistanceMatrixService();
-                const mapOptions = { zoom: 11, center: { lat: 52.373, lng: 5.215 } };
-                dropoffMap = new google.maps.Map(document.getElementById('dropoff-map'), mapOptions);
-                pickupMap = new google.maps.Map(document.getElementById('pickup-map'), mapOptions);
-                dropoffRenderer = new google.maps.DirectionsRenderer({ map: dropoffMap, polylineOptions: GREEN_POLYLINE_OPTIONS });
-                pickupRenderer = new google.maps.DirectionsRenderer({ map: pickupMap, polylineOptions: GREEN_POLYLINE_OPTIONS });
-                window.initMap = initMap;
-              } catch (e) { console.error("Map Init Error:", e); }
-            }
+        function initMap() {
+          try {
+            directionsService = new google.maps.DirectionsService();
+            distanceMatrixService = new google.maps.DistanceMatrixService();
+            const mapOptions = { zoom: 11, center: { lat: 52.373, lng: 5.215 } };
+            dropoffMap = new google.maps.Map(document.getElementById('dropoff-map'), mapOptions);
+            pickupMap = new google.maps.Map(document.getElementById('pickup-map'), mapOptions);
+            dropoffRenderer = new google.maps.DirectionsRenderer({ map: dropoffMap, polylineOptions: GREEN_POLYLINE_OPTIONS });
+            pickupRenderer = new google.maps.DirectionsRenderer({ map: pickupMap, polylineOptions: GREEN_POLYLINE_OPTIONS });
+            window.initMap = initMap;
+          } catch (e) { console.error("Map Init Error:", e); }
+        }
 
-            async function getGoogleDistance(address, type) {
-              const statusEl = document.getElementById(type + '-status');
-              if (statusEl) statusEl.innerText = "Calculating distance...";
-              if (typeof google === 'undefined' || !distanceMatrixService) return { km: 30 };
-              return new Promise((resolve) => {
-                distanceMatrixService.getDistanceMatrix({ origins: [address], destinations: [BOUTIQUE_ADDRESS], travelMode: 'DRIVING' }, (response, status) => {
-                  if (status === 'OK' && response.rows[0].elements[0].status === 'OK') {
-                    const dist = response.rows[0].elements[0].distance;
-                    if (dist) { resolve({ km: dist.value / 1000 }); return; }
-                  }
-                  resolve({ km: 30 });
-                });
-              });
-            }
-
-            function updateRoute(address, type) {
-              if (typeof google === 'undefined' || !directionsService) return;
-              const renderer = (type === 'dropoff') ? dropoffRenderer : pickupRenderer;
-              directionsService.route({ origin: address, destination: BOUTIQUE_ADDRESS, travelMode: 'DRIVING' }, (result, status) => {
-                if (status === 'OK') renderer.setDirections(result);
-              });
-            }
-
-            async function handlePostcodeLookup(type) {
-              const pc = document.getElementById(type + '-postcode').value.replace(/\s/g, '').toUpperCase();
-              if (pc.length >= 4) {
-                // City lookup logic could go here, for now just calculate
+        async function getGoogleDistance(address, type) {
+          const statusEl = document.getElementById(type + '-status');
+          if (statusEl) statusEl.innerText = "Calculating distance...";
+          if (typeof google === 'undefined' || !distanceMatrixService) return { km: 30 };
+          return new Promise((resolve) => {
+            distanceMatrixService.getDistanceMatrix({ origins: [address], destinations: [BOUTIQUE_ADDRESS], travelMode: 'DRIVING' }, (response, status) => {
+              if (status === 'OK' && response.rows[0].elements[0].status === 'OK') {
+                const dist = response.rows[0].elements[0].distance;
+                if (dist) { resolve({ km: dist.value / 1000 }); return; }
               }
-              debouncedCalculate();
-            }
+              resolve({ km: 30 });
+            });
+          });
+        }
 
-            let calcDebounce;
-            function debouncedCalculate() {
-              clearTimeout(calcDebounce);
-              calcDebounce = setTimeout(calculatePricing, 800);
-            }
+        function updateRoute(address, type) {
+          if (typeof google === 'undefined' || !directionsService) return;
+          const renderer = (type === 'dropoff') ? dropoffRenderer : pickupRenderer;
+          directionsService.route({ origin: address, destination: BOUTIQUE_ADDRESS, travelMode: 'DRIVING' }, (result, status) => {
+            if (status === 'OK') renderer.setDirections(result);
+          });
+        }
 
-            function toggleTransfer(type) {
-              const checkbox = document.getElementById('transfer-' + type);
-              const optionsDiv = document.getElementById('transfer-' + type + '-options');
-              if (optionsDiv) {
-                optionsDiv.style.display = checkbox.checked ? 'block' : 'none';
-              }
-              calculatePricing();
-            }
+        async function handlePostcodeLookup(type) {
+          const pc = document.getElementById(type + '-postcode').value.replace(/\s/g, '').toUpperCase();
+          if (pc.length >= 4) {
+            // City lookup logic could go here, for now just calculate
+          }
+          debouncedCalculate();
+        }
 
-            function handleLocationChange(type) {
-              const select = document.getElementById(type + '-location-select');
-              const customDiv = document.getElementById(type + '-custom-address');
-              if (customDiv) {
-                customDiv.style.display = select.value === 'Custom' ? 'block' : 'none';
-              }
-              calculatePricing();
-            }
+        let calcDebounce;
+        function debouncedCalculate() {
+          clearTimeout(calcDebounce);
+          calcDebounce = setTimeout(calculatePricing, 800);
+        }
 
-            function updateDynamicCatFields() {
-              const count = parseInt(document.getElementById('cat-count').value);
-              const container = document.getElementById('dynamic-cat-details');
-              container.innerHTML = '';
+        function toggleTransfer(type) {
+          const checkbox = document.getElementById('transfer-' + type);
+          const optionsDiv = document.getElementById('transfer-' + type + '-options');
+          if (optionsDiv) {
+            optionsDiv.style.display = checkbox.checked ? 'block' : 'none';
+          }
+          calculatePricing();
+        }
 
-              for (let i = 1; i <= count; i++) {
-                const catHtml = `
+        function handleLocationChange(type) {
+          const select = document.getElementById(type + '-location-select');
+          const customDiv = document.getElementById(type + '-custom-address');
+          if (customDiv) {
+            customDiv.style.display = select.value === 'Custom' ? 'block' : 'none';
+          }
+          calculatePricing();
+        }
+
+        function updateDynamicCatFields() {
+          const count = parseInt(document.getElementById('cat-count').value);
+          const container = document.getElementById('dynamic-cat-details');
+          container.innerHTML = '';
+          
+          for (let i = 1; i <= count; i++) {
+            const catHtml = `
               <div style="background: rgba(217,163,163,0.05); padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(217,163,163,0.15);">
                 <strong style="color: #D9A3A3; display: block; margin-bottom: 10px;">Cat ${i} Details</strong>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
@@ -2322,72 +2305,72 @@
                 </div>
               </div>
             `;
-                container.insertAdjacentHTML('beforeend', catHtml);
-              }
-              calculatePricing();
+            container.insertAdjacentHTML('beforeend', catHtml);
+          }
+          calculatePricing();
+        }
+
+        async function computeTransfer(type) {
+          if (!document.getElementById('transfer-' + type).checked) return null;
+          const locSelect = document.getElementById(type + '-location-select');
+          const loc = locSelect.value;
+          const selectedOption = locSelect.options[locSelect.selectedIndex];
+          const cleanLabel = selectedOption.textContent.replace(/\s*\(€.*?\)\s*$/, '').trim();
+          const fixedPrice = HomeEngine.getFixedTransferPrice(loc);
+          if (fixedPrice !== null) return { cost: fixedPrice, label: cleanLabel };
+
+
+          if (loc === 'Custom') {
+            const street = document.getElementById(type + '-street').value;
+            const no = document.getElementById(type + '-houseno').value;
+            const pc = document.getElementById(type + '-postcode').value;
+            const city = document.getElementById(type + '-city').value;
+            if (!street || !no || !pc || !city) return null;
+            const addr = `${street} ${no}, ${pc} ${city}`;
+            const res = await getGoogleDistance(addr, type);
+            if (res) {
+              updateRoute(addr, type);
+              const container = document.getElementById(type + '-map-container');
+              if (container) container.style.display = 'block';
+              const distEl = document.getElementById(type + '-dist');
+              if (distEl) distEl.innerText = `Distance: ${res.km.toFixed(1)} km`;
+              return { cost: HomeEngine.calculateDistanceTransfer(res.km), label: 'Custom Address', dist: res.km, address: addr };
             }
+          }
+          return null;
+        }
 
-            async function computeTransfer(type) {
-              if (!document.getElementById('transfer-' + type).checked) return null;
-              const locSelect = document.getElementById(type + '-location-select');
-              const loc = locSelect.value;
-              const selectedOption = locSelect.options[locSelect.selectedIndex];
-              const cleanLabel = selectedOption.textContent.replace(/\s*\(€.*?\)\s*$/, '').trim();
-              const fixedPrice = HomeEngine.getFixedTransferPrice(loc);
-              if (fixedPrice !== null) return { cost: fixedPrice, label: cleanLabel };
+        async function calculatePricing() {
+          const catCount = parseInt(document.getElementById('cat-count').value);
+          const dropDateVal = document.getElementById('dropoff-date').value;
+          const pickDateVal = document.getElementById('pickup-date').value;
+          const summaryContent = document.getElementById('summary-content');
 
+          if (!dropDateVal || !pickDateVal) {
+            if (summaryContent) summaryContent.innerHTML = '<p style="font-style: italic; color: #888;">Select dates to see pricing breakdown...</p>';
+            return { total: 0 };
+          }
 
-              if (loc === 'Custom') {
-                const street = document.getElementById(type + '-street').value;
-                const no = document.getElementById(type + '-houseno').value;
-                const pc = document.getElementById(type + '-postcode').value;
-                const city = document.getElementById(type + '-city').value;
-                if (!street || !no || !pc || !city) return null;
-                const addr = `${street} ${no}, ${pc} ${city}`;
-                const res = await getGoogleDistance(addr, type);
-                if (res) {
-                  updateRoute(addr, type);
-                  const container = document.getElementById(type + '-map-container');
-                  if (container) container.style.display = 'block';
-                  const distEl = document.getElementById(type + '-dist');
-                  if (distEl) distEl.innerText = `Distance: ${res.km.toFixed(1)} km`;
-                  return { cost: HomeEngine.calculateDistanceTransfer(res.km), label: 'Custom Address', dist: res.km, address: addr };
-                }
-              }
-              return null;
-            }
-
-            async function calculatePricing() {
-              const catCount = parseInt(document.getElementById('cat-count').value);
-              const dropDateVal = document.getElementById('dropoff-date').value;
-              const pickDateVal = document.getElementById('pickup-date').value;
-              const summaryContent = document.getElementById('summary-content');
-
-              if (!dropDateVal || !pickDateVal) {
-                if (summaryContent) summaryContent.innerHTML = '<p style="font-style: italic; color: #888;">Select dates to see pricing breakdown...</p>';
-                return { total: 0 };
-              }
-
-              const d1 = new Date(dropDateVal);
-              const d2 = new Date(pickDateVal);
-              const diffTime = d2 - d1;
-              const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
-
-              let boardingSubtotal = nights * 20;
-              let additionalCatFee = 0;
-              if (catCount === 2) additionalCatFee = nights * 15;
-
-              const dropT = await computeTransfer('dropoff');
-              const pickT = await computeTransfer('pickup');
-              let transferTotal = (dropT ? dropT.cost : 0) + (pickT ? pickT.cost : 0);
-
-              const total = boardingSubtotal + additionalCatFee + transferTotal;
-
-              const hiddenTotal = document.getElementById('estimated-total');
-              if (hiddenTotal) hiddenTotal.value = total.toFixed(2);
-
-              if (summaryContent) {
-                summaryContent.innerHTML = `
+          const d1 = new Date(dropDateVal);
+          const d2 = new Date(pickDateVal);
+          const diffTime = d2 - d1;
+          const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
+          
+          let boardingSubtotal = nights * 20;
+          let additionalCatFee = 0;
+          if (catCount === 2) additionalCatFee = nights * 15;
+          
+          const dropT = await computeTransfer('dropoff');
+          const pickT = await computeTransfer('pickup');
+          let transferTotal = (dropT ? dropT.cost : 0) + (pickT ? pickT.cost : 0);
+          
+          const total = boardingSubtotal + additionalCatFee + transferTotal;
+          
+          const hiddenTotal = document.getElementById('estimated-total');
+          if (hiddenTotal) hiddenTotal.value = total.toFixed(2);
+          
+          if (summaryContent) {
+            summaryContent.innerHTML = `
               <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                 <span>Boarding Subtotal (${nights} nights)</span>
                 <span>€${boardingSubtotal.toFixed(2)}</span>
@@ -2416,198 +2399,197 @@
               </div>
               <p style="font-size: 0.8rem; color: #888; margin-top: 5px;">* Final pricing will be confirmed by us.</p>
             `;
+          }
+
+          
+          return { boardingSubtotal, additionalCatFee, transferTotal, total, nights, dropT, pickT };
+
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+          // Initial render
+          updateDynamicCatFields();
+          calculatePricing();
+          
+          const pickupInput = document.getElementById('pickup-date');
+          const dropoffInput = document.getElementById('dropoff-date');
+
+          const pickupPicker = flatpickr("#pickup-date", {
+            dateFormat: "Y-m-d",
+            showMonths: window.innerWidth > 768 ? 2 : 1,
+            onChange: function() { calculatePricing(); }
+          });
+
+          const dropoffPicker = flatpickr("#dropoff-date", {
+            minDate: "today",
+            dateFormat: "Y-m-d",
+            showMonths: window.innerWidth > 768 ? 2 : 1,
+            onChange: function(selectedDates) {
+              if (selectedDates.length > 0) {
+                pickupInput.disabled = false;
+                pickupInput.style.backgroundColor = "white";
+                const minPickup = new Date(selectedDates[0]);
+                minPickup.setDate(minPickup.getDate() + 1);
+                pickupPicker.set('minDate', minPickup);
+                pickupPicker.setDate(minPickup, true);
               }
-
-
-              return { boardingSubtotal, additionalCatFee, transferTotal, total, nights, dropT, pickT };
-
-            }
-
-
-            document.addEventListener('DOMContentLoaded', function () {
-              // Initial render
-              updateDynamicCatFields();
               calculatePricing();
-
-              const pickupInput = document.getElementById('pickup-date');
-              const dropoffInput = document.getElementById('dropoff-date');
-
-              const pickupPicker = flatpickr("#pickup-date", {
-                dateFormat: "Y-m-d",
-                showMonths: window.innerWidth > 768 ? 2 : 1,
-                onChange: function () { calculatePricing(); }
-              });
-
-              const dropoffPicker = flatpickr("#dropoff-date", {
-                minDate: "today",
-                dateFormat: "Y-m-d",
-                showMonths: window.innerWidth > 768 ? 2 : 1,
-                onChange: function (selectedDates) {
-                  if (selectedDates.length > 0) {
-                    pickupInput.disabled = false;
-                    pickupInput.style.backgroundColor = "white";
-                    const minPickup = new Date(selectedDates[0]);
-                    minPickup.setDate(minPickup.getDate() + 1);
-                    pickupPicker.set('minDate', minPickup);
-                    pickupPicker.setDate(minPickup, true);
-                  }
-                  calculatePricing();
-                }
-              });
-
-              const form = document.querySelector('form[name="reservation"]');
-              form.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                const pricing = await calculatePricing();
-                const formData = new FormData(form);
-                const firstname = formData.get('firstname')?.trim();
-                const lastname = formData.get('lastname')?.trim();
-
-                if (!firstname || !lastname) {
-                  alert("Please enter both First Name and Last Name.");
-                  return;
-                }
-
-                const fullName = `${firstname} ${lastname}`;
-
-                const catCount = parseInt(formData.get('cat-count'));
-
-                if (catCount > 2) { alert("Max 2 cats."); return; }
-
-                let catsInfo = "";
-                for (let i = 1; i <= catCount; i++) {
-                  const name = formData.get(`cat-name-${i}`);
-                  const age = formData.get(`cat-age-${i}`) || 'N/A';
-                  const breed = formData.get(`cat-breed-${i}`) || 'N/A';
-                  const personality = formData.get(`cat-personality-${i}`) || 'None';
-                  catsInfo += `Cat ${i}: ${name} (${age}, ${breed})\nNotes: ${personality}\n`;
-                }
-
-                // Cat Care Info
-                const catItems = formData.getAll('cat-item');
-                const catItemsOther = formData.get('cat-item-other');
-                let careInfo = "CAT CARE INFORMATION\n";
-                if (catItems.length > 0) {
-                  careInfo += catItems.map(item => `- ${item}`).join('\n') + '\n';
-                }
-                if (catItemsOther) careInfo += `- Other: ${catItemsOther}\n`;
-                if (catItems.length === 0 && !catItemsOther) careInfo += "- None\n";
-
-                // Special Needs
-                const specialNeeds = formData.getAll('special-need');
-                const specialDetails = formData.get('special-need-details');
-                let sNeedsInfo = "SPECIAL NEEDS\n";
-                if (specialNeeds.length > 0) {
-                  sNeedsInfo += specialNeeds.map(n => `- ${n}`).join('\n') + '\n';
-                }
-                if (specialDetails) sNeedsInfo += `Details: ${specialDetails}\n`;
-                if (specialNeeds.length === 0 && !specialDetails) sNeedsInfo += "- None\n";
-
-                // Additional Notes
-                const addNotes = formData.get('additional-notes');
-                let notesBlock = "";
-                if (addNotes) {
-                  notesBlock = "ADDITIONAL NOTES\n";
-                  notesBlock += `- ${addNotes}\n\n`;
-                }
-
-                const hAddr = "Black Princess & White Prince, Flevostraat 32, 1315 CC Almere";
-
-                let transferBlocks = "";
-                transferBlocks += `DROP-OFF SERVICE\n`;
-                if (pricing.dropT) {
-                  const dFrom = pricing.dropT.address || pricing.dropT.label;
-                  transferBlocks += `- Status: Yes\n- From: ${dFrom}\n- To: ${hAddr}\n- Fee: €${pricing.dropT.cost.toFixed(2)}\n\n`;
-                } else {
-                  transferBlocks += `- Status: No\n\n`;
-                }
-
-                transferBlocks += `PICK-UP SERVICE\n`;
-                if (pricing.pickT) {
-                  const pTo = pricing.pickT.address || pricing.pickT.label;
-                  transferBlocks += `- Status: Yes\n- From: ${hAddr}\n- To: ${pTo}\n- Fee: €${pricing.pickT.cost.toFixed(2)}\n\n`;
-                } else {
-                  transferBlocks += `- Status: No\n\n`;
-                }
-
-                const countryCode = formData.get('phone-country-code');
-                const phoneNum = formData.get('phone');
-                const fullPhone = `${countryCode}${phoneNum}`;
-
-                let message = `NEW RESERVATION REQUEST\n\n`;
-                message += `GUEST INFORMATION\n- Name: ${fullName}\n- Phone: ${fullPhone}\n- Email: ${formData.get('email') || 'Not provided'}\n\n`;
-                message += `CATS STAYING\n${catsInfo}\n`;
-                message += `${careInfo}\n${sNeedsInfo}\n${notesBlock}`;
-                message += `STAY DETAILS\n- Check-in: ${formData.get('dropoff-date')}\n- Check-out: ${formData.get('pickup-date')}\n- Total Nights: ${pricing.nights}\n\n`;
-                message += `${transferBlocks}`;
-                message += `RESERVATION SUMMARY\n`;
-                message += `- Boarding Subtotal: €${pricing.boardingSubtotal.toFixed(2)}\n`;
-                if (pricing.additionalCatFee > 0) message += `- Additional Cat Fee: €${pricing.additionalCatFee.toFixed(2)}\n`;
-                if (pricing.transferTotal > 0) message += `- Transfer Total: €${pricing.transferTotal.toFixed(2)}\n`;
-                message += `TOTAL ESTIMATED: €${pricing.total.toFixed(2)}`;
-
-                const whatsappUrl = `https://wa.me/31644205396?text=${encodeURIComponent(message)}`;
-                window.open(whatsappUrl, '_blank');
-              });
-              // Wire up change events
-              document.getElementById('cat-count').addEventListener('change', updateDynamicCatFields);
-
-              document.getElementById('transfer-dropoff').addEventListener('change', () => toggleTransfer('dropoff'));
-              document.getElementById('transfer-pickup').addEventListener('change', () => toggleTransfer('pickup'));
-
-              document.getElementById('dropoff-location-select').addEventListener('change', () => handleLocationChange('dropoff'));
-              document.getElementById('pickup-location-select').addEventListener('change', () => handleLocationChange('pickup'));
-
-              document.querySelectorAll('input[name="special-need"]').forEach(cb => {
-                cb.addEventListener('change', calculatePricing);
-              });
-
-              document.getElementById('dropoff-time').addEventListener('change', calculatePricing);
-              document.getElementById('pickup-time').addEventListener('change', calculatePricing);
-            });
-          </script>
-
-
-          <footer
-            style="background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 40px 20px; text-align: center; border-top: 1px solid rgba(217,163,163,0.3); margin-top: 60px;">
-            <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px;">
-              <div
-                style="font-size: 1.2em; font-weight: bold; color: #D9A3A3; font-family: 'Dancing Script', cursive !important;"
-                class="brand-font">Black Princess & White Prince</div>
-              <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-                <a href="index.html" style="color: #4A4A4A; text-decoration: none; font-size: 0.9em;">Home</a>
-                <a href="about.html" style="color: #4A4A4A; text-decoration: none; font-size: 0.9em;">Story</a>
-                <a href="services.html" style="color: #4A4A4A; text-decoration: none; font-size: 0.9em;">Services</a>
-                <a href="pricing.html" style="color: #4A4A4A; text-decoration: none; font-size: 0.9em;">Pricing</a>
-                <a href="blog.html" style="color: #4A4A4A; text-decoration: none; font-size: 0.9em;">Blog</a>
-                <a href="gallery.html" style="color: #4A4A4A; text-decoration: none; font-size: 0.9em;">Gallery</a>
-                <a href="reservation.html" style="color: #4A4A4A; text-decoration: none; font-size: 0.9em;">Book</a>
-              </div>
-              <div style="color: #888; font-size: 0.9em;">📍 Almere, Netherlands | 📱 +31 615 677 962</div>
-              <div style="color: #bbb; font-size: 0.8em;">&copy; 2026 Black Princess & White Prince. All rights
-                reserved.
-              </div>
-            </div>
-          </footer>
-
-          <script>(function () { var on = addEventListener, off = removeEventListener, $ = function (q) { return document.querySelector(q) }, $$ = function (q) { return document.querySelectorAll(q) }, $body = document.body, $inner = $('.inner'), client = (function () { var o = { browser: 'other', browserVersion: 0, os: 'other', osVersion: 0, mobile: false, canUse: null, flags: { lsdUnits: false, }, }, ua = navigator.userAgent, a, i; a = [['firefox', /Firefox\/([0-9\.]+)/, null], ['edge', /Edge\/([0-9\.]+)/, null], ['safari', /Version\/([0-9\.]+).+Safari/, null], ['chrome', /Chrome\/([0-9\.]+)/, null], ['chrome', /CriOS\/([0-9\.]+)/, null], ['ie', /Trident\/.+rv:([0-9]+)/, null], ['safari', /iPhone OS ([0-9_]+)/, function (v) { return v.replace('_', '.').replace('_', ''); }]]; for (i = 0; i < a.length; i++) { if (ua.match(a[i][1])) { o.browser = a[i][0]; o.browserVersion = parseFloat(a[i][2] ? (a[i][2])(RegExp.$1) : RegExp.$1); break; } } a = [['ios', /([0-9_]+) like Mac OS X/, function (v) { return v.replace('_', '.').replace('_', ''); }], ['ios', /CPU like Mac OS X/, function (v) { return 0 }], ['ios', /iPad; CPU/, function (v) { return 0 }], ['android', /Android ([0-9\.]+)/, null], ['mac', /Macintosh.+Mac OS X ([0-9_]+)/, function (v) { return v.replace('_', '.').replace('_', ''); }], ['windows', /Windows NT ([0-9\.]+)/, null], ['undefined', /Undefined/, null]]; for (i = 0; i < a.length; i++) { if (ua.match(a[i][1])) { o.os = a[i][0]; o.osVersion = parseFloat(a[i][2] ? (a[i][2])(RegExp.$1) : RegExp.$1); break; } } if (o.os == 'mac' && ('ontouchstart' in window) && ((screen.width == 1024 && screen.height == 1366) || (screen.width == 834 && screen.height == 1112) || (screen.width == 810 && screen.height == 1080) || (screen.width == 768 && screen.height == 1024))) o.os = 'ios'; o.mobile = (o.os == 'android' || o.os == 'ios'); var _canUse = document.createElement('div'); o.canUse = function (property, value) { var style; style = _canUse.style; if (!(property in style)) return false; if (typeof value !== 'undefined') { style[property] = value; if (style[property] == '') return false; } return true; }; o.flags.lsdUnits = o.canUse('width', '100dvw'); return o; }()), ready = { list: [], add: function (f) { this.list.push(f); }, run: function () { this.list.forEach((f) => { f(); }); }, }, trigger = function (t) { dispatchEvent(new Event(t)); }, cssRules = function (selectorText) { var ss = document.styleSheets, a = [], f = function (s) { var r = s.cssRules, i; for (i = 0; i < r.length; i++) { if (r[i] instanceof CSSMediaRule && matchMedia(r[i].conditionText).matches) (f)(r[i]); else if (r[i] instanceof CSSStyleRule && r[i].selectorText == selectorText) a.push(r[i]); } }, x, i; for (i = 0; i < ss.length; i++)f(ss[i]); return a; }, escapeHtml = function (s) { if (s === '' || s === null || s === undefined) return ''; var a = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', }; s = s.replace(/[&<>"']/g, function (x) { return a[x]; }); return s; }, thisHash = function () { var h = location.hash ? location.hash.substring(1) : null, a; if (!h) return null; if (h.match(/\?/)) { a = h.split('?'); h = a[0]; history.replaceState(undefined, undefined, '#' + h); window.location.search = a[1]; } if (h.length > 0 && !h.match(/^[a-zA-Z]/)) h = 'x' + h; if (typeof h == 'string') h = h.toLowerCase(); return h; }, scrollToElement = function (e, style, duration) { var y, cy, dy, start, easing, offset, f; if (!e) y = 0; else { offset = (e.dataset.scrollOffset ? parseInt(e.dataset.scrollOffset) : 0) * parseFloat(getComputedStyle(document.documentElement).fontSize); switch (e.dataset.scrollBehavior ? e.dataset.scrollBehavior : 'default') { case 'default': default: y = e.offsetTop + offset; break; case 'center': if (e.offsetHeight < window.innerHeight) y = e.offsetTop - ((window.innerHeight - e.offsetHeight) / 2) + offset; else y = e.offsetTop - offset; break; case 'previous': if (e.previousElementSibling) y = e.previousElementSibling.offsetTop + e.previousElementSibling.offsetHeight + offset; else y = e.offsetTop + offset; break; } } if (!style) style = 'smooth'; if (!duration) duration = 750; if (style == 'instant') { window.scrollTo(0, y); return; } start = Date.now(); cy = window.scrollY; dy = y - cy; switch (style) { case 'linear': easing = function (t) { return t }; break; case 'smooth': easing = function (t) { return t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1 }; break; }f = function () { var t = Date.now() - start; if (t >= duration) window.scroll(0, y); else { window.scroll(0, cy + (dy * easing(t / duration))); requestAnimationFrame(f); } }; f(); }, scrollToTop = function () { scrollToElement(null); }, loadElements = function (parent) { var a, e, x, i; $body.dispatchEvent(new CustomEvent('startComponents', { detail: { parent: parent } })); a = parent.querySelectorAll('iframe[data-src]:not([data-src=""])'); for (i = 0; i < a.length; i++) { x = a[i].cloneNode(); x.setAttribute('src', x.dataset.src); x.dataset.initialSrc = x.dataset.src; x.dataset.src = ''; a[i].replaceWith(x); } a = parent.querySelectorAll('video[autoplay]'); for (i = 0; i < a.length; i++) { if (a[i].paused) a[i].play(); } e = parent.querySelector('[data-autofocus="1"]'); x = e ? e.tagName : null; switch (x) { case 'FORM': e = e.querySelector('.field input, .field select, .field textarea'); if (e) e.focus(); break; default: break; }a = parent.querySelectorAll('unloaded-script'); for (i = 0; i < a.length; i++) { x = document.createElement('script'); x.setAttribute('data-loaded', ''); if (a[i].getAttribute('src')) x.setAttribute('src', a[i].getAttribute('src')); if (a[i].textContent) x.textContent = a[i].textContent; a[i].replaceWith(x); } x = new Event('loadelements'); a = parent.querySelectorAll('[data-unloaded]'); a.forEach((element) => { element.removeAttribute('data-unloaded'); element.dispatchEvent(x); }); }, unloadElements = function (parent) { var a, e, x, i; $body.dispatchEvent(new CustomEvent('stopComponents', { detail: { parent: parent } })); a = parent.querySelectorAll('iframe[data-src=""]'); for (i = 0; i < a.length; i++) { if (a[i].dataset.srcUnload === '0') continue; if ('initialSrc' in a[i].dataset) a[i].dataset.src = a[i].dataset.initialSrc; else a[i].dataset.src = a[i].src; a[i].contentWindow.location.replace('about:blank'); } a = parent.querySelectorAll('video'); for (i = 0; i < a.length; i++) { if (!a[i].paused) a[i].pause(); } e = $(':focus'); if (e) e.blur(); }; window._scrollToTop = scrollToTop; var thisUrl = function () { return window.location.href.replace(window.location.search, '').replace(/#$/, ''); }; var getVar = function (name) { var a = window.location.search.substring(1).split('&'), b, k; for (k in a) { b = a[k].split('='); if (b[0] == name) return b[1]; } return null; }; var errors = { handle: function (handler) { window.onerror = function (message, url, line, column, error) { (handler)(error.message); return true; }; }, unhandle: function () { window.onerror = null; } }; loadElements(document.body); var style, sheet, rule; style = document.createElement('style'); style.appendChild(document.createTextNode('')); document.head.appendChild(style); sheet = style.sheet; if (client.mobile) { (function () { if (client.flags.lsdUnits) { document.documentElement.style.setProperty('--viewport-height', '100svh'); document.documentElement.style.setProperty('--background-height', '100lvh'); } else { var f = function () { document.documentElement.style.setProperty('--viewport-height', window.innerHeight + 'px'); document.documentElement.style.setProperty('--background-height', (window.innerHeight + 250) + 'px'); }; on('load', f); on('orientationchange', function () { setTimeout(function () { (f)(); }, 100); }); } })(); } if (client.os == 'android') { (function () { sheet.insertRule('body::after { }', 0); rule = sheet.cssRules[0]; var f = function () { rule.style.cssText = 'height: ' + (Math.max(screen.width, screen.height)) + 'px'; }; on('load', f); on('orientationchange', f); on('touchmove', f); })(); $body.classList.add('touch'); } else if (client.os == 'ios') { if (client.osVersion <= 11) (function () { sheet.insertRule('body::after { }', 0); rule = sheet.cssRules[0]; rule.style.cssText = '-webkit-transform: scale(1.0)'; })(); if (client.osVersion <= 11) (function () { sheet.insertRule('body.ios-focus-fix::before { }', 0); rule = sheet.cssRules[0]; rule.style.cssText = 'height: calc(100% + 60px)'; on('focus', function (event) { $body.classList.add('ios-focus-fix'); }, true); on('blur', function (event) { $body.classList.remove('ios-focus-fix'); }, true); })(); $body.classList.add('touch'); } var scrollEvents = { items: [], add: function (o) { this.items.push({ element: o.element, triggerElement: (('triggerElement' in o && o.triggerElement) ? o.triggerElement : o.element), enter: ('enter' in o ? o.enter : null), leave: ('leave' in o ? o.leave : null), mode: ('mode' in o ? o.mode : 4), threshold: ('threshold' in o ? o.threshold : 0.25), offset: ('offset' in o ? o.offset : 0), initialState: ('initialState' in o ? o.initialState : null), state: false, }); }, handler: function () { var height, top, bottom, scrollPad; if (client.os == 'ios') { height = document.documentElement.clientHeight; top = document.body.scrollTop + window.scrollY; bottom = top + height; scrollPad = 125; } else { height = document.documentElement.clientHeight; top = document.documentElement.scrollTop; bottom = top + height; scrollPad = 0; } scrollEvents.items.forEach(function (item) { var elementTop, elementBottom, viewportTop, viewportBottom, bcr, pad, state, a, b; if (!item.enter && !item.leave) return true; if (!item.triggerElement) return true; if (item.triggerElement.offsetParent === null) { if (item.state == true && item.leave) { item.state = false; (item.leave).apply(item.element); if (!item.enter) item.leave = null; } return true; } bcr = item.triggerElement.getBoundingClientRect(); elementTop = top + Math.floor(bcr.top); elementBottom = elementTop + bcr.height; if (item.initialState !== null) { state = item.initialState; item.initialState = null; } else { switch (item.mode) { case 1: default: state = (bottom > (elementTop - item.offset) && top < (elementBottom + item.offset)); break; case 2: a = (top + (height * 0.5)); state = (a > (elementTop - item.offset) && a < (elementBottom + item.offset)); break; case 3: a = top + (height * (item.threshold)); if (a - (height * 0.375) <= 0) a = 0; b = top + (height * (1 - item.threshold)); if (b + (height * 0.375) >= document.body.scrollHeight - scrollPad) b = document.body.scrollHeight + scrollPad; state = (b > (elementTop - item.offset) && a < (elementBottom + item.offset)); break; case 4: pad = height * item.threshold; viewportTop = (top + pad); viewportBottom = (bottom - pad); if (Math.floor(top) <= pad) viewportTop = top; if (Math.ceil(bottom) >= (document.body.scrollHeight - pad)) viewportBottom = bottom; if ((viewportBottom - viewportTop) >= (elementBottom - elementTop)) { state = ((elementTop >= viewportTop && elementBottom <= viewportBottom) || (elementTop >= viewportTop && elementTop <= viewportBottom) || (elementBottom >= viewportTop && elementBottom <= viewportBottom)); } else state = ((viewportTop >= elementTop && viewportBottom <= elementBottom) || (elementTop >= viewportTop && elementTop <= viewportBottom) || (elementBottom >= viewportTop && elementBottom <= viewportBottom)); break; } } if (state != item.state) { item.state = state; if (item.state) { if (item.enter) { (item.enter).apply(item.element); if (!item.leave) item.enter = null; } } else { if (item.leave) { (item.leave).apply(item.element); if (!item.enter) item.leave = null; } } } }); }, init: function () { on('load', this.handler); on('resize', this.handler); on('scroll', this.handler); (this.handler)(); } }; scrollEvents.init(); (function () { var items = $$('.deferred'), loadHandler, enterHandler; loadHandler = function () { var i = this, p = this.parentElement, duration = 375; if (i.dataset.src !== 'assets/images/cat_photo_9d64c687-6b7f-4f95-86b2-40160ef48937.JPG') return; if (Date.now() - i._startLoad < duration) duration = 175; i.style.transitionDuration = (duration / 1000.00) + 's'; p.classList.remove('loading'); i.style.opacity = 1; setTimeout(function () { p.style.backgroundImage = 'none'; i.style.transitionProperty = ''; i.style.transitionTimingFunction = ''; i.style.transitionDuration = ''; }, duration); }; enterHandler = function () { var i = this, p = this.parentElement, src; src = i.dataset.src; i.dataset.src = 'assets/images/cat_photo_9d64c687-6b7f-4f95-86b2-40160ef48937.JPG'; p.classList.add('loading'); i._startLoad = Date.now(); i.src = src; }; items.forEach(function (p) { var i = p.firstElementChild; if (!p.classList.contains('enclosed')) { p.style.backgroundImage = 'url(' + i.src + ')'; p.style.backgroundSize = '100% 100%'; p.style.backgroundPosition = 'top left'; p.style.backgroundRepeat = 'no-repeat'; } i.style.opacity = 0; i.style.transitionProperty = 'opacity'; i.style.transitionTimingFunction = 'ease-in-out'; i.addEventListener('load', loadHandler); scrollEvents.add({ element: i, enter: enterHandler, offset: 250, }); }); })(); var onvisible = { effects: { 'blur-in': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'filter ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity) { this.style.opacity = 0; this.style.filter = 'blur(' + (0.25 * intensity) + 'rem)'; }, play: function () { this.style.opacity = 1; this.style.filter = 'none'; }, }, 'zoom-in': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity, alt) { this.style.opacity = 0; this.style.transform = 'scale(' + (1 - ((alt ? 0.25 : 0.05) * intensity)) + ')'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'zoom-out': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity, alt) { this.style.opacity = 0; this.style.transform = 'scale(' + (1 + ((alt ? 0.25 : 0.05) * intensity)) + ')'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'slide-left': { type: 'transition', transition: function (speed, delay) { return 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function () { this.style.transform = 'translateX(100vw)'; }, play: function () { this.style.transform = 'none'; }, }, 'slide-right': { type: 'transition', transition: function (speed, delay) { return 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function () { this.style.transform = 'translateX(-100vw)'; }, play: function () { this.style.transform = 'none'; }, }, 'flip-forward': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity, alt) { this.style.opacity = 0; this.style.transformOrigin = '50% 50%'; this.style.transform = 'perspective(1000px) rotateX(' + ((alt ? 45 : 15) * intensity) + 'deg)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'flip-backward': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity, alt) { this.style.opacity = 0; this.style.transformOrigin = '50% 50%'; this.style.transform = 'perspective(1000px) rotateX(' + ((alt ? -45 : -15) * intensity) + 'deg)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'flip-left': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity, alt) { this.style.opacity = 0; this.style.transformOrigin = '50% 50%'; this.style.transform = 'perspective(1000px) rotateY(' + ((alt ? 45 : 15) * intensity) + 'deg)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'flip-right': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity, alt) { this.style.opacity = 0; this.style.transformOrigin = '50% 50%'; this.style.transform = 'perspective(1000px) rotateY(' + ((alt ? -45 : -15) * intensity) + 'deg)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'tilt-left': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity, alt) { this.style.opacity = 0; this.style.transform = 'rotate(' + ((alt ? 45 : 5) * intensity) + 'deg)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'tilt-right': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity, alt) { this.style.opacity = 0; this.style.transform = 'rotate(' + ((alt ? -45 : -5) * intensity) + 'deg)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'fade-right': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity) { this.style.opacity = 0; this.style.transform = 'translateX(' + (-1.5 * intensity) + 'rem)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'fade-left': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity) { this.style.opacity = 0; this.style.transform = 'translateX(' + (1.5 * intensity) + 'rem)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'fade-down': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity) { this.style.opacity = 0; this.style.transform = 'translateY(' + (-1.5 * intensity) + 'rem)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'fade-up': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity) { this.style.opacity = 0; this.style.transform = 'translateY(' + (1.5 * intensity) + 'rem)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'fade-in': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function () { this.style.opacity = 0; }, play: function () { this.style.opacity = 1; }, }, 'fade-in-background': { type: 'manual', rewind: function () { this.style.removeProperty('--onvisible-delay'); this.style.removeProperty('--onvisible-background-color'); }, play: function (speed, delay) { this.style.setProperty('--onvisible-speed', speed + 's'); if (delay) this.style.setProperty('--onvisible-delay', delay + 's'); this.style.setProperty('--onvisible-background-color', 'rgba(0,0,0,0.001)'); }, }, 'zoom-in-image': { type: 'transition', target: 'img', transition: function (speed, delay) { return 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function () { this.style.transform = 'scale(1)'; }, play: function (intensity) { this.style.transform = 'scale(' + (1 + (0.1 * intensity)) + ')'; }, }, 'zoom-out-image': { type: 'transition', target: 'img', transition: function (speed, delay) { return 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity) { this.style.transform = 'scale(' + (1 + (0.1 * intensity)) + ')'; }, play: function () { this.style.transform = 'none'; }, }, 'focus-image': { type: 'transition', target: 'img', transition: function (speed, delay) { return 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'filter ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity) { this.style.transform = 'scale(' + (1 + (0.05 * intensity)) + ')'; this.style.filter = 'blur(' + (0.25 * intensity) + 'rem)'; }, play: function (intensity) { this.style.transform = 'none'; this.style.filter = 'none'; }, }, 'wipe-up': { type: 'animate', keyframes: function (intensity) { return [{ maskSize: '100% 0%', maskImage: 'linear-gradient(90deg, black 100%, transparent 100%)', }, { maskSize: '110% 110%', maskImage: 'linear-gradient(90deg, black 100%, transparent 100%)', },]; }, options: function (speed) { return { duration: speed, iterations: 1, easing: 'ease', }; }, rewind: function () { this.style.opacity = 0; this.style.maskComposite = 'exclude'; this.style.maskRepeat = 'no-repeat'; this.style.maskPosition = '0% 100%'; }, play: function () { this.style.opacity = 1; }, }, 'wipe-down': { type: 'animate', keyframes: function (intensity) { return [{ maskSize: '100% 0%', maskImage: 'linear-gradient(90deg, black 100%, transparent 100%)', }, { maskSize: '110% 110%', maskImage: 'linear-gradient(90deg, black 100%, transparent 100%)', },]; }, options: function (speed) { return { duration: speed, iterations: 1, easing: 'ease', }; }, rewind: function () { this.style.opacity = 0; this.style.maskComposite = 'exclude'; this.style.maskRepeat = 'no-repeat'; this.style.maskPosition = '0% 0%'; }, play: function () { this.style.opacity = 1; }, }, 'wipe-left': { type: 'animate', keyframes: function (intensity) { return [{ maskSize: '0% 100%', maskImage: 'linear-gradient(90deg, black 100%, transparent 100%)', }, { maskSize: '110% 110%', maskImage: 'linear-gradient(90deg, black 100%, transparent 100%)', },]; }, options: function (speed) { return { duration: speed, iterations: 1, easing: 'ease', }; }, rewind: function () { this.style.opacity = 0; this.style.maskComposite = 'exclude'; this.style.maskRepeat = 'no-repeat'; this.style.maskPosition = '100% 0%'; }, play: function () { this.style.opacity = 1; }, }, 'wipe-right': { type: 'animate', keyframes: function (intensity) { return [{ maskSize: '0% 100%', maskImage: 'linear-gradient(90deg, black 100%, transparent 100%)', }, { maskSize: '110% 110%', maskImage: 'linear-gradient(90deg, black 100%, transparent 100%)', },]; }, options: function (speed) { return { duration: speed, iterations: 1, easing: 'ease', }; }, rewind: function () { this.style.opacity = 0; this.style.maskComposite = 'exclude'; this.style.maskRepeat = 'no-repeat'; this.style.maskPosition = '0% 0%'; }, play: function () { this.style.opacity = 1; }, }, 'wipe-diagonal': { type: 'animate', keyframes: function (intensity) { return [{ maskSize: '0% 0%', maskImage: 'linear-gradient(45deg, black 50%, transparent 50%)', }, { maskSize: '220% 220%', maskImage: 'linear-gradient(45deg, black 50%, transparent 50%)', },]; }, options: function (speed) { return { duration: speed, iterations: 1, easing: 'ease', }; }, rewind: function () { this.style.opacity = 0; this.style.maskComposite = 'exclude'; this.style.maskRepeat = 'no-repeat'; this.style.maskPosition = '0% 100%'; }, play: function () { this.style.opacity = 1; }, }, 'wipe-reverse-diagonal': { type: 'animate', keyframes: function (intensity) { return [{ maskSize: '0% 0%', maskImage: 'linear-gradient(135deg, transparent 50%, black 50%)', }, { maskSize: '220% 220%', maskImage: 'linear-gradient(135deg, transparent 50%, black 50%)', },]; }, options: function (speed) { return { duration: speed, iterations: 1, easing: 'ease', }; }, rewind: function () { this.style.opacity = 0; this.style.maskComposite = 'exclude'; this.style.maskRepeat = 'no-repeat'; this.style.maskPosition = '100% 100%'; }, play: function () { this.style.opacity = 1; }, }, 'pop-in': { type: 'animate', keyframes: function (intensity) { let diff = (intensity + 1) * 0.025; return [{ opacity: 0, transform: 'scale(' + (1 - diff) + ')', }, { opacity: 1, transform: 'scale(' + (1 + diff) + ')', }, { opacity: 1, transform: 'scale(' + (1 - (diff * 0.25)) + ')', offset: 0.9, }, { opacity: 1, transform: 'scale(1)', }]; }, options: function (speed) { return { duration: speed, iterations: 1, }; }, rewind: function () { this.style.opacity = 0; }, play: function () { this.style.opacity = 1; }, }, 'bounce-up': { type: 'animate', keyframes: function (intensity) { let diff = (intensity + 1) * 0.075; return [{ opacity: 0, transform: 'translateY(' + diff + 'rem)', }, { opacity: 1, transform: 'translateY(' + (-1 * diff) + 'rem)', }, { opacity: 1, transform: 'translateY(' + (diff * 0.25) + 'rem)', offset: 0.9, }, { opacity: 1, transform: 'translateY(0)', }]; }, options: function (speed) { return { duration: speed, iterations: 1, }; }, rewind: function () { this.style.opacity = 0; }, play: function () { this.style.opacity = 1; }, }, 'bounce-down': { type: 'animate', keyframes: function (intensity) { let diff = (intensity + 1) * 0.075; return [{ opacity: 0, transform: 'translateY(' + (-1 * diff) + 'rem)', }, { opacity: 1, transform: 'translateY(' + diff + 'rem)', }, { opacity: 1, transform: 'translateY(' + (-1 * (diff * 0.25)) + 'rem)', offset: 0.9, }, { opacity: 1, transform: 'translateY(0)', }]; }, options: function (speed) { return { duration: speed, iterations: 1, }; }, rewind: function () { this.style.opacity = 0; }, play: function () { this.style.opacity = 1; }, }, 'bounce-left': { type: 'animate', keyframes: function (intensity) { let diff = (intensity + 1) * 0.075; return [{ opacity: 0, transform: 'translateX(' + diff + 'rem)', }, { opacity: 1, transform: 'translateX(' + (-1 * diff) + 'rem)', }, { opacity: 1, transform: 'translateX(' + (diff * 0.25) + 'rem)', offset: 0.9, }, { opacity: 1, transform: 'translateX(0)', }]; }, options: function (speed) { return { duration: speed, iterations: 1, }; }, rewind: function () { this.style.opacity = 0; }, play: function () { this.style.opacity = 1; }, }, 'bounce-right': { type: 'animate', keyframes: function (intensity) { let diff = (intensity + 1) * 0.075; return [{ opacity: 0, transform: 'translateX(' + (-1 * diff) + 'rem)', }, { opacity: 1, transform: 'translateX(' + diff + 'rem)', }, { opacity: 1, transform: 'translateX(' + (-1 * (diff * 0.25)) + 'rem)', offset: 0.9, }, { opacity: 1, transform: 'translateX(0)', }]; }, options: function (speed) { return { duration: speed, iterations: 1, }; }, rewind: function () { this.style.opacity = 0; }, play: function () { this.style.opacity = 1; }, }, }, regex: new RegExp('([^\\s]+)', 'g'), add: function (selector, settings) { var _this = this, style = settings.style in this.effects ? settings.style : 'fade', speed = parseInt('speed' in settings ? settings.speed : 0), intensity = parseInt('intensity' in settings ? settings.intensity : 5), delay = parseInt('delay' in settings ? settings.delay : 0), replay = 'replay' in settings ? settings.replay : false, stagger = 'stagger' in settings ? (parseInt(settings.stagger) >= 0 ? parseInt(settings.stagger) : false) : false, staggerOrder = 'staggerOrder' in settings ? settings.staggerOrder : 'default', staggerSelector = 'staggerSelector' in settings ? settings.staggerSelector : null, threshold = parseInt('threshold' in settings ? settings.threshold : 3), state = 'state' in settings ? settings.state : null, effect = this.effects[style], enter, leave, scrollEventThreshold; if (window.CARRD_DISABLE_ANIMATION === true) { if (style == 'fade-in-background') $$(selector).forEach(function (e) { e.style.setProperty('--onvisible-background-color', 'rgba(0,0,0,0.001)'); }); return; } switch (threshold) { case 1: scrollEventThreshold = 0; break; case 2: scrollEventThreshold = 0.125; break; default: case 3: scrollEventThreshold = 0.25; break; case 4: scrollEventThreshold = 0.375; break; case 5: scrollEventThreshold = 0.475; break; }switch (effect.type) { default: case 'transition': intensity = ((intensity / 10) * 1.75) + 0.25; enter = function (children, staggerDelay = 0) { var _this = this, transitionOrig; if (effect.target) _this = this.querySelector(effect.target); transitionOrig = _this.style.transition; _this.style.setProperty('backface-visibility', 'hidden'); _this.style.transition = effect.transition.apply(_this, [speed / 1000, (delay + staggerDelay) / 1000]); effect.play.apply(_this, [intensity, !!children]); setTimeout(function () { _this.style.removeProperty('backface-visibility'); _this.style.transition = transitionOrig; }, (speed + delay + staggerDelay) * 2); }; leave = function (children) { var _this = this, transitionOrig; if (effect.target) _this = this.querySelector(effect.target); transitionOrig = _this.style.transition; _this.style.setProperty('backface-visibility', 'hidden'); _this.style.transition = effect.transition.apply(_this, [speed / 1000]); effect.rewind.apply(_this, [intensity, !!children]); setTimeout(function () { _this.style.removeProperty('backface-visibility'); _this.style.transition = transitionOrig; }, speed * 2); }; break; case 'animate': enter = function (children, staggerDelay = 0) { var _this = this, transitionOrig; if (effect.target) _this = this.querySelector(effect.target); setTimeout(() => { effect.play.apply(_this, []); _this.animate(effect.keyframes.apply(_this, [intensity]), effect.options.apply(_this, [speed, delay])); }, delay + staggerDelay); }; leave = function (children) { var _this = this, transitionOrig; if (effect.target) _this = this.querySelector(effect.target); let a = _this.animate(effect.keyframes.apply(_this, [intensity]), effect.options.apply(_this, [speed, delay])); a.reverse(); a.addEventListener('finish', () => { effect.rewind.apply(_this, []); }); }; break; case 'manual': enter = function (children, staggerDelay = 0) { var _this = this, transitionOrig; if (effect.target) _this = this.querySelector(effect.target); effect.play.apply(_this, [speed / 1000, (delay + staggerDelay) / 1000, intensity]); }; leave = function (children) { var _this = this, transitionOrig; if (effect.target) _this = this.querySelector(effect.target); effect.rewind.apply(_this, [intensity, !!children]); }; break; }$$(selector).forEach(function (e) { var children, targetElement, triggerElement; if (stagger !== false && staggerSelector == ':scope > *') _this.expandTextNodes(e); children = (stagger !== false && staggerSelector) ? e.querySelectorAll(staggerSelector) : null; if (effect.target) targetElement = e.querySelector(effect.target); else targetElement = e; if (children) children.forEach(function (targetElement) { effect.rewind.apply(targetElement, [intensity, true]); }); else effect.rewind.apply(targetElement, [intensity]); triggerElement = e; if (e.parentNode) { if (e.parentNode.dataset.onvisibleTrigger) triggerElement = e.parentNode; else if (e.parentNode.parentNode) { if (e.parentNode.parentNode.dataset.onvisibleTrigger) triggerElement = e.parentNode.parentNode; } } scrollEvents.add({ element: e, triggerElement: triggerElement, initialState: state, threshold: scrollEventThreshold, enter: children ? function () { var staggerDelay = 0, childHandler = function (e) { enter.apply(e, [children, staggerDelay]); staggerDelay += stagger; }, a; if (staggerOrder == 'default') { children.forEach(childHandler); } else { a = Array.from(children); switch (staggerOrder) { case 'reverse': a.reverse(); break; case 'random': a.sort(function () { return Math.random() - 0.5; }); break; }a.forEach(childHandler); } } : enter, leave: (replay ? (children ? function () { children.forEach(function (e) { leave.apply(e, [children]); }); } : leave) : null), }); }); }, expandTextNodes: function (e) { var s, i, w, x; for (i = 0; i < e.childNodes.length; i++) { x = e.childNodes[i]; if (x.nodeType != Node.TEXT_NODE) continue; s = x.nodeValue; s = s.replace(this.regex, function (x, a) { return '<text-node>' + escapeHtml(a) + '</text-node>'; }); w = document.createElement('text-node'); w.innerHTML = s; x.replaceWith(w); while (w.childNodes.length > 0) { w.parentNode.insertBefore(w.childNodes[0], w); } w.parentNode.removeChild(w); } }, }; onvisible.add('.text-component.style-1', { style: 'zoom-in', speed: 1000, intensity: 5, threshold: 3, delay: 0, replay: false }); onvisible.add('.buttons-component.style-1', { style: 'pop-in', speed: 1000, intensity: 5, threshold: 3, delay: 0, replay: false }); onvisible.add('.image-component.style-1', { style: 'bounce-up', speed: 1000, intensity: 5, threshold: 3, delay: 0, replay: false }); onvisible.add('.image-component.instance-2', { style: 'zoom-out', speed: 1000, intensity: 5, threshold: 3, delay: 0, replay: false }); onvisible.add('.image-component.instance-5', { style: 'zoom-in', speed: 1000, intensity: 5, threshold: 3, delay: 0, replay: false }); ready.run(); })();</script>
-          <script>
-            function gm_authFailure() {
-              alert("Google Maps Authentication Error!\n\nPlease check these in Google Cloud Console:\n1. Billing must be ACTIVE and LINKED to this project.\n2. APIs to enable: Maps JavaScript API, Distance Matrix API, Geocoding API.\n3. Restrictions: Ensure catboardingalmere.nl/* is allowed.");
             }
-          </script>
-          <!-- Supabase JS -->
-          <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-          <script src="assets/js/supabase-client.js"></script>
+          });
 
-          <!-- Flatpickr JS -->
-          <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-          <script async
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8PdQzSDHqUhpd8dPfMAYHdoS63Pey9yY&libraries=places,geometry&callback=initMap"></script>
-          <script src="assets/js/bg-music.js?v=music-v6"></script>
-          <script src="assets/js/site-announcement.js"></script>
+          const form = document.querySelector('form[name="reservation"]');
+          form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const pricing = await calculatePricing();
+            const formData = new FormData(form);
+            const firstname = formData.get('firstname')?.trim();
+            const lastname = formData.get('lastname')?.trim();
+            
+            if (!firstname || !lastname) {
+              alert("Please enter both First Name and Last Name.");
+              return;
+            }
 
-          <script src="/assets/js/global-widgets.js"></script>
+            const fullName = `${firstname} ${lastname}`;
+
+            const catCount = parseInt(formData.get('cat-count'));
+            
+            if (catCount > 2) { alert("Max 2 cats."); return; }
+            
+            let catsInfo = "";
+            for (let i = 1; i <= catCount; i++) {
+              const name = formData.get(`cat-name-${i}`);
+              const age = formData.get(`cat-age-${i}`) || 'N/A';
+              const breed = formData.get(`cat-breed-${i}`) || 'N/A';
+              const personality = formData.get(`cat-personality-${i}`) || 'None';
+              catsInfo += `Cat ${i}: ${name} (${age}, ${breed})\nNotes: ${personality}\n`;
+            }
+            
+            // Cat Care Info
+            const catItems = formData.getAll('cat-item');
+            const catItemsOther = formData.get('cat-item-other');
+            let careInfo = "CAT CARE INFORMATION\n";
+            if (catItems.length > 0) {
+              careInfo += catItems.map(item => `- ${item}`).join('\n') + '\n';
+            }
+            if (catItemsOther) careInfo += `- Other: ${catItemsOther}\n`;
+            if (catItems.length === 0 && !catItemsOther) careInfo += "- None\n";
+            
+            // Special Needs
+            const specialNeeds = formData.getAll('special-need');
+            const specialDetails = formData.get('special-need-details');
+            let sNeedsInfo = "SPECIAL NEEDS\n";
+            if (specialNeeds.length > 0) {
+              sNeedsInfo += specialNeeds.map(n => `- ${n}`).join('\n') + '\n';
+            }
+            if (specialDetails) sNeedsInfo += `Details: ${specialDetails}\n`;
+            if (specialNeeds.length === 0 && !specialDetails) sNeedsInfo += "- None\n";
+            
+            // Additional Notes
+            const addNotes = formData.get('additional-notes');
+            let notesBlock = "";
+            if (addNotes) {
+              notesBlock = "ADDITIONAL NOTES\n";
+              notesBlock += `- ${addNotes}\n\n`;
+            }
+
+            const hAddr = "Black Princess & White Prince, Flevostraat 32, 1315 CC Almere";
+            
+            let transferBlocks = "";
+            transferBlocks += `DROP-OFF SERVICE\n`;
+            if (pricing.dropT) {
+              const dFrom = pricing.dropT.address || pricing.dropT.label;
+              transferBlocks += `- Status: Yes\n- From: ${dFrom}\n- To: ${hAddr}\n- Fee: €${pricing.dropT.cost.toFixed(2)}\n\n`;
+            } else {
+              transferBlocks += `- Status: No\n\n`;
+            }
+            
+            transferBlocks += `PICK-UP SERVICE\n`;
+            if (pricing.pickT) {
+              const pTo = pricing.pickT.address || pricing.pickT.label;
+              transferBlocks += `- Status: Yes\n- From: ${hAddr}\n- To: ${pTo}\n- Fee: €${pricing.pickT.cost.toFixed(2)}\n\n`;
+            } else {
+              transferBlocks += `- Status: No\n\n`;
+            }
+            
+            const countryCode = formData.get('phone-country-code');
+            const phoneNum = formData.get('phone');
+            const fullPhone = `${countryCode}${phoneNum}`;
+
+            let message = `NEW RESERVATION REQUEST\n\n`;
+            message += `GUEST INFORMATION\n- Name: ${fullName}\n- Phone: ${fullPhone}\n- Email: ${formData.get('email') || 'Not provided'}\n\n`;
+            message += `CATS STAYING\n${catsInfo}\n`;
+            message += `${careInfo}\n${sNeedsInfo}\n${notesBlock}`;
+            message += `STAY DETAILS\n- Check-in: ${formData.get('dropoff-date')}\n- Check-out: ${formData.get('pickup-date')}\n- Total Nights: ${pricing.nights}\n\n`;
+            message += `${transferBlocks}`;
+            message += `RESERVATION SUMMARY\n`;
+            message += `- Boarding Subtotal: €${pricing.boardingSubtotal.toFixed(2)}\n`;
+            if (pricing.additionalCatFee > 0) message += `- Additional Cat Fee: €${pricing.additionalCatFee.toFixed(2)}\n`;
+            if (pricing.transferTotal > 0) message += `- Transfer Total: €${pricing.transferTotal.toFixed(2)}\n`;
+            message += `TOTAL ESTIMATED: €${pricing.total.toFixed(2)}`;
+            
+            const whatsappUrl = `https://wa.me/31615677962?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+          });
+          // Wire up change events
+          document.getElementById('cat-count').addEventListener('change', updateDynamicCatFields);
+          
+          document.getElementById('transfer-dropoff').addEventListener('change', () => toggleTransfer('dropoff'));
+          document.getElementById('transfer-pickup').addEventListener('change', () => toggleTransfer('pickup'));
+          
+          document.getElementById('dropoff-location-select').addEventListener('change', () => handleLocationChange('dropoff'));
+          document.getElementById('pickup-location-select').addEventListener('change', () => handleLocationChange('pickup'));
+          
+          document.querySelectorAll('input[name="special-need"]').forEach(cb => {
+            cb.addEventListener('change', calculatePricing);
+          });
+          
+          document.getElementById('dropoff-time').addEventListener('change', calculatePricing);
+          document.getElementById('pickup-time').addEventListener('change', calculatePricing);
+        });
+        </script>
+
+
+      <footer
+        style="background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 40px 20px; text-align: center; border-top: 1px solid rgba(217,163,163,0.3); margin-top: 60px;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px;">
+          <div
+            style="font-size: 1.2em; font-weight: bold; color: #D9A3A3; font-family: 'Dancing Script', cursive !important;"
+            class="brand-font">Black Princess & White Prince</div>
+          <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+            <a href="index.html" style="color: #4A4A4A; text-decoration: none; font-size: 0.9em;">Home</a>
+            <a href="about.html" style="color: #4A4A4A; text-decoration: none; font-size: 0.9em;">Story</a>
+            <a href="services.html" style="color: #4A4A4A; text-decoration: none; font-size: 0.9em;">Services</a>
+            <a href="pricing.html" style="color: #4A4A4A; text-decoration: none; font-size: 0.9em;">Pricing</a>
+            <a href="blog.html" style="color: #4A4A4A; text-decoration: none; font-size: 0.9em;">Blog</a>
+            <a href="gallery.html" style="color: #4A4A4A; text-decoration: none; font-size: 0.9em;">Gallery</a>
+            <a href="reservation.html" style="color: #4A4A4A; text-decoration: none; font-size: 0.9em;">Book</a>
+          </div>
+          <div style="color: #888; font-size: 0.9em;">📍 Almere, Netherlands | 📱 +31 615 677 962</div>
+          <div style="color: #bbb; font-size: 0.8em;">&copy; 2026 Black Princess & White Prince. All rights reserved.
+          </div>
+        </div>
+      </footer>
+
+      <script>(function () { var on = addEventListener, off = removeEventListener, $ = function (q) { return document.querySelector(q) }, $$ = function (q) { return document.querySelectorAll(q) }, $body = document.body, $inner = $('.inner'), client = (function () { var o = { browser: 'other', browserVersion: 0, os: 'other', osVersion: 0, mobile: false, canUse: null, flags: { lsdUnits: false, }, }, ua = navigator.userAgent, a, i; a = [['firefox', /Firefox\/([0-9\.]+)/, null], ['edge', /Edge\/([0-9\.]+)/, null], ['safari', /Version\/([0-9\.]+).+Safari/, null], ['chrome', /Chrome\/([0-9\.]+)/, null], ['chrome', /CriOS\/([0-9\.]+)/, null], ['ie', /Trident\/.+rv:([0-9]+)/, null], ['safari', /iPhone OS ([0-9_]+)/, function (v) { return v.replace('_', '.').replace('_', ''); }]]; for (i = 0; i < a.length; i++) { if (ua.match(a[i][1])) { o.browser = a[i][0]; o.browserVersion = parseFloat(a[i][2] ? (a[i][2])(RegExp.$1) : RegExp.$1); break; } } a = [['ios', /([0-9_]+) like Mac OS X/, function (v) { return v.replace('_', '.').replace('_', ''); }], ['ios', /CPU like Mac OS X/, function (v) { return 0 }], ['ios', /iPad; CPU/, function (v) { return 0 }], ['android', /Android ([0-9\.]+)/, null], ['mac', /Macintosh.+Mac OS X ([0-9_]+)/, function (v) { return v.replace('_', '.').replace('_', ''); }], ['windows', /Windows NT ([0-9\.]+)/, null], ['undefined', /Undefined/, null]]; for (i = 0; i < a.length; i++) { if (ua.match(a[i][1])) { o.os = a[i][0]; o.osVersion = parseFloat(a[i][2] ? (a[i][2])(RegExp.$1) : RegExp.$1); break; } } if (o.os == 'mac' && ('ontouchstart' in window) && ((screen.width == 1024 && screen.height == 1366) || (screen.width == 834 && screen.height == 1112) || (screen.width == 810 && screen.height == 1080) || (screen.width == 768 && screen.height == 1024))) o.os = 'ios'; o.mobile = (o.os == 'android' || o.os == 'ios'); var _canUse = document.createElement('div'); o.canUse = function (property, value) { var style; style = _canUse.style; if (!(property in style)) return false; if (typeof value !== 'undefined') { style[property] = value; if (style[property] == '') return false; } return true; }; o.flags.lsdUnits = o.canUse('width', '100dvw'); return o; }()), ready = { list: [], add: function (f) { this.list.push(f); }, run: function () { this.list.forEach((f) => { f(); }); }, }, trigger = function (t) { dispatchEvent(new Event(t)); }, cssRules = function (selectorText) { var ss = document.styleSheets, a = [], f = function (s) { var r = s.cssRules, i; for (i = 0; i < r.length; i++) { if (r[i] instanceof CSSMediaRule && matchMedia(r[i].conditionText).matches) (f)(r[i]); else if (r[i] instanceof CSSStyleRule && r[i].selectorText == selectorText) a.push(r[i]); } }, x, i; for (i = 0; i < ss.length; i++)f(ss[i]); return a; }, escapeHtml = function (s) { if (s === '' || s === null || s === undefined) return ''; var a = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', }; s = s.replace(/[&<>"']/g, function (x) { return a[x]; }); return s; }, thisHash = function () { var h = location.hash ? location.hash.substring(1) : null, a; if (!h) return null; if (h.match(/\?/)) { a = h.split('?'); h = a[0]; history.replaceState(undefined, undefined, '#' + h); window.location.search = a[1]; } if (h.length > 0 && !h.match(/^[a-zA-Z]/)) h = 'x' + h; if (typeof h == 'string') h = h.toLowerCase(); return h; }, scrollToElement = function (e, style, duration) { var y, cy, dy, start, easing, offset, f; if (!e) y = 0; else { offset = (e.dataset.scrollOffset ? parseInt(e.dataset.scrollOffset) : 0) * parseFloat(getComputedStyle(document.documentElement).fontSize); switch (e.dataset.scrollBehavior ? e.dataset.scrollBehavior : 'default') { case 'default': default: y = e.offsetTop + offset; break; case 'center': if (e.offsetHeight < window.innerHeight) y = e.offsetTop - ((window.innerHeight - e.offsetHeight) / 2) + offset; else y = e.offsetTop - offset; break; case 'previous': if (e.previousElementSibling) y = e.previousElementSibling.offsetTop + e.previousElementSibling.offsetHeight + offset; else y = e.offsetTop + offset; break; } } if (!style) style = 'smooth'; if (!duration) duration = 750; if (style == 'instant') { window.scrollTo(0, y); return; } start = Date.now(); cy = window.scrollY; dy = y - cy; switch (style) { case 'linear': easing = function (t) { return t }; break; case 'smooth': easing = function (t) { return t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1 }; break; }f = function () { var t = Date.now() - start; if (t >= duration) window.scroll(0, y); else { window.scroll(0, cy + (dy * easing(t / duration))); requestAnimationFrame(f); } }; f(); }, scrollToTop = function () { scrollToElement(null); }, loadElements = function (parent) { var a, e, x, i; $body.dispatchEvent(new CustomEvent('startComponents', { detail: { parent: parent } })); a = parent.querySelectorAll('iframe[data-src]:not([data-src=""])'); for (i = 0; i < a.length; i++) { x = a[i].cloneNode(); x.setAttribute('src', x.dataset.src); x.dataset.initialSrc = x.dataset.src; x.dataset.src = ''; a[i].replaceWith(x); } a = parent.querySelectorAll('video[autoplay]'); for (i = 0; i < a.length; i++) { if (a[i].paused) a[i].play(); } e = parent.querySelector('[data-autofocus="1"]'); x = e ? e.tagName : null; switch (x) { case 'FORM': e = e.querySelector('.field input, .field select, .field textarea'); if (e) e.focus(); break; default: break; }a = parent.querySelectorAll('unloaded-script'); for (i = 0; i < a.length; i++) { x = document.createElement('script'); x.setAttribute('data-loaded', ''); if (a[i].getAttribute('src')) x.setAttribute('src', a[i].getAttribute('src')); if (a[i].textContent) x.textContent = a[i].textContent; a[i].replaceWith(x); } x = new Event('loadelements'); a = parent.querySelectorAll('[data-unloaded]'); a.forEach((element) => { element.removeAttribute('data-unloaded'); element.dispatchEvent(x); }); }, unloadElements = function (parent) { var a, e, x, i; $body.dispatchEvent(new CustomEvent('stopComponents', { detail: { parent: parent } })); a = parent.querySelectorAll('iframe[data-src=""]'); for (i = 0; i < a.length; i++) { if (a[i].dataset.srcUnload === '0') continue; if ('initialSrc' in a[i].dataset) a[i].dataset.src = a[i].dataset.initialSrc; else a[i].dataset.src = a[i].src; a[i].contentWindow.location.replace('about:blank'); } a = parent.querySelectorAll('video'); for (i = 0; i < a.length; i++) { if (!a[i].paused) a[i].pause(); } e = $(':focus'); if (e) e.blur(); }; window._scrollToTop = scrollToTop; var thisUrl = function () { return window.location.href.replace(window.location.search, '').replace(/#$/, ''); }; var getVar = function (name) { var a = window.location.search.substring(1).split('&'), b, k; for (k in a) { b = a[k].split('='); if (b[0] == name) return b[1]; } return null; }; var errors = { handle: function (handler) { window.onerror = function (message, url, line, column, error) { (handler)(error.message); return true; }; }, unhandle: function () { window.onerror = null; } }; loadElements(document.body); var style, sheet, rule; style = document.createElement('style'); style.appendChild(document.createTextNode('')); document.head.appendChild(style); sheet = style.sheet; if (client.mobile) { (function () { if (client.flags.lsdUnits) { document.documentElement.style.setProperty('--viewport-height', '100svh'); document.documentElement.style.setProperty('--background-height', '100lvh'); } else { var f = function () { document.documentElement.style.setProperty('--viewport-height', window.innerHeight + 'px'); document.documentElement.style.setProperty('--background-height', (window.innerHeight + 250) + 'px'); }; on('load', f); on('orientationchange', function () { setTimeout(function () { (f)(); }, 100); }); } })(); } if (client.os == 'android') { (function () { sheet.insertRule('body::after { }', 0); rule = sheet.cssRules[0]; var f = function () { rule.style.cssText = 'height: ' + (Math.max(screen.width, screen.height)) + 'px'; }; on('load', f); on('orientationchange', f); on('touchmove', f); })(); $body.classList.add('touch'); } else if (client.os == 'ios') { if (client.osVersion <= 11) (function () { sheet.insertRule('body::after { }', 0); rule = sheet.cssRules[0]; rule.style.cssText = '-webkit-transform: scale(1.0)'; })(); if (client.osVersion <= 11) (function () { sheet.insertRule('body.ios-focus-fix::before { }', 0); rule = sheet.cssRules[0]; rule.style.cssText = 'height: calc(100% + 60px)'; on('focus', function (event) { $body.classList.add('ios-focus-fix'); }, true); on('blur', function (event) { $body.classList.remove('ios-focus-fix'); }, true); })(); $body.classList.add('touch'); } var scrollEvents = { items: [], add: function (o) { this.items.push({ element: o.element, triggerElement: (('triggerElement' in o && o.triggerElement) ? o.triggerElement : o.element), enter: ('enter' in o ? o.enter : null), leave: ('leave' in o ? o.leave : null), mode: ('mode' in o ? o.mode : 4), threshold: ('threshold' in o ? o.threshold : 0.25), offset: ('offset' in o ? o.offset : 0), initialState: ('initialState' in o ? o.initialState : null), state: false, }); }, handler: function () { var height, top, bottom, scrollPad; if (client.os == 'ios') { height = document.documentElement.clientHeight; top = document.body.scrollTop + window.scrollY; bottom = top + height; scrollPad = 125; } else { height = document.documentElement.clientHeight; top = document.documentElement.scrollTop; bottom = top + height; scrollPad = 0; } scrollEvents.items.forEach(function (item) { var elementTop, elementBottom, viewportTop, viewportBottom, bcr, pad, state, a, b; if (!item.enter && !item.leave) return true; if (!item.triggerElement) return true; if (item.triggerElement.offsetParent === null) { if (item.state == true && item.leave) { item.state = false; (item.leave).apply(item.element); if (!item.enter) item.leave = null; } return true; } bcr = item.triggerElement.getBoundingClientRect(); elementTop = top + Math.floor(bcr.top); elementBottom = elementTop + bcr.height; if (item.initialState !== null) { state = item.initialState; item.initialState = null; } else { switch (item.mode) { case 1: default: state = (bottom > (elementTop - item.offset) && top < (elementBottom + item.offset)); break; case 2: a = (top + (height * 0.5)); state = (a > (elementTop - item.offset) && a < (elementBottom + item.offset)); break; case 3: a = top + (height * (item.threshold)); if (a - (height * 0.375) <= 0) a = 0; b = top + (height * (1 - item.threshold)); if (b + (height * 0.375) >= document.body.scrollHeight - scrollPad) b = document.body.scrollHeight + scrollPad; state = (b > (elementTop - item.offset) && a < (elementBottom + item.offset)); break; case 4: pad = height * item.threshold; viewportTop = (top + pad); viewportBottom = (bottom - pad); if (Math.floor(top) <= pad) viewportTop = top; if (Math.ceil(bottom) >= (document.body.scrollHeight - pad)) viewportBottom = bottom; if ((viewportBottom - viewportTop) >= (elementBottom - elementTop)) { state = ((elementTop >= viewportTop && elementBottom <= viewportBottom) || (elementTop >= viewportTop && elementTop <= viewportBottom) || (elementBottom >= viewportTop && elementBottom <= viewportBottom)); } else state = ((viewportTop >= elementTop && viewportBottom <= elementBottom) || (elementTop >= viewportTop && elementTop <= viewportBottom) || (elementBottom >= viewportTop && elementBottom <= viewportBottom)); break; } } if (state != item.state) { item.state = state; if (item.state) { if (item.enter) { (item.enter).apply(item.element); if (!item.leave) item.enter = null; } } else { if (item.leave) { (item.leave).apply(item.element); if (!item.enter) item.leave = null; } } } }); }, init: function () { on('load', this.handler); on('resize', this.handler); on('scroll', this.handler); (this.handler)(); } }; scrollEvents.init(); (function () { var items = $$('.deferred'), loadHandler, enterHandler; loadHandler = function () { var i = this, p = this.parentElement, duration = 375; if (i.dataset.src !== 'assets/images/cat_photo_9d64c687-6b7f-4f95-86b2-40160ef48937.JPG') return; if (Date.now() - i._startLoad < duration) duration = 175; i.style.transitionDuration = (duration / 1000.00) + 's'; p.classList.remove('loading'); i.style.opacity = 1; setTimeout(function () { p.style.backgroundImage = 'none'; i.style.transitionProperty = ''; i.style.transitionTimingFunction = ''; i.style.transitionDuration = ''; }, duration); }; enterHandler = function () { var i = this, p = this.parentElement, src; src = i.dataset.src; i.dataset.src = 'assets/images/cat_photo_9d64c687-6b7f-4f95-86b2-40160ef48937.JPG'; p.classList.add('loading'); i._startLoad = Date.now(); i.src = src; }; items.forEach(function (p) { var i = p.firstElementChild; if (!p.classList.contains('enclosed')) { p.style.backgroundImage = 'url(' + i.src + ')'; p.style.backgroundSize = '100% 100%'; p.style.backgroundPosition = 'top left'; p.style.backgroundRepeat = 'no-repeat'; } i.style.opacity = 0; i.style.transitionProperty = 'opacity'; i.style.transitionTimingFunction = 'ease-in-out'; i.addEventListener('load', loadHandler); scrollEvents.add({ element: i, enter: enterHandler, offset: 250, }); }); })(); var onvisible = { effects: { 'blur-in': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'filter ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity) { this.style.opacity = 0; this.style.filter = 'blur(' + (0.25 * intensity) + 'rem)'; }, play: function () { this.style.opacity = 1; this.style.filter = 'none'; }, }, 'zoom-in': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity, alt) { this.style.opacity = 0; this.style.transform = 'scale(' + (1 - ((alt ? 0.25 : 0.05) * intensity)) + ')'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'zoom-out': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity, alt) { this.style.opacity = 0; this.style.transform = 'scale(' + (1 + ((alt ? 0.25 : 0.05) * intensity)) + ')'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'slide-left': { type: 'transition', transition: function (speed, delay) { return 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function () { this.style.transform = 'translateX(100vw)'; }, play: function () { this.style.transform = 'none'; }, }, 'slide-right': { type: 'transition', transition: function (speed, delay) { return 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function () { this.style.transform = 'translateX(-100vw)'; }, play: function () { this.style.transform = 'none'; }, }, 'flip-forward': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity, alt) { this.style.opacity = 0; this.style.transformOrigin = '50% 50%'; this.style.transform = 'perspective(1000px) rotateX(' + ((alt ? 45 : 15) * intensity) + 'deg)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'flip-backward': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity, alt) { this.style.opacity = 0; this.style.transformOrigin = '50% 50%'; this.style.transform = 'perspective(1000px) rotateX(' + ((alt ? -45 : -15) * intensity) + 'deg)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'flip-left': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity, alt) { this.style.opacity = 0; this.style.transformOrigin = '50% 50%'; this.style.transform = 'perspective(1000px) rotateY(' + ((alt ? 45 : 15) * intensity) + 'deg)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'flip-right': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity, alt) { this.style.opacity = 0; this.style.transformOrigin = '50% 50%'; this.style.transform = 'perspective(1000px) rotateY(' + ((alt ? -45 : -15) * intensity) + 'deg)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'tilt-left': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity, alt) { this.style.opacity = 0; this.style.transform = 'rotate(' + ((alt ? 45 : 5) * intensity) + 'deg)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'tilt-right': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity, alt) { this.style.opacity = 0; this.style.transform = 'rotate(' + ((alt ? -45 : -5) * intensity) + 'deg)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'fade-right': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity) { this.style.opacity = 0; this.style.transform = 'translateX(' + (-1.5 * intensity) + 'rem)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'fade-left': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity) { this.style.opacity = 0; this.style.transform = 'translateX(' + (1.5 * intensity) + 'rem)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'fade-down': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity) { this.style.opacity = 0; this.style.transform = 'translateY(' + (-1.5 * intensity) + 'rem)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'fade-up': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity) { this.style.opacity = 0; this.style.transform = 'translateY(' + (1.5 * intensity) + 'rem)'; }, play: function () { this.style.opacity = 1; this.style.transform = 'none'; }, }, 'fade-in': { type: 'transition', transition: function (speed, delay) { return 'opacity ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function () { this.style.opacity = 0; }, play: function () { this.style.opacity = 1; }, }, 'fade-in-background': { type: 'manual', rewind: function () { this.style.removeProperty('--onvisible-delay'); this.style.removeProperty('--onvisible-background-color'); }, play: function (speed, delay) { this.style.setProperty('--onvisible-speed', speed + 's'); if (delay) this.style.setProperty('--onvisible-delay', delay + 's'); this.style.setProperty('--onvisible-background-color', 'rgba(0,0,0,0.001)'); }, }, 'zoom-in-image': { type: 'transition', target: 'img', transition: function (speed, delay) { return 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function () { this.style.transform = 'scale(1)'; }, play: function (intensity) { this.style.transform = 'scale(' + (1 + (0.1 * intensity)) + ')'; }, }, 'zoom-out-image': { type: 'transition', target: 'img', transition: function (speed, delay) { return 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity) { this.style.transform = 'scale(' + (1 + (0.1 * intensity)) + ')'; }, play: function () { this.style.transform = 'none'; }, }, 'focus-image': { type: 'transition', target: 'img', transition: function (speed, delay) { return 'transform ' + speed + 's ease' + (delay ? ' ' + delay + 's' : '') + ', ' + 'filter ' + speed + 's ease' + (delay ? ' ' + delay + 's' : ''); }, rewind: function (intensity) { this.style.transform = 'scale(' + (1 + (0.05 * intensity)) + ')'; this.style.filter = 'blur(' + (0.25 * intensity) + 'rem)'; }, play: function (intensity) { this.style.transform = 'none'; this.style.filter = 'none'; }, }, 'wipe-up': { type: 'animate', keyframes: function (intensity) { return [{ maskSize: '100% 0%', maskImage: 'linear-gradient(90deg, black 100%, transparent 100%)', }, { maskSize: '110% 110%', maskImage: 'linear-gradient(90deg, black 100%, transparent 100%)', },]; }, options: function (speed) { return { duration: speed, iterations: 1, easing: 'ease', }; }, rewind: function () { this.style.opacity = 0; this.style.maskComposite = 'exclude'; this.style.maskRepeat = 'no-repeat'; this.style.maskPosition = '0% 100%'; }, play: function () { this.style.opacity = 1; }, }, 'wipe-down': { type: 'animate', keyframes: function (intensity) { return [{ maskSize: '100% 0%', maskImage: 'linear-gradient(90deg, black 100%, transparent 100%)', }, { maskSize: '110% 110%', maskImage: 'linear-gradient(90deg, black 100%, transparent 100%)', },]; }, options: function (speed) { return { duration: speed, iterations: 1, easing: 'ease', }; }, rewind: function () { this.style.opacity = 0; this.style.maskComposite = 'exclude'; this.style.maskRepeat = 'no-repeat'; this.style.maskPosition = '0% 0%'; }, play: function () { this.style.opacity = 1; }, }, 'wipe-left': { type: 'animate', keyframes: function (intensity) { return [{ maskSize: '0% 100%', maskImage: 'linear-gradient(90deg, black 100%, transparent 100%)', }, { maskSize: '110% 110%', maskImage: 'linear-gradient(90deg, black 100%, transparent 100%)', },]; }, options: function (speed) { return { duration: speed, iterations: 1, easing: 'ease', }; }, rewind: function () { this.style.opacity = 0; this.style.maskComposite = 'exclude'; this.style.maskRepeat = 'no-repeat'; this.style.maskPosition = '100% 0%'; }, play: function () { this.style.opacity = 1; }, }, 'wipe-right': { type: 'animate', keyframes: function (intensity) { return [{ maskSize: '0% 100%', maskImage: 'linear-gradient(90deg, black 100%, transparent 100%)', }, { maskSize: '110% 110%', maskImage: 'linear-gradient(90deg, black 100%, transparent 100%)', },]; }, options: function (speed) { return { duration: speed, iterations: 1, easing: 'ease', }; }, rewind: function () { this.style.opacity = 0; this.style.maskComposite = 'exclude'; this.style.maskRepeat = 'no-repeat'; this.style.maskPosition = '0% 0%'; }, play: function () { this.style.opacity = 1; }, }, 'wipe-diagonal': { type: 'animate', keyframes: function (intensity) { return [{ maskSize: '0% 0%', maskImage: 'linear-gradient(45deg, black 50%, transparent 50%)', }, { maskSize: '220% 220%', maskImage: 'linear-gradient(45deg, black 50%, transparent 50%)', },]; }, options: function (speed) { return { duration: speed, iterations: 1, easing: 'ease', }; }, rewind: function () { this.style.opacity = 0; this.style.maskComposite = 'exclude'; this.style.maskRepeat = 'no-repeat'; this.style.maskPosition = '0% 100%'; }, play: function () { this.style.opacity = 1; }, }, 'wipe-reverse-diagonal': { type: 'animate', keyframes: function (intensity) { return [{ maskSize: '0% 0%', maskImage: 'linear-gradient(135deg, transparent 50%, black 50%)', }, { maskSize: '220% 220%', maskImage: 'linear-gradient(135deg, transparent 50%, black 50%)', },]; }, options: function (speed) { return { duration: speed, iterations: 1, easing: 'ease', }; }, rewind: function () { this.style.opacity = 0; this.style.maskComposite = 'exclude'; this.style.maskRepeat = 'no-repeat'; this.style.maskPosition = '100% 100%'; }, play: function () { this.style.opacity = 1; }, }, 'pop-in': { type: 'animate', keyframes: function (intensity) { let diff = (intensity + 1) * 0.025; return [{ opacity: 0, transform: 'scale(' + (1 - diff) + ')', }, { opacity: 1, transform: 'scale(' + (1 + diff) + ')', }, { opacity: 1, transform: 'scale(' + (1 - (diff * 0.25)) + ')', offset: 0.9, }, { opacity: 1, transform: 'scale(1)', }]; }, options: function (speed) { return { duration: speed, iterations: 1, }; }, rewind: function () { this.style.opacity = 0; }, play: function () { this.style.opacity = 1; }, }, 'bounce-up': { type: 'animate', keyframes: function (intensity) { let diff = (intensity + 1) * 0.075; return [{ opacity: 0, transform: 'translateY(' + diff + 'rem)', }, { opacity: 1, transform: 'translateY(' + (-1 * diff) + 'rem)', }, { opacity: 1, transform: 'translateY(' + (diff * 0.25) + 'rem)', offset: 0.9, }, { opacity: 1, transform: 'translateY(0)', }]; }, options: function (speed) { return { duration: speed, iterations: 1, }; }, rewind: function () { this.style.opacity = 0; }, play: function () { this.style.opacity = 1; }, }, 'bounce-down': { type: 'animate', keyframes: function (intensity) { let diff = (intensity + 1) * 0.075; return [{ opacity: 0, transform: 'translateY(' + (-1 * diff) + 'rem)', }, { opacity: 1, transform: 'translateY(' + diff + 'rem)', }, { opacity: 1, transform: 'translateY(' + (-1 * (diff * 0.25)) + 'rem)', offset: 0.9, }, { opacity: 1, transform: 'translateY(0)', }]; }, options: function (speed) { return { duration: speed, iterations: 1, }; }, rewind: function () { this.style.opacity = 0; }, play: function () { this.style.opacity = 1; }, }, 'bounce-left': { type: 'animate', keyframes: function (intensity) { let diff = (intensity + 1) * 0.075; return [{ opacity: 0, transform: 'translateX(' + diff + 'rem)', }, { opacity: 1, transform: 'translateX(' + (-1 * diff) + 'rem)', }, { opacity: 1, transform: 'translateX(' + (diff * 0.25) + 'rem)', offset: 0.9, }, { opacity: 1, transform: 'translateX(0)', }]; }, options: function (speed) { return { duration: speed, iterations: 1, }; }, rewind: function () { this.style.opacity = 0; }, play: function () { this.style.opacity = 1; }, }, 'bounce-right': { type: 'animate', keyframes: function (intensity) { let diff = (intensity + 1) * 0.075; return [{ opacity: 0, transform: 'translateX(' + (-1 * diff) + 'rem)', }, { opacity: 1, transform: 'translateX(' + diff + 'rem)', }, { opacity: 1, transform: 'translateX(' + (-1 * (diff * 0.25)) + 'rem)', offset: 0.9, }, { opacity: 1, transform: 'translateX(0)', }]; }, options: function (speed) { return { duration: speed, iterations: 1, }; }, rewind: function () { this.style.opacity = 0; }, play: function () { this.style.opacity = 1; }, }, }, regex: new RegExp('([^\\s]+)', 'g'), add: function (selector, settings) { var _this = this, style = settings.style in this.effects ? settings.style : 'fade', speed = parseInt('speed' in settings ? settings.speed : 0), intensity = parseInt('intensity' in settings ? settings.intensity : 5), delay = parseInt('delay' in settings ? settings.delay : 0), replay = 'replay' in settings ? settings.replay : false, stagger = 'stagger' in settings ? (parseInt(settings.stagger) >= 0 ? parseInt(settings.stagger) : false) : false, staggerOrder = 'staggerOrder' in settings ? settings.staggerOrder : 'default', staggerSelector = 'staggerSelector' in settings ? settings.staggerSelector : null, threshold = parseInt('threshold' in settings ? settings.threshold : 3), state = 'state' in settings ? settings.state : null, effect = this.effects[style], enter, leave, scrollEventThreshold; if (window.CARRD_DISABLE_ANIMATION === true) { if (style == 'fade-in-background') $$(selector).forEach(function (e) { e.style.setProperty('--onvisible-background-color', 'rgba(0,0,0,0.001)'); }); return; } switch (threshold) { case 1: scrollEventThreshold = 0; break; case 2: scrollEventThreshold = 0.125; break; default: case 3: scrollEventThreshold = 0.25; break; case 4: scrollEventThreshold = 0.375; break; case 5: scrollEventThreshold = 0.475; break; }switch (effect.type) { default: case 'transition': intensity = ((intensity / 10) * 1.75) + 0.25; enter = function (children, staggerDelay = 0) { var _this = this, transitionOrig; if (effect.target) _this = this.querySelector(effect.target); transitionOrig = _this.style.transition; _this.style.setProperty('backface-visibility', 'hidden'); _this.style.transition = effect.transition.apply(_this, [speed / 1000, (delay + staggerDelay) / 1000]); effect.play.apply(_this, [intensity, !!children]); setTimeout(function () { _this.style.removeProperty('backface-visibility'); _this.style.transition = transitionOrig; }, (speed + delay + staggerDelay) * 2); }; leave = function (children) { var _this = this, transitionOrig; if (effect.target) _this = this.querySelector(effect.target); transitionOrig = _this.style.transition; _this.style.setProperty('backface-visibility', 'hidden'); _this.style.transition = effect.transition.apply(_this, [speed / 1000]); effect.rewind.apply(_this, [intensity, !!children]); setTimeout(function () { _this.style.removeProperty('backface-visibility'); _this.style.transition = transitionOrig; }, speed * 2); }; break; case 'animate': enter = function (children, staggerDelay = 0) { var _this = this, transitionOrig; if (effect.target) _this = this.querySelector(effect.target); setTimeout(() => { effect.play.apply(_this, []); _this.animate(effect.keyframes.apply(_this, [intensity]), effect.options.apply(_this, [speed, delay])); }, delay + staggerDelay); }; leave = function (children) { var _this = this, transitionOrig; if (effect.target) _this = this.querySelector(effect.target); let a = _this.animate(effect.keyframes.apply(_this, [intensity]), effect.options.apply(_this, [speed, delay])); a.reverse(); a.addEventListener('finish', () => { effect.rewind.apply(_this, []); }); }; break; case 'manual': enter = function (children, staggerDelay = 0) { var _this = this, transitionOrig; if (effect.target) _this = this.querySelector(effect.target); effect.play.apply(_this, [speed / 1000, (delay + staggerDelay) / 1000, intensity]); }; leave = function (children) { var _this = this, transitionOrig; if (effect.target) _this = this.querySelector(effect.target); effect.rewind.apply(_this, [intensity, !!children]); }; break; }$$(selector).forEach(function (e) { var children, targetElement, triggerElement; if (stagger !== false && staggerSelector == ':scope > *') _this.expandTextNodes(e); children = (stagger !== false && staggerSelector) ? e.querySelectorAll(staggerSelector) : null; if (effect.target) targetElement = e.querySelector(effect.target); else targetElement = e; if (children) children.forEach(function (targetElement) { effect.rewind.apply(targetElement, [intensity, true]); }); else effect.rewind.apply(targetElement, [intensity]); triggerElement = e; if (e.parentNode) { if (e.parentNode.dataset.onvisibleTrigger) triggerElement = e.parentNode; else if (e.parentNode.parentNode) { if (e.parentNode.parentNode.dataset.onvisibleTrigger) triggerElement = e.parentNode.parentNode; } } scrollEvents.add({ element: e, triggerElement: triggerElement, initialState: state, threshold: scrollEventThreshold, enter: children ? function () { var staggerDelay = 0, childHandler = function (e) { enter.apply(e, [children, staggerDelay]); staggerDelay += stagger; }, a; if (staggerOrder == 'default') { children.forEach(childHandler); } else { a = Array.from(children); switch (staggerOrder) { case 'reverse': a.reverse(); break; case 'random': a.sort(function () { return Math.random() - 0.5; }); break; }a.forEach(childHandler); } } : enter, leave: (replay ? (children ? function () { children.forEach(function (e) { leave.apply(e, [children]); }); } : leave) : null), }); }); }, expandTextNodes: function (e) { var s, i, w, x; for (i = 0; i < e.childNodes.length; i++) { x = e.childNodes[i]; if (x.nodeType != Node.TEXT_NODE) continue; s = x.nodeValue; s = s.replace(this.regex, function (x, a) { return '<text-node>' + escapeHtml(a) + '</text-node>'; }); w = document.createElement('text-node'); w.innerHTML = s; x.replaceWith(w); while (w.childNodes.length > 0) { w.parentNode.insertBefore(w.childNodes[0], w); } w.parentNode.removeChild(w); } }, }; onvisible.add('.text-component.style-1', { style: 'zoom-in', speed: 1000, intensity: 5, threshold: 3, delay: 0, replay: false }); onvisible.add('.buttons-component.style-1', { style: 'pop-in', speed: 1000, intensity: 5, threshold: 3, delay: 0, replay: false }); onvisible.add('.image-component.style-1', { style: 'bounce-up', speed: 1000, intensity: 5, threshold: 3, delay: 0, replay: false }); onvisible.add('.image-component.instance-2', { style: 'zoom-out', speed: 1000, intensity: 5, threshold: 3, delay: 0, replay: false }); onvisible.add('.image-component.instance-5', { style: 'zoom-in', speed: 1000, intensity: 5, threshold: 3, delay: 0, replay: false }); ready.run(); })();</script>
+      <script>
+        function gm_authFailure() {
+          alert("Google Maps Authentication Error!\n\nPlease check these in Google Cloud Console:\n1. Billing must be ACTIVE and LINKED to this project.\n2. APIs to enable: Maps JavaScript API, Distance Matrix API, Geocoding API.\n3. Restrictions: Ensure catboardingalmere.nl/* is allowed.");
+        }
+      </script>
+      <!-- Supabase JS -->
+      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+      <script src="assets/js/supabase-client.js"></script>
+
+      <!-- Flatpickr JS -->
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+      <script async
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8PdQzSDHqUhpd8dPfMAYHdoS63Pey9yY&libraries=places,geometry&callback=initMap"></script>
+      <script src="assets/js/bg-music.js?v=music-v6"></script>
+      <script src="assets/js/site-announcement.js"></script>
+
+    <script src="/assets/js/global-widgets.js"></script>
 </body>
 
 </html>

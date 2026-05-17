@@ -2,18 +2,18 @@
  * Site Announcement Logic - Black Princess & White Prince
  * Handles persistent banner visibility for development notice.
  */
-(function () {
-    const waNumber = '31644205396';
+(function() {
+    const waNumber = '31615677962';
     const message = 'Our website is currently under development. If you encounter any issues or need information, please reach out to us via WhatsApp!';
     const storageKey = 'site_announcement_dismissed';
-
+    
     // Robust Homepage Detection (Self-Destruct if on homepage)
     const path = window.location.pathname.toLowerCase();
-    const isHomepage = path === '/' ||
-        path === '/index.html' ||
-        path.endsWith('/index.html') ||
-        path === '';
-
+    const isHomepage = path === '/' || 
+                       path === '/index.html' || 
+                       path.endsWith('/index.html') ||
+                       path === '';
+    
     if (isHomepage) {
         console.warn("🐾 site-announcement.js: Homepage detected. Self-destructing to prevent banner render.");
         return;
@@ -27,7 +27,7 @@
 
         const banner = document.createElement('div');
         banner.id = 'site-announcement-banner';
-
+        
         // Premium Glassmorphism Style
         banner.style.cssText = `
             position: fixed;
@@ -64,7 +64,7 @@
         `;
 
         document.body.appendChild(banner);
-
+        
         // Trigger animation
         setTimeout(() => {
             banner.style.opacity = '1';
@@ -98,7 +98,7 @@
     if (!sessionStorage.getItem(storageKey)) {
         // Wait for first interaction to avoid blocking music or other initial loads
         triggerEvents.forEach(evt => window.addEventListener(evt, handleTrigger));
-
+        
         // Also show if music already started on previous page load or interaction already happened
         if (localStorage.getItem('bgMusic_interaction') === 'true') {
             if (document.readyState === 'complete') {

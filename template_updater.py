@@ -32,7 +32,7 @@ for file, data in pages.items():
 <h1 id="text01" class="text-component instance-1 style-1" style="opacity: 1; transform: none; font-size: 2.5em; margin-bottom: 2rem;">{data['title']}</h1>
 <p id="text04" class="text-component instance-4 style-1" style="opacity: 1; transform: none; max-width: 800px; margin: 0 auto; line-height: 1.6;">{data['desc']}</p>
 <ul id="buttons02" class="buttons-component instance-2" style="margin-top: 3rem;">
-<li><a href="https://wa.me/31644205396?text=Hi%20I%20would%20like%20to%20check%20availability%20for%20cat%20boarding" class="n01" role="button">Check Availability on WhatsApp</a></li>
+<li><a href="https://wa.me/31615677962?text=Hi%20I%20would%20like%20to%20check%20availability%20for%20cat%20boarding" class="n01" role="button">Check Availability on WhatsApp</a></li>
 </ul>
 """
         html = html[:inner_start] + new_content + html[inner_end:]
