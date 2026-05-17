@@ -3,7 +3,7 @@
  * Handles persistent banner visibility for development notice.
  */
 (function() {
-    const waNumber = '31615677962';
+    const waNumber = '31644205396';
     const message = 'Our website is currently under development. If you encounter any issues or need information, please reach out to us via WhatsApp!';
     const storageKey = 'site_announcement_dismissed';
     

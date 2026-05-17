@@ -9,7 +9,7 @@
 
     // 2. Add WhatsApp Button
     const waBtn = document.createElement('a');
-    waBtn.href = 'https://wa.me/31615677962';
+    waBtn.href = 'https://wa.me/31644205396';
     waBtn.className = 'whatsapp-float';
     waBtn.target = '_blank';
     waBtn.innerHTML = `
