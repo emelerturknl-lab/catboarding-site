@@ -4,7 +4,7 @@
  */
 (function() {
     const waNumber = '31644205396';
-    const message = 'Fully booked from 4 July 2026 until 9 August 2026.';
+    const message = 'Fully booked from 5 July 2026 until 8 August 2026.';
     const storageKey = 'site_announcement_dismissed';
     
     // Robust Homepage Detection (Self-Destruct if on homepage)

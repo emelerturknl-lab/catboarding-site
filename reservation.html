@@ -2356,11 +2356,11 @@
           const diffTime = d2 - d1;
           const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
           
-          // Date Overlap Check (4 July 2026 - 9 August 2026)
+          // Date Overlap Check (5 July 2026 - 8 August 2026)
           const d1Date = new Date(dropDateVal + "T00:00:00");
           const d2Date = new Date(pickDateVal + "T00:00:00");
-          const blockStart = new Date("2026-07-04T00:00:00");
-          const blockEnd = new Date("2026-08-09T00:00:00");
+          const blockStart = new Date("2026-07-05T00:00:00");
+          const blockEnd = new Date("2026-08-08T00:00:00");
           const overlaps = (d1Date <= blockEnd && d2Date > blockStart);
 
           if (overlaps) {
@@ -2369,7 +2369,7 @@
             if (summaryContent) {
               summaryContent.innerHTML = `
                 <div style="background: #FFF0F0; border: 1px solid #FFC0C0; padding: 15px; border-radius: 8px; color: #D8000C; font-size: 0.95rem; text-align: center; margin-bottom: 10px; font-weight: bold;">
-                  ⚠️ Fully booked from 4 July 2026 until 9 August 2026. Please select another date range.
+                  ⚠️ Fully booked from 5 July 2026 until 8 August 2026. Please select another date range.
                 </div>
               `;
             }
@@ -2438,8 +2438,8 @@
           function getDisabledDates() {
             return [
               {
-                from: "2026-07-04",
-                to: "2026-08-09"
+                from: "2026-07-05",
+                to: "2026-08-08"
               }
             ];
           }
@@ -2474,7 +2474,7 @@
             e.preventDefault();
             const pricing = await calculatePricing();
             if (pricing.overlaps) {
-              alert("We are fully booked from 4 July 2026 until 9 August 2026. Please choose different dates.");
+              alert("We are fully booked from 5 July 2026 until 8 August 2026. Please choose different dates.");
               return;
             }
             const formData = new FormData(form);
