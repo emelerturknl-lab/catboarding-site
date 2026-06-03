@@ -8,7 +8,7 @@ const HomeEngine = {
     },
 
     calculateAccommodation: function (nights, catCount) {
-        let ratePerNight = (catCount === 1) ? 20 : 35;
+        let ratePerNight = (catCount === 1) ? 24 : 42;
         let undiscountedTotal = nights * ratePerNight;
         let nightsFree = 0;
 

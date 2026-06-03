@@ -2054,8 +2054,8 @@
                   of Cats</label>
                 <select name="cat-count" id="cat-count"
                   style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box; background: white;">
-                  <option value="1">1 Cat (€20/night)</option>
-                  <option value="2">2 Cats (€35/night)</option>
+                  <option value="1">1 Cat (€24/night)</option>
+                  <option value="2">2 Cats (€42/night)</option>
                 </select>
               </div>
 
@@ -2356,9 +2356,29 @@
           const diffTime = d2 - d1;
           const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
           
-          let boardingSubtotal = nights * 20;
+          // Date Overlap Check (4 July 2026 - 9 August 2026)
+          const d1Date = new Date(dropDateVal + "T00:00:00");
+          const d2Date = new Date(pickDateVal + "T00:00:00");
+          const blockStart = new Date("2026-07-04T00:00:00");
+          const blockEnd = new Date("2026-08-09T00:00:00");
+          const overlaps = (d1Date <= blockEnd && d2Date > blockStart);
+
+          if (overlaps) {
+            const hiddenTotal = document.getElementById('estimated-total');
+            if (hiddenTotal) hiddenTotal.value = "0.00";
+            if (summaryContent) {
+              summaryContent.innerHTML = `
+                <div style="background: #FFF0F0; border: 1px solid #FFC0C0; padding: 15px; border-radius: 8px; color: #D8000C; font-size: 0.95rem; text-align: center; margin-bottom: 10px; font-weight: bold;">
+                  ⚠️ Fully booked from 4 July 2026 until 9 August 2026. Please select another date range.
+                </div>
+              `;
+            }
+            return { total: 0, overlaps: true };
+          }
+          
+          let boardingSubtotal = nights * 24;
           let additionalCatFee = 0;
-          if (catCount === 2) additionalCatFee = nights * 15;
+          if (catCount === 2) additionalCatFee = nights * 18;
           
           const dropT = await computeTransfer('dropoff');
           const pickT = await computeTransfer('pickup');
@@ -2415,9 +2435,19 @@
           const pickupInput = document.getElementById('pickup-date');
           const dropoffInput = document.getElementById('dropoff-date');
 
+          function getDisabledDates() {
+            return [
+              {
+                from: "2026-07-04",
+                to: "2026-08-09"
+              }
+            ];
+          }
+
           const pickupPicker = flatpickr("#pickup-date", {
             dateFormat: "Y-m-d",
             showMonths: window.innerWidth > 768 ? 2 : 1,
+            disable: getDisabledDates(),
             onChange: function() { calculatePricing(); }
           });
 
@@ -2425,6 +2455,7 @@
             minDate: "today",
             dateFormat: "Y-m-d",
             showMonths: window.innerWidth > 768 ? 2 : 1,
+            disable: getDisabledDates(),
             onChange: function(selectedDates) {
               if (selectedDates.length > 0) {
                 pickupInput.disabled = false;
@@ -2442,6 +2473,10 @@
           form.addEventListener('submit', async function(e) {
             e.preventDefault();
             const pricing = await calculatePricing();
+            if (pricing.overlaps) {
+              alert("We are fully booked from 4 July 2026 until 9 August 2026. Please choose different dates.");
+              return;
+            }
             const formData = new FormData(form);
             const firstname = formData.get('firstname')?.trim();
             const lastname = formData.get('lastname')?.trim();

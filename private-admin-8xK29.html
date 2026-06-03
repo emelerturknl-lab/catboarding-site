@@ -1208,8 +1208,8 @@
                 <div class="form-group">
                     <label>Kedi Sayısı</label>
                     <select id="catCount">
-                        <option value="1">1 Kedi (€20/gece)</option>
-                        <option value="2">2 Kedi (€35/gece)</option>
+                        <option value="1">1 Kedi (€24/gece)</option>
+                        <option value="2">2 Kedi (€42/gece)</option>
                     </select>
                 </div>
                 <div class="form-group" style="display: flex; gap: 10px;">
@@ -1426,10 +1426,10 @@
 
             if (!startVal || !endVal) return;
 
-            // Reverted to original flat pricing: €20 for 1 cat, €35 for 2 cats
+            // Reverted to original flat pricing: €24 for 1 cat, €42 for 2 cats
             const nights = Math.max(1, Math.ceil((new Date(endVal) - new Date(startVal)) / (1000 * 60 * 60 * 24)));
             const catCount = parseInt(catCountSelect.value) || 1;
-            const ratePerNight = (catCount === 2) ? 35 : 20;
+            const ratePerNight = (catCount === 2) ? 42 : 24;
             const total = nights * ratePerNight;
 
             document.getElementById('price').value = total;
