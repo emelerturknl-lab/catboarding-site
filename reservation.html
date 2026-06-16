@@ -2564,6 +2564,23 @@
             if (pricing.transferTotal > 0) message += `- Transfer Total: €${pricing.transferTotal.toFixed(2)}\n`;
             message += `TOTAL ESTIMATED: €${pricing.total.toFixed(2)}`;
             
+            // Retrieve referral source from sessionStorage
+            try {
+              const rawRef = sessionStorage.getItem('bp_referral_source');
+              if (rawRef) {
+                const sourceMap = {
+                  'flyer': 'Flyer / Brochure',
+                  'google': 'Google Search',
+                  'facebook': 'Facebook',
+                  'instagram': 'Instagram'
+                };
+                const formattedSource = sourceMap[rawRef.toLowerCase()] || rawRef;
+                message += `\n\nSource: ${formattedSource}`;
+              }
+            } catch (e) {
+              console.warn('Referral retrieval error:', e);
+            }
+            
             const whatsappUrl = `https://wa.me/31644205396?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
           });

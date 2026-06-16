@@ -43,4 +43,15 @@
         });
     }
 
+    // 4. Capture Referral Source from URL
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const ref = urlParams.get('ref');
+        if (ref) {
+            sessionStorage.setItem('bp_referral_source', ref);
+        }
+    } catch (e) {
+        console.warn('Referral tracking error:', e);
+    }
+
 })();
