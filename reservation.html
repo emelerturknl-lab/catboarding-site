@@ -2236,14 +2236,14 @@
         async function getGoogleDistance(address, type) {
           const statusEl = document.getElementById(type + '-status');
           if (statusEl) statusEl.innerText = "Calculating distance...";
-          if (typeof google === 'undefined' || !distanceMatrixService) return { km: 30 };
+          if (typeof google === 'undefined' || !distanceMatrixService) return null;
           return new Promise((resolve) => {
             distanceMatrixService.getDistanceMatrix({ origins: [address], destinations: [BOUTIQUE_ADDRESS], travelMode: 'DRIVING' }, (response, status) => {
               if (status === 'OK' && response.rows[0].elements[0].status === 'OK') {
                 const dist = response.rows[0].elements[0].distance;
                 if (dist) { resolve({ km: dist.value / 1000 }); return; }
               }
-              resolve({ km: 30 });
+              resolve(null);
             });
           });
         }
@@ -2328,13 +2328,19 @@
             if (!street || !no || !pc || !city) return null;
             const addr = `${street} ${no}, ${pc} ${city}`;
             const res = await getGoogleDistance(addr, type);
+            const container = document.getElementById(type + '-map-container');
+            const statusEl = document.getElementById(type + '-status');
             if (res) {
               updateRoute(addr, type);
-              const container = document.getElementById(type + '-map-container');
               if (container) container.style.display = 'block';
               const distEl = document.getElementById(type + '-dist');
               if (distEl) distEl.innerText = `Distance: ${res.km.toFixed(1)} km`;
+              if (statusEl) statusEl.innerText = "";
               return { cost: HomeEngine.calculateDistanceTransfer(res.km), label: 'Custom Address', dist: res.km, address: addr };
+            } else {
+              if (container) container.style.display = 'none';
+              if (statusEl) statusEl.innerText = "Distance calculation is currently unavailable. Transfer fee will be confirmed manually.";
+              return { cost: null, label: 'Custom Address', failed: true, address: addr };
             }
           }
           return null;
@@ -2382,7 +2388,7 @@
           
           const dropT = await computeTransfer('dropoff');
           const pickT = await computeTransfer('pickup');
-          let transferTotal = (dropT ? dropT.cost : 0) + (pickT ? pickT.cost : 0);
+          let transferTotal = (dropT && dropT.cost !== null ? dropT.cost : 0) + (pickT && pickT.cost !== null ? pickT.cost : 0);
           
           const total = boardingSubtotal + additionalCatFee + transferTotal;
           
@@ -2405,11 +2411,11 @@
                 <strong style="font-size: 0.9rem;">Transfer Services:</strong>
                 ${dropT ? `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-top: 4px;">
                   <span>- Drop-off (${dropT.label})</span>
-                  <span>€${dropT.cost.toFixed(2)}</span>
+                  <span>${dropT.cost !== null ? `€${dropT.cost.toFixed(2)}` : 'Transfer fee: To be confirmed manually'}</span>
                 </div>` : ''}
                 ${pickT ? `<div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-top: 4px;">
                   <span>- Pick-up (${pickT.label})</span>
-                  <span>€${pickT.cost.toFixed(2)}</span>
+                  <span>${pickT.cost !== null ? `€${pickT.cost.toFixed(2)}` : 'Transfer fee: To be confirmed manually'}</span>
                 </div>` : ''}
                 </div>` : ''}
 
@@ -2535,7 +2541,8 @@
             transferBlocks += `DROP-OFF SERVICE\n`;
             if (pricing.dropT) {
               const dFrom = pricing.dropT.address || pricing.dropT.label;
-              transferBlocks += `- Status: Yes\n- From: ${dFrom}\n- To: ${hAddr}\n- Fee: €${pricing.dropT.cost.toFixed(2)}\n\n`;
+              const feeText = pricing.dropT.cost !== null ? `€${pricing.dropT.cost.toFixed(2)}` : `To be confirmed manually`;
+              transferBlocks += `- Status: Yes\n- From: ${dFrom}\n- To: ${hAddr}\n- Fee: ${feeText}\n\n`;
             } else {
               transferBlocks += `- Status: No\n\n`;
             }
@@ -2543,7 +2550,8 @@
             transferBlocks += `PICK-UP SERVICE\n`;
             if (pricing.pickT) {
               const pTo = pricing.pickT.address || pricing.pickT.label;
-              transferBlocks += `- Status: Yes\n- From: ${hAddr}\n- To: ${pTo}\n- Fee: €${pricing.pickT.cost.toFixed(2)}\n\n`;
+              const feeText = pricing.pickT.cost !== null ? `€${pricing.pickT.cost.toFixed(2)}` : `To be confirmed manually`;
+              transferBlocks += `- Status: Yes\n- From: ${hAddr}\n- To: ${pTo}\n- Fee: ${feeText}\n\n`;
             } else {
               transferBlocks += `- Status: No\n\n`;
             }
