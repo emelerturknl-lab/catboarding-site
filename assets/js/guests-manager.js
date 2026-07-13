@@ -6,15 +6,80 @@ async function fetchPublicGuests() {
     const container = document.getElementById('guests-container');
     if (!container) return;
 
+    // Inject styles dynamically to avoid inline styling rules
+    if (!document.getElementById('guest-stay-styles')) {
+        const style = document.createElement('style');
+        style.id = 'guest-stay-styles';
+        style.textContent = `
+            .returning-guest-badge {
+                background: #fff5f5;
+                color: #D9A3A3;
+                border: 1px solid rgba(217, 163, 163, 0.3);
+                font-size: 0.8rem;
+                padding: 4px 10px;
+                border-radius: 20px;
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                font-weight: bold;
+                margin-left: 10px;
+                vertical-align: middle;
+            }
+            .last-visit-container {
+                margin-top: 20px;
+                padding-top: 15px;
+                border-top: 1px dashed rgba(217, 163, 163, 0.25);
+            }
+            .last-visit-title {
+                font-family: 'Dancing Script', cursive !important;
+                font-size: 1.4rem;
+                color: #D9A3A3;
+                margin: 0 0 5px 0;
+                text-align: left;
+            }
+            .last-visit-date {
+                font-size: 0.95rem;
+                color: #555;
+                text-align: left;
+                font-weight: bold;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
     try {
-        // Fetch from Supabase - Newest First (using order_index descending)
-        const { data, error } = await supabase
+        let data, error;
+
+        // 1. Primary Attempt: Fetch guests with relation
+        const primaryQuery = await supabase
             .from('guests')
-            .select('*')
+            .select(`
+                *,
+                guest_stays(
+                    start_date,
+                    end_date
+                )
+            `)
             .eq('status', 'published')
             .order('order_index', { ascending: false });
+        
+        data = primaryQuery.data;
+        error = primaryQuery.error;
 
-        if (error) throw error;
+        // 2. Fallback Attempt: If relation query fails, run fallback query against public guests
+        if (error) {
+            console.warn("Primary relation query failed, attempting legacy fallback:", error);
+            const fallbackQuery = await supabase
+                .from('guests')
+                .select('*')
+                .eq('status', 'published')
+                .order('order_index', { ascending: false });
+            
+            data = fallbackQuery.data;
+            error = fallbackQuery.error;
+            
+            if (error) throw error; // Throw only if both fail
+        }
 
         if (!data || data.length === 0) {
             showComingSoon(container);
@@ -39,17 +104,77 @@ async function fetchPublicGuests() {
                 displayStory = displayStory.replace(regex, '');
             }
 
+            // --- Date Calculations ---
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const localToday = `${year}-${month}-${day}`;
+
+            // Defensive check for relation data existence
+            const hasRelationData = Array.isArray(guest.guest_stays) && guest.guest_stays.length > 0;
+            const stays = hasRelationData ? guest.guest_stays : [];
+
+            // Month year formatter helper (direct string parsing, timezone-safe)
+            const formatMonthYear = (dateStr) => {
+                const parts = dateStr.split('-');
+                if (parts.length !== 3) return '';
+                const mNum = parseInt(parts[1], 10);
+                const yNum = parseInt(parts[0], 10);
+                const monthNames = [
+                    "January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                ];
+                return `${monthNames[mNum - 1]} ${yNum}`;
+            };
+
+            // Chronological mapping of completed stays only
+            const completedStaysSorted = [...stays]
+                .filter(s => s.end_date <= localToday)
+                .sort((a, b) => a.start_date.localeCompare(b.start_date));
+
+            // Select only the single most recently completed stay (last element of chronological list)
+            const latestCompletedStay = completedStaysSorted.length > 0 
+                ? completedStaysSorted[completedStaysSorted.length - 1] 
+                : null;
+
+            // Dates display logic (fallback only when relation data is completely missing/empty)
+            let datesHtml = '';
+            if (!hasRelationData) {
+                datesHtml = `<div class="guest-dates">${guest.stay_dates || ''}</div>`;
+            }
+
+            // Returning Guest badge (only when completed stays >= 2)
+            let returningBadgeHtml = '';
+            if (completedStaysSorted.length >= 2) {
+                returningBadgeHtml = `<span class="returning-guest-badge">🐾 Returning Guest</span>`;
+            }
+
+            // Last Visit layout rendering
+            let lastVisitHtml = '';
+            if (latestCompletedStay) {
+                const formattedDate = formatMonthYear(latestCompletedStay.start_date);
+                lastVisitHtml = `
+                    <div class="last-visit-container">
+                        <h4 class="last-visit-title">Last Visit</h4>
+                        <div class="last-visit-date">${formattedDate}</div>
+                    </div>
+                `;
+            }
+
+            // Construct card HTML (preserving exact naming, structures, stories, tags and classes)
             card.innerHTML = `
                 <div class="guest-image-wrapper">
                     <img src="${guest.photo_url || 'assets/images/placeholder.jpg'}" alt="${guest.cat_name}" class="guest-image" onerror="this.src='assets/images/placeholder.jpg'">
                 </div>
                 <div class="guest-info">
                     <div class="guest-header">
-                        <h3 class="guest-name">${guest.cat_name}</h3>
-                        <div class="guest-dates">${guest.stay_dates || ''}</div>
+                        <h3 class="guest-name">${guest.cat_name}${returningBadgeHtml}</h3>
+                        ${datesHtml}
                     </div>
                     <p class="guest-story">${displayStory}</p>
                     <div class="guest-tags">${tagsHtml}</div>
+                    ${lastVisitHtml}
                 </div>
             `;
             container.appendChild(card);
