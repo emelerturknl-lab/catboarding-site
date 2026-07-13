@@ -86,6 +86,54 @@ async function fetchPublicGuests() {
             return;
         }
 
+        // --- Date Calculations & Pre-processing ---
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const localToday = `${year}-${month}-${day}`;
+
+        // Map and pre-process stays for sorting
+        data.forEach(guest => {
+            const hasRelationData = Array.isArray(guest.guest_stays) && guest.guest_stays.length > 0;
+            guest._hasRelationData = hasRelationData;
+            
+            const stays = hasRelationData ? guest.guest_stays : [];
+            const eligibleStays = stays
+                .filter(s => s.start_date <= localToday)
+                .sort((a, b) => a.start_date.localeCompare(b.start_date)); // Chronological ascending
+            
+            guest._eligibleStays = eligibleStays;
+            
+            if (eligibleStays.length > 0) {
+                // Latest eligible start_date is the last one in the ascending chronological list
+                guest._latestEligibleStartDate = eligibleStays[eligibleStays.length - 1].start_date;
+            } else {
+                guest._latestEligibleStartDate = null;
+            }
+        });
+
+        // --- Public Card Sorting Rule ---
+        // Sort guests:
+        // 1. Guests with eligible stays come before guests with no eligible stays.
+        // 2. Sort by latest eligible start_date descending.
+        // 3. Fallback: Sort by order_index descending for ties.
+        data.sort((a, b) => {
+            const hasA = a._latestEligibleStartDate !== null;
+            const hasB = b._latestEligibleStartDate !== null;
+            
+            if (hasA && !hasB) return -1;
+            if (!hasA && hasB) return 1;
+            
+            if (hasA && hasB) {
+                const dateCompare = b._latestEligibleStartDate.localeCompare(a._latestEligibleStartDate);
+                if (dateCompare !== 0) return dateCompare;
+            }
+            
+            // Tie-breaker: order_index descending
+            return (b.order_index || 0) - (a.order_index || 0);
+        });
+
         container.innerHTML = '';
         
         data.forEach(guest => {
@@ -104,17 +152,6 @@ async function fetchPublicGuests() {
                 displayStory = displayStory.replace(regex, '');
             }
 
-            // --- Date Calculations ---
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const localToday = `${year}-${month}-${day}`;
-
-            // Defensive check for relation data existence
-            const hasRelationData = Array.isArray(guest.guest_stays) && guest.guest_stays.length > 0;
-            const stays = hasRelationData ? guest.guest_stays : [];
-
             // Month year formatter helper (direct string parsing, timezone-safe)
             const formatMonthYear = (dateStr) => {
                 const parts = dateStr.split('-');
@@ -128,32 +165,25 @@ async function fetchPublicGuests() {
                 return `${monthNames[mNum - 1]} ${yNum}`;
             };
 
-            // Chronological mapping of completed stays only
-            const completedStaysSorted = [...stays]
-                .filter(s => s.end_date <= localToday)
-                .sort((a, b) => a.start_date.localeCompare(b.start_date));
-
-            // Select only the single most recently completed stay (last element of chronological list)
-            const latestCompletedStay = completedStaysSorted.length > 0 
-                ? completedStaysSorted[completedStaysSorted.length - 1] 
-                : null;
+            const eligibleStays = guest._eligibleStays || [];
+            const latestEligibleStay = eligibleStays.length > 0 ? eligibleStays[eligibleStays.length - 1] : null;
 
             // Dates display logic (fallback only when relation data is completely missing/empty)
             let datesHtml = '';
-            if (!hasRelationData) {
+            if (!guest._hasRelationData) {
                 datesHtml = `<div class="guest-dates">${guest.stay_dates || ''}</div>`;
             }
 
-            // Returning Guest badge (only when completed stays >= 2)
+            // Returning Guest badge (only when eligible stays >= 2)
             let returningBadgeHtml = '';
-            if (completedStaysSorted.length >= 2) {
+            if (eligibleStays.length >= 2) {
                 returningBadgeHtml = `<span class="returning-guest-badge">🐾 Returning Guest</span>`;
             }
 
             // Last Visit layout rendering
             let lastVisitHtml = '';
-            if (latestCompletedStay) {
-                const formattedDate = formatMonthYear(latestCompletedStay.start_date);
+            if (latestEligibleStay) {
+                const formattedDate = formatMonthYear(latestEligibleStay.start_date);
                 lastVisitHtml = `
                     <div class="last-visit-container">
                         <h4 class="last-visit-title">Last Visit</h4>
