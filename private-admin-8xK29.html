@@ -1028,13 +1028,16 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" id="top-level-stay-dates-group">
                         <label>Konaklama Tarihleri (Stay Dates)</label>
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <input type="date" id="stay-start-date" style="flex: 1;">
                             <span>to</span>
                             <input type="date" id="stay-end-date" style="flex: 1;">
                         </div>
+                    </div>
+                    <div id="top-level-stay-dates-info" style="display: none; background: #ebf5fb; color: #3498db; border: 1px solid rgba(52, 152, 219, 0.2); padding: 10px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 15px;">
+                        Bu misafirin konaklama kayıtları aşağıda yer alan <b>Konaklama Geçmişi Yönetimi</b> bölümünden yönetilmektedir.
                     </div>
 
                     <div class="form-group">
@@ -1074,6 +1077,56 @@
                         <div style="flex: 1;">
                             <label>Fotoğraf Yükle</label>
                             <input type="file" id="guest-file" accept="image/*">
+                        </div>
+                    </div>
+
+                    <!-- Stay Records Management Section (Structured CRUD) -->
+                    <div id="guest-stays-section" style="display: none; margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee;">
+                        <h4 style="margin-bottom: 15px; color: #4A4A4A;">Konaklama Geçmişi Yönetimi (Stays History)</h4>
+                        
+                        <!-- Legacy Stays Notice (Only shown when 0 stays exist) -->
+                        <div id="legacy-stays-notice" style="display: none; background: #fffdf6; color: #d39e00; border: 1px solid rgba(211, 158, 0, 0.2); padding: 10px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 15px;">
+                            Bu misafir için yapılandırılmış konaklama kaydı bulunmamaktadır. İlk konaklama kaydını oluşturmak için aşağıdaki formu kullanabilirsiniz.
+                        </div>
+
+                        <!-- Stays List Table -->
+                        <div style="overflow-x: auto; margin-bottom: 20px;">
+                            <table class="gallery-logs-table" style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background: #f8f9fa; border-bottom: 2px solid #eee;">
+                                        <th style="padding: 10px; text-align: left; font-size: 0.9rem; color: #666;">Giriş Tarihi</th>
+                                        <th style="padding: 10px; text-align: left; font-size: 0.9rem; color: #666;">Çıkış Tarihi</th>
+                                        <th style="padding: 10px; text-align: left; font-size: 0.9rem; color: #666;">Gece Sayısı</th>
+                                        <th style="padding: 10px; text-align: left; font-size: 0.9rem; color: #666;">Durum</th>
+                                        <th style="padding: 10px; text-align: center; font-size: 0.9rem; color: #666;">Not</th>
+                                        <th style="padding: 10px; text-align: left; font-size: 0.9rem; color: #666;">Not İşlemleri</th>
+                                        <th style="padding: 10px; text-align: right; font-size: 0.9rem; color: #666;">Konaklama İşlemleri</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="guest-stays-list-body">
+                                    <!-- Stays will be rendered here -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Stay Edit Form -->
+                        <div id="stay-editor-box" style="background: #fcf9f9; padding: 15px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 15px;">
+                            <h5 id="stay-editor-title" style="margin-top: 0; margin-bottom: 10px;">Yeni Konaklama Ekle</h5>
+                            <input type="hidden" id="stay-id">
+                            <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end;">
+                                <div style="flex: 1; min-width: 150px;">
+                                    <label style="font-size: 0.85rem; color: #666; display: block; margin-bottom: 5px;">Giriş Tarihi</label>
+                                    <input type="date" id="stay-form-start-date" style="width: 100%;">
+                                </div>
+                                <div style="flex: 1; min-width: 150px;">
+                                    <label style="font-size: 0.85rem; color: #666; display: block; margin-bottom: 5px;">Çıkış Tarihi</label>
+                                    <input type="date" id="stay-form-end-date" style="width: 100%;">
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <button type="button" class="btn btn-secondary" id="stay-cancel-btn" onclick="resetStayForm()" style="padding: 8px 15px; display: none;">Vazgeç</button>
+                                    <button type="button" class="btn" id="stay-save-btn" onclick="saveStay()" style="padding: 8px 15px;">Kaydet</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -1344,6 +1397,36 @@
             </div>
         </div>
     </div>
+
+    <!-- Note Reader Modal -->
+    <div id="noteReaderModal" class="modal" style="display: none; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; backdrop-filter: blur(5px);">
+        <div class="modal-content">
+            <h2 id="noteReaderTitle" style="margin-top: 0; color: #4A4A4A; font-size: 1.5rem;">Konaklama Notu</h2>
+            <p id="noteReaderDates" style="font-size: 0.9rem; color: #666; margin-bottom: 15px;"></p>
+            <div id="noteReaderContent" style="background: #f9f9f9; padding: 15px; border-radius: 10px; border: 1px solid #eee; min-height: 100px; white-space: pre-wrap; font-size: 0.95rem; color: #333; margin-bottom: 15px;"></div>
+            <p id="noteReaderTimestamp" style="font-size: 0.8rem; color: #999; margin-bottom: 20px;"></p>
+            <div style="display: flex; justify-content: flex-end;">
+                <button type="button" class="btn btn-secondary" onclick="closeNoteReaderModal()">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Note Editor Modal -->
+    <div id="noteEditorModal" class="modal" style="display: none; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; backdrop-filter: blur(5px);">
+        <div class="modal-content">
+            <h2 id="noteEditorTitle" style="margin-top: 0; color: #4A4A4A; font-size: 1.5rem;">Not Düzenle / Ekle</h2>
+            <p id="noteEditorDates" style="font-size: 0.9rem; color: #666; margin-bottom: 15px;"></p>
+            <input type="hidden" id="note-stay-id">
+            <div class="form-group">
+                <textarea id="note-editor-text" rows="6" style="width: 100%; border: 1px solid #ccc; border-radius: 10px; padding: 10px; font-family: inherit; font-size: 0.95rem; resize: vertical;" placeholder="Konaklamaya ait özel notunuzu yazınız..."></textarea>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn btn-secondary" onclick="closeNoteEditorModal()">Vazgeç</button>
+                <button type="button" class="btn" id="note-save-btn" onclick="saveNote()">Kaydet</button>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         let reservations = [];
@@ -2448,6 +2531,41 @@
         // GUESTS LOGIC (SUPABASE VERSION)
         // ==========================================
         let guestList = [];
+        let guestStaysList = [];
+        let currentGuestId = null;
+        let currentGuestStaysLoadedSuccessfully = false;
+        let currentGuestHasStructuredStays = false;
+
+        // Inject stays styling dynamically
+        if (!document.getElementById('guest-stay-styles')) {
+            const style = document.createElement('style');
+            style.id = 'guest-stay-styles';
+            style.textContent = `
+                .stay-status-badge {
+                    font-size: 0.75rem;
+                    padding: 3px 8px;
+                    border-radius: 12px;
+                    font-weight: bold;
+                    display: inline-block;
+                }
+                .stay-status-upcoming {
+                    background: #ebf5fb;
+                    color: #3498db;
+                    border: 1px solid rgba(52, 152, 219, 0.2);
+                }
+                .stay-status-current {
+                    background: #eafaf1;
+                    color: #2ecc71;
+                    border: 1px solid rgba(46, 204, 113, 0.2);
+                }
+                .stay-status-completed {
+                    background: #f4f6f7;
+                    color: #7f8c8d;
+                    border: 1px solid rgba(127, 140, 141, 0.2);
+                }
+            `;
+            document.head.appendChild(style);
+        }
 
         async function fetchGuests() {
             const container = document.getElementById('guests-list');
@@ -2526,6 +2644,12 @@
                 return;
             }
 
+            // If creating a new guest and dates are filled, pre-validate start/end date order
+            if (!id && start && end && end <= start) {
+                alert("Çıkış tarihi giriş tarihinden sonra olmalıdır.");
+                return;
+            }
+
             try {
                 saveBtn.disabled = true;
                 saveBtn.innerText = "Kaydediliyor...";
@@ -2572,7 +2696,6 @@
 
                 const payload = {
                     cat_name,
-                    stay_dates,
                     description,
                     photo_url,
                     tags,
@@ -2581,22 +2704,48 @@
                     order_index: id ? undefined : Date.now()
                 };
 
+                // Prevent legacy date-field desynchronization:
+                // Only include stay_dates on creation, or when editing a legacy guest where stays loaded successfully and they have no structured stays.
+                if (!id || (id && currentGuestStaysLoadedSuccessfully === true && currentGuestHasStructuredStays === false)) {
+                    payload.stay_dates = stay_dates;
+                }
+
                 if (guest_code) payload.guest_code = guest_code;
 
                 let result;
                 if (id) {
-                    // Update
+                    // Update: Existing Guest
                     delete payload.status; // Don't change status on update
                     delete payload.order_index;
                     result = await supabase.from('guests').update(payload).eq('id', id);
                 } else {
-                    // Insert
-                    result = await supabase.from('guests').insert([payload]);
+                    // Insert: New Guest (Return inserted row to retrieve the new ID)
+                    result = await supabase.from('guests').insert([payload]).select();
                 }
 
                 if (result.error) throw result.error;
 
-                alert("Misafir kartı başarıyla kaydedildi.");
+                // Chain initial stay creation for new guests
+                let hasStayError = false;
+                if (!id && start && end && result.data && result.data.length > 0) {
+                    const newGuestId = result.data[0].id;
+                    const { error: stayError } = await supabase
+                        .from('guest_stays')
+                        .insert([{
+                            guest_id: newGuestId,
+                            start_date: start,
+                            end_date: end
+                        }]);
+                    
+                    if (stayError) {
+                        hasStayError = true;
+                        alert("Misafir kartı oluşturuldu ancak ilk konaklama kaydı oluşturulamadı: " + stayError.message);
+                    }
+                }
+
+                if (!hasStayError) {
+                    alert("Misafir kartı başarıyla kaydedildi.");
+                }
                 resetGuestForm();
                 fetchGuests();
 
@@ -2610,9 +2759,14 @@
         }
 
         async function editGuest(id) {
+            // Reset stays loading flags before loading stays
+            currentGuestStaysLoadedSuccessfully = false;
+            currentGuestHasStructuredStays = false;
+
             const guest = guestList.find(g => g.id === id);
             if (!guest) return;
 
+            currentGuestId = guest.id;
             document.getElementById('guest-id').value = guest.id;
             document.getElementById('guest-cat-name').value = guest.cat_name;
             document.getElementById('guest-chip-number').value = guest.chip_number || '';
@@ -2633,6 +2787,9 @@
             const tags = guest.tags ? guest.tags.split(',').map(t => t.trim()) : [];
             const checkboxes = document.querySelectorAll('#guest-tags-container input[type="checkbox"]');
             checkboxes.forEach(cb => cb.checked = tags.includes(cb.value));
+
+            // Load and display stays
+            await fetchStaysForGuest(guest.id);
 
             document.getElementById('guest-form').scrollIntoView({ behavior: 'smooth' });
         }
@@ -2677,6 +2834,7 @@
             document.getElementById('guest-chip-number').value = '';
             document.getElementById('stay-start-date').value = '';
             document.getElementById('stay-end-date').value = '';
+            document.getElementById('stay-end-date').removeAttribute('min'); // Clear top-level end date min attribute
             document.getElementById('guest-description').value = '';
             document.getElementById('guest-photo-url').value = '';
             document.getElementById('guest-file').value = '';
@@ -2684,7 +2842,532 @@
 
             const checkboxes = document.querySelectorAll('#guest-tags-container input[type="checkbox"]');
             checkboxes.forEach(cb => cb.checked = false);
+
+            // Reset stays state
+            currentGuestId = null;
+            guestStaysList = [];
+            currentGuestStaysLoadedSuccessfully = false;
+            currentGuestHasStructuredStays = false;
+
+            // Restore Stay Manager inputs and Save button to normal enabled state
+            const stayStartInput = document.getElementById('stay-form-start-date');
+            const stayEndInput = document.getElementById('stay-form-end-date');
+            const staySaveBtn = document.getElementById('stay-save-btn');
+            if (stayStartInput) stayStartInput.disabled = false;
+            if (stayEndInput) stayEndInput.disabled = false;
+            if (staySaveBtn) staySaveBtn.disabled = false;
+
+            document.getElementById('guest-stays-section').style.display = 'none';
+            document.getElementById('top-level-stay-dates-group').style.display = 'block';
+            document.getElementById('top-level-stay-dates-info').style.display = 'none';
+            resetStayForm();
         }
+
+        // --- STAY MANAGER HELPER FUNCTIONS ---
+
+        async function fetchStaysForGuest(guestId) {
+            // Clear current stays list, reset stays sub-form editor state and loading states immediately
+            guestStaysList = [];
+            currentGuestStaysLoadedSuccessfully = false;
+            currentGuestHasStructuredStays = false;
+            resetStayForm();
+
+            try {
+                let data, error;
+                const primaryQuery = await supabase
+                    .from('guest_stays')
+                    .select(`
+                        *,
+                        guest_stay_notes (
+                            notes,
+                            notes_updated_at
+                        )
+                    `)
+                    .eq('guest_id', guestId)
+                    .order('start_date', { ascending: false });
+
+                data = primaryQuery.data;
+                error = primaryQuery.error;
+
+                // Fallback: If relation query fails (e.g. guest_stay_notes table does not exist yet), fetch stays only
+                if (error) {
+                    console.warn("Primary stays note query failed, executing fallback (stays only):", error);
+                    const fallbackQuery = await supabase
+                        .from('guest_stays')
+                        .select('*')
+                        .eq('guest_id', guestId)
+                        .order('start_date', { ascending: false });
+
+                    if (fallbackQuery.error) throw fallbackQuery.error;
+                    data = fallbackQuery.data;
+                }
+
+                guestStaysList = data || [];
+                
+                // Set loading status to true and define structured status
+                currentGuestStaysLoadedSuccessfully = true;
+                currentGuestHasStructuredStays = guestStaysList.length > 0;
+
+                // Re-enable Stay Manager inputs and Save button on success
+                const stayStartInput = document.getElementById('stay-form-start-date');
+                const stayEndInput = document.getElementById('stay-form-end-date');
+                const staySaveBtn = document.getElementById('stay-save-btn');
+                if (stayStartInput) stayStartInput.disabled = false;
+                if (stayEndInput) stayEndInput.disabled = false;
+                if (staySaveBtn) staySaveBtn.disabled = false;
+
+                renderStays();
+
+                // Toggle legacy date inputs and helper notices based on stays count
+                const topLevelGroup = document.getElementById('top-level-stay-dates-group');
+                const topLevelInfo = document.getElementById('top-level-stay-dates-info');
+                const legacyNotice = document.getElementById('legacy-stays-notice');
+
+                if (guestStaysList.length > 0) {
+                    topLevelGroup.style.display = 'none';
+                    topLevelInfo.style.display = 'block';
+                    legacyNotice.style.display = 'none';
+                } else {
+                    topLevelGroup.style.display = 'block';
+                    topLevelInfo.style.display = 'none';
+                    legacyNotice.style.display = 'block';
+                }
+
+                document.getElementById('guest-stays-section').style.display = 'block';
+            } catch (err) {
+                console.error("Fetch Stays Error:", err);
+                
+                // Stay loading failed
+                currentGuestStaysLoadedSuccessfully = false;
+                currentGuestHasStructuredStays = false;
+
+                // Disable Stay Manager inputs and Save button on failure
+                const stayStartInput = document.getElementById('stay-form-start-date');
+                const stayEndInput = document.getElementById('stay-form-end-date');
+                const staySaveBtn = document.getElementById('stay-save-btn');
+                if (stayStartInput) stayStartInput.disabled = true;
+                if (stayEndInput) stayEndInput.disabled = true;
+                if (staySaveBtn) staySaveBtn.disabled = true;
+
+                // Protect legacy date inputs and show helper info
+                const topLevelGroup = document.getElementById('top-level-stay-dates-group');
+                const topLevelInfo = document.getElementById('top-level-stay-dates-info');
+                if (topLevelGroup) topLevelGroup.style.display = 'none';
+                if (topLevelInfo) topLevelInfo.style.display = 'block';
+
+                // Clear/hide stays table content and show error message
+                const tbody = document.getElementById('guest-stays-list-body');
+                if (tbody) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#e74c3c; padding:15px; font-weight:bold;">Hata: Konaklama kayıtları yüklenemedi.</td></tr>';
+                }
+                
+                const legacyNotice = document.getElementById('legacy-stays-notice');
+                if (legacyNotice) legacyNotice.style.display = 'none';
+
+                alert("Konaklama geçmişi yüklenirken bir hata oluştu.");
+                document.getElementById('guest-stays-section').style.display = 'block';
+            }
+        }
+
+        function renderStays() {
+            const tbody = document.getElementById('guest-stays-list-body');
+            tbody.innerHTML = '';
+
+            if (guestStaysList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#888; padding:15px;">Konaklama kaydı bulunmuyor.</td></tr>';
+                return;
+            }
+
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const localToday = `${year}-${month}-${day}`;
+
+            guestStaysList.forEach(stay => {
+                // Nights count (timezone-safe calendar calculation)
+                const sParts = stay.start_date.split('-');
+                const eParts = stay.end_date.split('-');
+                let nights = 0;
+                if (sParts.length === 3 && eParts.length === 3) {
+                    const sUTC = Date.UTC(parseInt(sParts[0]), parseInt(sParts[1]) - 1, parseInt(sParts[2]));
+                    const eUTC = Date.UTC(parseInt(eParts[0]), parseInt(eParts[1]) - 1, parseInt(eParts[2]));
+                    nights = Math.round((eUTC - sUTC) / (1000 * 60 * 60 * 24));
+                }
+
+                // Calculated status
+                let statusLabel = 'Completed';
+                let statusClass = 'stay-status-completed';
+
+                if (localToday < stay.start_date) {
+                    statusLabel = 'Upcoming';
+                    statusClass = 'stay-status-upcoming';
+                } else if (stay.start_date <= localToday && localToday < stay.end_date) {
+                    statusLabel = 'Current';
+                    statusClass = 'stay-status-current';
+                }
+
+                // Retrieve note information safely
+                const noteObj = stay.guest_stay_notes ? (Array.isArray(stay.guest_stay_notes) ? stay.guest_stay_notes[0] : stay.guest_stay_notes) : null;
+                const hasNote = !!(noteObj && noteObj.notes);
+
+                // Column 5: Not indicator
+                let noteColHTML = '';
+                if (hasNote) {
+                    noteColHTML = `
+                        <button type="button" class="btn btn-success" style="padding: 0; font-size: 0.75rem; border-radius: 50%; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; border: none; background: #2ecc71; color: white;" onclick="openNoteReader('${stay.id}', '${stay.start_date}', '${stay.end_date}')">✔️</button>
+                    `;
+                } else {
+                    noteColHTML = `
+                        <span style="color: #e74c3c; font-weight: bold; font-size: 1rem; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center;">❌</span>
+                    `;
+                }
+
+                // Column 6: Not İşlemleri
+                let noteActionHTML = '';
+                if (hasNote) {
+                    noteActionHTML = `
+                        <button type="button" class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.75rem; margin-right: 5px;" onclick="openNoteEditor('${stay.id}', '${stay.start_date}', '${stay.end_date}')">Düzenle</button>
+                        <button type="button" class="btn btn-danger" style="padding: 4px 8px; font-size: 0.75rem;" onclick="deleteNote('${stay.id}', '${stay.start_date}', '${stay.end_date}')">Sil</button>
+                    `;
+                } else {
+                    noteActionHTML = `
+                        <button type="button" class="btn" style="padding: 4px 8px; font-size: 0.75rem; background: #3498db; color: white;" onclick="openNoteEditor('${stay.id}', '${stay.start_date}', '${stay.end_date}')">Not ekle</button>
+                    `;
+                }
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">${stay.start_date}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">${stay.end_date}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">${nights} gece</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">
+                        <span class="stay-status-badge ${statusClass}">${statusLabel}</span>
+                    </td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">${noteColHTML}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">${noteActionHTML}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">
+                        <button type="button" class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.75rem; margin-right: 5px;" onclick="editStay('${stay.id}')">Düzenle</button>
+                        <button type="button" class="btn btn-danger" style="padding: 4px 8px; font-size: 0.75rem;" onclick="deleteStay('${stay.id}')">Sil</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function saveStay() {
+            if (!(await checkSession())) return;
+
+            // Guard currentGuestId in saveStay()
+            if (!currentGuestId) {
+                alert("Lütfen önce bir misafir kartı seçiniz veya kaydediniz.");
+                return;
+            }
+
+            // Guard loading-state
+            if (currentGuestStaysLoadedSuccessfully !== true) {
+                alert("Konaklama kayıtları güvenli şekilde yüklenmeden işlem yapılamaz. Lütfen tekrar deneyiniz.");
+                return;
+            }
+
+            const staySaveBtn = document.getElementById('stay-save-btn');
+            const stayId = document.getElementById('stay-id').value;
+            const start = document.getElementById('stay-form-start-date').value;
+            const end = document.getElementById('stay-form-end-date').value;
+
+            if (!start || !end) {
+                alert("Lütfen giriş ve çıkış tarihlerini seçiniz.");
+                return;
+            }
+
+            if (end <= start) {
+                alert("Çıkış tarihi giriş tarihinden sonra olmalıdır.");
+                return;
+            }
+
+            // JavaScript overlap check (excluding currently edited stay)
+            const overlap = guestStaysList.some(exist => {
+                if (stayId && exist.id === stayId) return false;
+                return start < exist.end_date && end > exist.start_date;
+            });
+
+            if (overlap) {
+                alert("Bu tarihler başka bir konaklama kaydıyla çakışmaktadır.");
+                return;
+            }
+
+            try {
+                if (staySaveBtn) {
+                    staySaveBtn.disabled = true;
+                    staySaveBtn.innerText = "Kaydediliyor...";
+                }
+
+                let error;
+                if (stayId) {
+                    // Update existing stay
+                    const res = await supabase
+                        .from('guest_stays')
+                        .update({ start_date: start, end_date: end })
+                        .eq('id', stayId);
+                    error = res.error;
+                } else {
+                    // Insert new stay
+                    const res = await supabase
+                        .from('guest_stays')
+                        .insert([{
+                            guest_id: currentGuestId,
+                            start_date: start,
+                            end_date: end
+                        }]);
+                    error = res.error;
+                }
+
+                if (error) throw error;
+
+                alert("Konaklama kaydı başarıyla kaydedildi.");
+                resetStayForm();
+                await fetchStaysForGuest(currentGuestId);
+            } catch (err) {
+                console.error("Save Stay Error:", err);
+                alert("Kaydedilemedi: " + err.message);
+            } finally {
+                if (staySaveBtn) {
+                    staySaveBtn.disabled = false;
+                    staySaveBtn.innerText = "Kaydet";
+                }
+            }
+        }
+
+        function editStay(stayId) {
+            const stay = guestStaysList.find(s => s.id === stayId);
+            if (!stay) return;
+
+            // Set checkout min attribute timezone-safely based on the loaded stay's start date
+            if (stay.start_date) {
+                const parts = stay.start_date.split('-');
+                const date = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])));
+                date.setUTCDate(date.getUTCDate() + 1);
+                const minDateStr = date.toISOString().split('T')[0];
+                document.getElementById('stay-form-end-date').setAttribute('min', minDateStr);
+            }
+
+            document.getElementById('stay-id').value = stay.id;
+            document.getElementById('stay-form-start-date').value = stay.start_date;
+            document.getElementById('stay-form-end-date').value = stay.end_date;
+            document.getElementById('stay-editor-title').innerText = "Konaklama Kaydını Düzenle";
+            document.getElementById('stay-cancel-btn').style.display = "inline-flex";
+        }
+
+        async function deleteStay(stayId) {
+            if (!(await checkSession())) return;
+
+            const stay = guestStaysList.find(s => s.id === stayId);
+            if (!stay) return;
+
+            if (!confirm(`Bu misafirin ${stay.start_date} - ${stay.end_date} tarihlerindeki konaklamasını silmek istediğinizden emin misiniz?`)) {
+                return;
+            }
+
+            try {
+                const { error } = await supabase
+                    .from('guest_stays')
+                    .delete()
+                    .eq('id', stayId);
+
+                if (error) throw error;
+
+                alert("Konaklama kaydı başarıyla silindi.");
+                
+                // Reset form if we were editing the deleted stay
+                if (document.getElementById('stay-id').value === stayId) {
+                    resetStayForm();
+                }
+                
+                await fetchStaysForGuest(currentGuestId);
+            } catch (err) {
+                console.error("Delete Stay Error:", err);
+                alert("Silme işlemi başarısız: " + err.message);
+            }
+        }
+
+        function resetStayForm() {
+            document.getElementById('stay-id').value = '';
+            document.getElementById('stay-form-start-date').value = '';
+            document.getElementById('stay-form-end-date').value = '';
+            document.getElementById('stay-form-end-date').removeAttribute('min'); // Clear Stay Manager end date min attribute
+            document.getElementById('stay-editor-title').innerText = "Yeni Konaklama Ekle";
+            document.getElementById('stay-cancel-btn').style.display = "none";
+        }
+
+        // Auto-guided min dates validation for checkout
+        document.addEventListener('DOMContentLoaded', () => {
+            const topLevelStart = document.getElementById('stay-start-date');
+            const topLevelEnd = document.getElementById('stay-end-date');
+            if (topLevelStart && topLevelEnd) {
+                topLevelStart.addEventListener('change', () => {
+                    const val = topLevelStart.value;
+                    if (val) {
+                        const parts = val.split('-');
+                        const date = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])));
+                        date.setUTCDate(date.getUTCDate() + 1);
+                        const minDateStr = date.toISOString().split('T')[0];
+                        topLevelEnd.setAttribute('min', minDateStr);
+                        if (topLevelEnd.value && topLevelEnd.value < minDateStr) {
+                            topLevelEnd.value = '';
+                        }
+                    } else {
+                        topLevelEnd.removeAttribute('min');
+                    }
+                });
+            }
+
+            const stayFormStart = document.getElementById('stay-form-start-date');
+            const stayFormEnd = document.getElementById('stay-form-end-date');
+            if (stayFormStart && stayFormEnd) {
+                stayFormStart.addEventListener('change', () => {
+                    const val = stayFormStart.value;
+                    if (val) {
+                        const parts = val.split('-');
+                        const date = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])));
+                        date.setUTCDate(date.getUTCDate() + 1);
+                        const minDateStr = date.toISOString().split('T')[0];
+                        stayFormEnd.setAttribute('min', minDateStr);
+                        if (stayFormEnd.value && stayFormEnd.value < minDateStr) {
+                            stayFormEnd.value = '';
+                        }
+                    } else {
+                        stayFormEnd.removeAttribute('min');
+                    }
+                });
+            }
+        });
+
+        // --- STAY NOTE HELPER FUNCTIONS ---
+
+        function openNoteReader(stayId, startDate, endDate) {
+            const stay = guestStaysList.find(s => s.id === stayId);
+            if (!stay) return;
+
+            const noteObj = stay.guest_stay_notes ? (Array.isArray(stay.guest_stay_notes) ? stay.guest_stay_notes[0] : stay.guest_stay_notes) : null;
+            const notesText = noteObj ? noteObj.notes : '';
+            const timestamp = noteObj ? noteObj.notes_updated_at : '';
+
+            document.getElementById('noteReaderDates').innerText = `${startDate} - ${endDate}`;
+            document.getElementById('noteReaderContent').innerText = notesText;
+            
+            let timeStr = '';
+            if (timestamp) {
+                try {
+                    const d = new Date(timestamp);
+                    timeStr = `Son Güncelleme: ${d.toLocaleDateString('tr-TR')} ${d.toLocaleTimeString('tr-TR')}`;
+                } catch(e) {
+                    timeStr = `Son Güncelleme: ${timestamp}`;
+                }
+            }
+            document.getElementById('noteReaderTimestamp').innerText = timeStr;
+            document.getElementById('noteReaderModal').style.display = 'flex';
+        }
+
+        function closeNoteReaderModal() {
+            document.getElementById('noteReaderModal').style.display = 'none';
+        }
+
+        function openNoteEditor(stayId, startDate, endDate) {
+            const stay = guestStaysList.find(s => s.id === stayId);
+            if (!stay) return;
+
+            const noteObj = stay.guest_stay_notes ? (Array.isArray(stay.guest_stay_notes) ? stay.guest_stay_notes[0] : stay.guest_stay_notes) : null;
+            const notesText = noteObj ? noteObj.notes : '';
+
+            document.getElementById('note-stay-id').value = stayId;
+            document.getElementById('noteEditorDates').innerText = `${startDate} - ${endDate}`;
+            document.getElementById('note-editor-text').value = notesText;
+            document.getElementById('noteEditorModal').style.display = 'flex';
+        }
+
+        function closeNoteEditorModal() {
+            document.getElementById('noteEditorModal').style.display = 'none';
+            document.getElementById('note-editor-text').value = '';
+            document.getElementById('note-stay-id').value = '';
+        }
+
+        async function saveNote() {
+            if (!(await checkSession())) return;
+
+            const stayId = document.getElementById('note-stay-id').value;
+            const noteText = document.getElementById('note-editor-text').value.trim();
+            const saveBtn = document.getElementById('note-save-btn');
+
+            if (!stayId) {
+                alert("Konaklama bilgisi bulunamadı.");
+                return;
+            }
+
+            if (!noteText) {
+                alert("Lütfen not içeriğini boş bırakmayınız.");
+                return;
+            }
+
+            try {
+                if (saveBtn) {
+                    saveBtn.disabled = true;
+                    saveBtn.innerText = "Kaydediliyor...";
+                }
+
+                const { error } = await supabase
+                    .from('guest_stay_notes')
+                    .upsert([{
+                        stay_id: stayId,
+                        notes: noteText,
+                        notes_updated_at: new Date().toISOString()
+                    }]);
+
+                if (error) throw error;
+
+                alert("Not başarıyla kaydedildi.");
+                closeNoteEditorModal();
+                if (currentGuestId) {
+                    await fetchStaysForGuest(currentGuestId);
+                }
+            } catch (err) {
+                console.error("Save Note Error:", err);
+                alert("Not kaydedilemedi: " + err.message);
+            } finally {
+                if (saveBtn) {
+                    saveBtn.disabled = false;
+                    saveBtn.innerText = "Kaydet";
+                }
+            }
+        }
+
+        async function deleteNote(stayId, startDate, endDate) {
+            if (!(await checkSession())) return;
+
+            if (!stayId) return;
+
+            if (!confirm(`Bu konaklamaya ait notu silmek istediğinizden emin misiniz? (Tarihler: ${startDate} - ${endDate})`)) {
+                return;
+            }
+
+            try {
+                const { error } = await supabase
+                    .from('guest_stay_notes')
+                    .delete()
+                    .eq('stay_id', stayId);
+
+                if (error) throw error;
+
+                alert("Not başarıyla silindi.");
+                if (currentGuestId) {
+                    await fetchStaysForGuest(currentGuestId);
+                }
+            } catch (err) {
+                console.error("Delete Note Error:", err);
+                alert("Not silinemedi: " + err.message);
+            }
+        }
+
+
         // --- SECURITY LOGIC ---
 
         async function getDeviceFingerprint() {
