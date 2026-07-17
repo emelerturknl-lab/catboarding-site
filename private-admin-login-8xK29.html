@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yönetici Girişi - Black Princess</title>
+    <title>Admin Login - Black Princess</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -24,21 +24,21 @@
 
     <div id="loading-screen">
         <div style="font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--primary); margin-bottom: 20px;">Black Princess</div>
-        <p>Oturum kontrol ediliyor...</p>
+        <p>Checking session...</p>
     </div>
 
     <div id="login-screen" style="display: none;">
-        <h2>Yönetici Girişi</h2>
-        <p style="color:#888; margin-bottom:30px;">Lütfen Supabase bilgilerinizle giriş yapın.</p>
+        <h2>Admin Login</h2>
+        <p style="color:#888; margin-bottom:30px;">Please log in using your Supabase credentials.</p>
         <div id="login-box">
             <div class="form-group">
                 <input type="email" id="email" placeholder="admin@catboardingalmere.nl">
             </div>
             <div class="form-group">
-                <input type="password" id="password" placeholder="Şifreniz">
+                <input type="password" id="password" placeholder="Your password">
             </div>
-            <button type="button" class="btn" id="login-btn" onclick="performLogin()">Giriş Yap</button>
-            <button type="button" class="btn btn-secondary" onclick="window.location.href='index.html'">🏠 Web Sitesine Dön</button>
+            <button type="button" class="btn" id="login-btn" onclick="performLogin()">Log In</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='index.html'">🏠 Return to Website</button>
             <p id="login-error"></p>
         </div>
     </div>
@@ -75,23 +75,23 @@
             const err = document.getElementById('login-error');
 
             if (!email || !password) {
-                err.innerText = "Lütfen tüm alanları doldurun.";
+                err.innerText = "Please fill in all fields.";
                 err.style.display = "block";
                 return;
             }
 
-            btn.innerHTML = "Giriş Yapılıyor..."; btn.disabled = true;
+            btn.innerHTML = "Logging in..."; btn.disabled = true;
             const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
             if (error) {
-                btn.innerHTML = "Giriş Yap"; btn.disabled = false;
-                err.innerText = "Giriş başarısız. Lütfen bilgilerinizi kontrol edin.";
+                btn.innerHTML = "Log In"; btn.disabled = false;
+                err.innerText = "Login failed. Please check your credentials.";
                 err.style.display = "block";
             } else {
                 if (data.user.email !== ADMIN_EMAIL) {
                     await supabase.auth.signOut();
-                    btn.innerHTML = "Giriş Yap"; btn.disabled = false;
-                    err.innerText = "Yetkisiz erişim denemesi!";
+                    btn.innerHTML = "Log In"; btn.disabled = false;
+                    err.innerText = "Unauthorized access attempt!";
                     err.style.display = "block";
                 } else {
                     window.location.href = 'private-admin-8xK29.html';

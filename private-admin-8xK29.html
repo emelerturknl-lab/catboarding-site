@@ -15,7 +15,7 @@
         // Global error catcher for debugging - ENABLED for troubleshooting
         window.onerror = function (message, source, lineno, colno, error) {
             console.error("DEBUG ERROR:", { message, source, lineno, colno, error });
-            alert("Sistem Hatası: " + message + " (Satır: " + lineno + ")");
+            alert("System Error: " + message + " (Line: " + lineno + ")");
             return false;
         };
     </script>
@@ -23,7 +23,10 @@
     <!-- FullCalendar CSS -->
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/tr.js'></script>
+
+    <!-- Flatpickr CSS & JS (Local) -->
+    <link rel="stylesheet" href="assets/vendor/flatpickr/flatpickr.min.css">
+    <script src="assets/vendor/flatpickr/flatpickr.min.js"></script>
 
 
     <style>
@@ -800,7 +803,7 @@
 
 
     <div id="loading-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:9999; display:flex; align-items:center; justify-content:center;">
-        <div style="font-family: 'Dancing Script', cursive; font-size: 2rem;">Giriş doğrulanıyor...</div>
+        <div style="font-family: 'Dancing Script', cursive; font-size: 2rem;">Verifying session...</div>
     </div>
 
 
@@ -808,29 +811,27 @@
     <!-- Main App -->
     <div class="container" id="app">
         <div class="header">
-            <h1>Yönetim Paneli</h1>
+            <h1>Admin Dashboard</h1>
             <div style="display: flex; gap: 10px;">
-                <button type="button" class="btn btn-secondary" onclick="window.location.href='index.html'">🏠 Web
-                    Sitesi</button>
-                <button type="button" class="btn btn-secondary" onclick="logout()">Çıkış Yap</button>
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='index.html'">🏠 Website</button>
+                <button type="button" class="btn btn-secondary" onclick="logout()">Log Out</button>
             </div>
         </div>
 
         <!-- TABS NAVIGATION -->
         <div class="tabs-nav">
-            <button class="tab-btn active" onclick="switchTab('reservations')">📅 Rezervasyonlar</button>
-            <button class="tab-btn" onclick="switchTab('financials')">📊 Arşiv & Finans</button>
-            <button class="tab-btn" onclick="switchTab('gallery')">🖼️ Galeri Yönetimi</button>
-            <button class="tab-btn" onclick="switchTab('guests')">🐾 Misafirlerimiz</button>
-            <button class="tab-btn" onclick="switchTab('security')">🔒 Güvenlik</button>
+            <button class="tab-btn active" onclick="switchTab('reservations')">📅 Reservations</button>
+            <button class="tab-btn" onclick="switchTab('financials')">📊 Archive & Financials</button>
+            <button class="tab-btn" onclick="switchTab('gallery')">🖼️ Gallery Management</button>
+            <button class="tab-btn" onclick="switchTab('guests')">🐾 Guest Profiles</button>
+            <button class="tab-btn" onclick="switchTab('security')">🔒 Security</button>
         </div>
 
         <!-- PANEL: RESERVATIONS -->
         <div id="reservations-panel" class="tab-panel">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>Rezervasyon Takibi</h2>
-                <button type="button" class="btn" id="new-booking-btn" onclick="openNewBookingModal()">+ Yeni Kayıt
-                    Ekle</button>
+                <h2>Reservations</h2>
+                <button type="button" class="btn" id="new-booking-btn" onclick="openNewBookingModal()">+ Add New Booking</button>
             </div>
 
             <div class="stats-grid">
@@ -855,105 +856,105 @@
 
             <!-- Reminders Panel (New) -->
             <div id="reminder-section" style="display: none; margin-bottom: 30px;">
-                <h2>🔔 Zamanlama Hatırlatmaları</h2>
+                <h2>🔔 Schedule Reminders</h2>
                 <div id="reminder-list"
                     style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
                     <!-- Reminders will be injected here -->
                 </div>
             </div>
 
-            <h2>📅 Gelecek ve Bekleyen Kayıtlar</h2>
+            <h2>📅 Upcoming & Pending Bookings</h2>
             <div
                 style="background: white; border-radius: 15px; border: 1px solid #eee; padding: 2px; overflow-x: auto; margin-bottom: 40px;">
                 <table id="pending-table">
                     <thead>
                         <tr>
-                            <th>Müşteri</th>
-                            <th>Tarihler</th>
-                            <th>Kedi / Fiyat</th>
-                            <th>İşlem</th>
+                            <th>Customer</th>
+                            <th>Dates</th>
+                            <th>Cat / Price</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="pending-list">
                         <tr>
-                            <td colspan="4" style="text-align:center;">Yükleniyor...</td>
+                            <td colspan="4" style="text-align:center;">Loading...</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <h2 style="color: #888;">🧪 Test ve Arşiv Kayıtları</h2>
+            <h2 style="color: #888;">🧪 Test & Archive Bookings</h2>
             <div
                 style="background: #fdfdfd; border-radius: 15px; border: 1px solid #ddd; padding: 2px; overflow-x: auto; opacity: 0.8;">
                 <table id="test-table">
                     <thead>
                         <tr>
-                            <th>Müşteri (Test)</th>
-                            <th>Tarihler</th>
-                            <th>Kedi / Fiyat</th>
-                            <th>İşlem</th>
+                            <th>Customer (Test)</th>
+                            <th>Dates</th>
+                            <th>Cat / Price</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="test-list">
                         <tr>
-                            <td colspan="4" style="text-align:center;">Liste boş...</td>
+                            <td colspan="4" style="text-align:center;">List is empty...</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <h2 style="margin-top: 40px;">🗓️ Rezervasyon Takvimi</h2>
+            <h2 style="margin-top: 40px;">🗓️ Reservations Calendar</h2>
             <div id='calendar'></div>
         </div>
 
         <!-- PANEL: GALLERY MANAGEMENT -->
         <div id="gallery-panel" class="tab-panel" style="display: none;">
-            <h2>Dinamik Galeri Yönetimi</h2>
-            <p style="color: #666; margin-bottom: 25px;">Buradan eklediğiniz resim ve videolar tüm dillerdeki galeri
-                sayfalarında otomatik olarak güncellenir.</p>
+            <h2>Dynamic Gallery Management</h2>
+            <p style="color: #666; margin-bottom: 25px;">Images and videos added here are automatically updated in gallery pages across all languages.</p>
 
             <!-- Gallery Add Form -->
             <div class="gallery-form-box">
-                <h3>Yeni İçerik Ekle</h3>
+                <h3>Add New Content</h3>
                 <div id="gallery-form">
                     <div class="form-row">
                         <div>
-                            <label>İçerik Tipi</label>
+                            <label>Content Type</label>
                             <select id="gallery-type" onchange="toggleGalleryUrlPlaceholder()">
-                                <option value="image">Resim (Image)</option>
+                                <option value="image">Image</option>
                                 <option value="video">Video (YouTube)</option>
                             </select>
                         </div>
                         <div>
-                            <label>Dil (Görüneceği Sayfa)</label>
+                            <label>Language (Target Page)</label>
                             <select id="gallery-lang">
-                                <option value="all">Hepsi (All)</option>
-                                <option value="en">İngilizce</option>
-                                <option value="tr">Türkçe</option>
-                                <option value="nl">Hollandaca</option>
+                                <option value="all">All</option>
+                                <option value="en">English</option>
+                                <option value="tr">Turkish</option>
+                                <option value="nl">Dutch</option>
                             </select>
                         </div>
                         <div>
-                            <label>Sıralama</label>
+                            <label>Sorting Order</label>
                             <input type="number" id="gallery-order" value="0">
                         </div>
                     </div>
                     <div class="form-group" id="gallery-url-group">
-                        <label id="gallery-url-label">Resim URL'si</label>
+                        <label id="gallery-url-label">Image URL</label>
                         <input type="text" id="gallery-url"
                             placeholder="https://catboardingalmere.nl/assets/images/gallery/cat1.jpg">
-                        <small id="gallery-url-hint" style="color: #888;">Resimler için tam URL, videolar için sadece
-                            YouTube Video ID giriniz.</small>
+                        <small id="gallery-url-hint" style="color: #888;">Enter the full URL for images, or only the YouTube Video ID for videos.</small>
                     </div>
                     <div class="form-group" id="gallery-file-group" style="display:block; margin-top: 10px;">
-                        <label>Dosya Seç (Cihazınızdan)</label>
-                        <input type="file" id="gallery-file" accept="image/*" multiple style="padding: 5px;">
-                        <small style="color: #888; display: block;">Resmi doğrudan bilgisayarınızdan veya telefonunuzdan
-                            seçin.</small>
+                        <label>Select File (From Device)</label>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+                            <label for="gallery-file" class="btn btn-secondary" style="cursor: pointer; margin: 0; padding: 8px 16px; font-size: 0.9rem;">Choose File</label>
+                            <input type="file" id="gallery-file" accept="image/*" multiple style="display: none;" onchange="document.getElementById('gallery-file-chosen').innerText = this.files.length > 1 ? this.files.length + ' files selected' : (this.files.length === 1 ? this.files[0].name : 'No file selected')">
+                            <span id="gallery-file-chosen" style="font-size: 0.85rem; color: #666;">No file selected</span>
+                        </div>
+                        <small style="color: #888; display: block; margin-top: 5px;">Select the file directly from your computer or phone.</small>
                     </div>
                     <div style="text-align: right; margin-top: 15px;">
-                        <button type="button" class="btn" id="gallery-add-btn" onclick="saveGalleryItem()">+ Galeriye
-                            Ekle</button>
+                        <button type="button" class="btn" id="gallery-add-btn" onclick="saveGalleryItem()">+ Add to Gallery</button>
                     </div>
                 </div>
             </div>
@@ -961,22 +962,20 @@
             <!-- Gallery Items List -->
             <div id="gallery-items-container">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3>Galeri Yönetimi</h3>
+                    <h3>Gallery Library</h3>
                     <button type="button" class="btn btn-secondary"
-                        onclick="fetchGalleryItems(); fetchGalleryLogs();">🔄 Yenile</button>
+                        onclick="fetchGalleryItems(); fetchGalleryLogs();">🔄 Refresh</button>
                 </div>
 
-                <h4 style="color: #DE9999; margin: 20px 0 10px 0;">📥 Taslak Kütüphanesi (Onay Bekleyenler)</h4>
-                <p style="font-size: 0.85rem; color: #888; margin-bottom: 15px;">Buradakiler web sitesinde henüz
-                    yayınlanmamıştır. Önizleme yapıp onaylayabilirsiniz.</p>
+                <h4 style="color: #DE9999; margin: 20px 0 10px 0;">📥 Drafts Library (Pending Approval)</h4>
+                <p style="font-size: 0.85rem; color: #888; margin-bottom: 15px;">Items listed below are not published on the website yet. You can preview and approve them.</p>
                 <div id="gallery-draft-list" class="gallery-manager-grid"
                     style="margin-bottom: 40px; min-height: 100px; border: 2px dashed #eee; padding: 15px; border-radius: 15px;">
                     <!-- Draft items will be injected here -->
                 </div>
 
-                <h4 style="color: #2ecc71; margin: 20px 0 10px 0;">🌐 Yayındakiler (Canlı Site)</h4>
-                <p style="font-size: 0.85rem; color: #888; margin-bottom: 15px;">Bu içerikler şu an web sitenizde
-                    ziyaretçiler tarafından görülebilir durumdadır.</p>
+                <h4 style="color: #2ecc71; margin: 20px 0 10px 0;">🌐 Published (Live Site)</h4>
+                <p style="font-size: 0.85rem; color: #888; margin-bottom: 15px;">These items are currently live and visible to visitors on your website.</p>
                 <div id="gallery-published-list" class="gallery-manager-grid" style="min-height: 100px; padding: 15px;">
                     <!-- Published items will be injected here -->
                 </div>
@@ -984,17 +983,16 @@
 
             <!-- System Logs / Reports -->
             <div style="margin-top: 60px; background: #fafafa; padding: 25px; border-radius: 20px;">
-                <h3>📊 Sistem Raporları & İşlem Geçmişi</h3>
-                <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">Otomatik temizleme veya manuel
-                    işlemlerin kayıtlarını buradan takip edebilirsiniz.</p>
+                <h3>📊 System Logs & Action History</h3>
+                <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">You can track logs of automatic cleanups or manual operations from here.</p>
                 <div class="table-container" style="background: white;">
                     <table style="width: 100%; border-collapse: collapse; font-size: 0.85em;">
                         <thead>
                             <tr style="border-bottom: 2px solid #eee;">
-                                <th style="padding: 10px; text-align: left;">Tarih</th>
-                                <th style="padding: 10px; text-align: left;">İşlem</th>
-                                <th style="padding: 10px; text-align: left;">Detay</th>
-                                <th style="padding: 10px; text-align: left;">Kim</th>
+                                <th style="padding: 10px; text-align: left;">Date</th>
+                                <th style="padding: 10px; text-align: left;">Action</th>
+                                <th style="padding: 10px; text-align: left;">Details</th>
+                                <th style="padding: 10px; text-align: left;">User</th>
                             </tr>
                         </thead>
                         <tbody id="gallery-logs-list">
@@ -1007,47 +1005,46 @@
 
         <!-- PANEL: GUESTS MANAGEMENT -->
         <div id="guests-panel" class="tab-panel" style="display: none;">
-            <h2>Misafirlerimiz (Konuk Kartları)</h2>
-            <p style="color: #666; margin-bottom: 25px;">Buradan kedi misafirleriniz için özel kartlar
-                oluşturabilirsiniz. Kartlar "Published" yapıldığında web sitesinde görünür.</p>
+            <h2>Guest Profiles</h2>
+            <p style="color: #666; margin-bottom: 25px;">You can create custom profiles for cat guests here. Profiles will appear on the website once marked as "Published".</p>
 
             <!-- Guest Add Form -->
             <div class="gallery-form-box">
-                <h3 id="guest-form-title">Yeni Misafir Kartı Ekle</h3>
+                <h3 id="guest-form-title">Add New Guest Profile</h3>
                 <div id="guest-form">
                     <input type="hidden" id="guest-id">
                     <div class="form-row">
                         <div>
-                            <label>Kedi Adı (Cat Name)</label>
-                            <input type="text" id="guest-cat-name" placeholder="Örn: Pamuk">
+                            <label>Cat Name</label>
+                            <input type="text" id="guest-cat-name" placeholder="e.g. Pamuk">
                         </div>
                         <div>
-                            <label>Çip Numarası (Chip Number - Opsiyonel)</label>
-                            <input type="text" id="guest-chip-number" placeholder="Örn: 123456789">
-                            <small style="color: #888;">Boş ise GID kodu üretilir.</small>
+                            <label>Chip Number (Optional)</label>
+                            <input type="text" id="guest-chip-number" placeholder="e.g. 123456789">
+                            <small style="color: #888;">If empty, a GID code will be auto-generated.</small>
                         </div>
                     </div>
 
                     <div class="form-group" id="top-level-stay-dates-group">
-                        <label>Konaklama Tarihleri (Stay Dates)</label>
+                        <label>Stay Dates</label>
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <input type="date" id="stay-start-date" style="flex: 1;">
+                            <input type="text" id="stay-start-date" class="date-input-flatpickr" style="flex: 1;">
                             <span>to</span>
-                            <input type="date" id="stay-end-date" style="flex: 1;">
+                            <input type="text" id="stay-end-date" class="date-input-flatpickr" style="flex: 1;">
                         </div>
                     </div>
                     <div id="top-level-stay-dates-info" style="display: none; background: #ebf5fb; color: #3498db; border: 1px solid rgba(52, 152, 219, 0.2); padding: 10px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 15px;">
-                        Bu misafirin konaklama kayıtları aşağıda yer alan <b>Konaklama Geçmişi Yönetimi</b> bölümünden yönetilmektedir.
+                        Stay records for this guest are managed under the <b>Stay History Management</b> section below.
                     </div>
 
                     <div class="form-group">
-                        <label>Kısa Hikaye / Açıklama (Short Story)</label>
+                        <label>About This Guest</label>
                         <textarea id="guest-description" rows="3"
-                            placeholder="Kedinin karakteri ve konaklaması hakkında kısa bir bilgi..."></textarea>
+                            placeholder="A brief information about the cat's character and stay..."></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label>Özellikler / Etiketler (Tags)</label>
+                        <label>Tags</label>
                         <div id="guest-tags-container"
                             style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; background: white; padding: 15px; border-radius: 10px; border: 1px solid #ddd;">
                             <label style="cursor:pointer; font-size: 0.9rem;"><input type="checkbox"
@@ -1071,22 +1068,26 @@
 
                     <div class="form-row">
                         <div id="guest-url-group" style="flex: 2;">
-                            <label>Fotoğraf URL'si (Opsiyonel)</label>
+                            <label>Photo URL (Optional)</label>
                             <input type="text" id="guest-photo-url" placeholder="https://...">
                         </div>
                         <div style="flex: 1;">
-                            <label>Fotoğraf Yükle</label>
-                            <input type="file" id="guest-file" accept="image/*">
+                            <label>Upload Photo</label>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+                                <label for="guest-file" class="btn btn-secondary" style="cursor: pointer; margin: 0; padding: 8px 16px; font-size: 0.9rem;">Choose File</label>
+                                <input type="file" id="guest-file" accept="image/*" style="display: none;" onchange="document.getElementById('guest-file-chosen').innerText = this.files.length ? this.files[0].name : 'No file selected'">
+                                <span id="guest-file-chosen" style="font-size: 0.85rem; color: #666; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">No file selected</span>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Stay Records Management Section (Structured CRUD) -->
                     <div id="guest-stays-section" style="display: none; margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee;">
-                        <h4 style="margin-bottom: 15px; color: #4A4A4A;">Konaklama Geçmişi Yönetimi (Stays History)</h4>
+                        <h4 style="margin-bottom: 15px; color: #4A4A4A;">Stay History Management</h4>
                         
                         <!-- Legacy Stays Notice (Only shown when 0 stays exist) -->
                         <div id="legacy-stays-notice" style="display: none; background: #fffdf6; color: #d39e00; border: 1px solid rgba(211, 158, 0, 0.2); padding: 10px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 15px;">
-                            Bu misafir için yapılandırılmış konaklama kaydı bulunmamaktadır. İlk konaklama kaydını oluşturmak için aşağıdaki formu kullanabilirsiniz.
+                            No stay records configured for this guest. You can use the form below to create the first stay record.
                         </div>
 
                         <!-- Stays List Table -->
@@ -1094,13 +1095,13 @@
                             <table class="gallery-logs-table" style="width: 100%; border-collapse: collapse;">
                                 <thead>
                                     <tr style="background: #f8f9fa; border-bottom: 2px solid #eee;">
-                                        <th style="padding: 10px; text-align: left; font-size: 0.9rem; color: #666;">Giriş Tarihi</th>
-                                        <th style="padding: 10px; text-align: left; font-size: 0.9rem; color: #666;">Çıkış Tarihi</th>
-                                        <th style="padding: 10px; text-align: left; font-size: 0.9rem; color: #666;">Gece Sayısı</th>
-                                        <th style="padding: 10px; text-align: left; font-size: 0.9rem; color: #666;">Durum</th>
-                                        <th style="padding: 10px; text-align: center; font-size: 0.9rem; color: #666;">Not</th>
-                                        <th style="padding: 10px; text-align: left; font-size: 0.9rem; color: #666;">Not İşlemleri</th>
-                                        <th style="padding: 10px; text-align: right; font-size: 0.9rem; color: #666;">Konaklama İşlemleri</th>
+                                        <th style="padding: 10px; text-align: left; font-size: 0.9rem; color: #666;">Check-in Date</th>
+                                        <th style="padding: 10px; text-align: left; font-size: 0.9rem; color: #666;">Check-out Date</th>
+                                        <th style="padding: 10px; text-align: left; font-size: 0.9rem; color: #666;">Nights</th>
+                                        <th style="padding: 10px; text-align: left; font-size: 0.9rem; color: #666;">Status</th>
+                                        <th style="padding: 10px; text-align: center; font-size: 0.9rem; color: #666;">Note</th>
+                                        <th style="padding: 10px; text-align: left; font-size: 0.9rem; color: #666;">Note Actions</th>
+                                        <th style="padding: 10px; text-align: right; font-size: 0.9rem; color: #666;">Stay Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="guest-stays-list-body">
@@ -1111,30 +1112,28 @@
 
                         <!-- Stay Edit Form -->
                         <div id="stay-editor-box" style="background: #fcf9f9; padding: 15px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 15px;">
-                            <h5 id="stay-editor-title" style="margin-top: 0; margin-bottom: 10px;">Yeni Konaklama Ekle</h5>
+                            <h5 id="stay-editor-title" style="margin-top: 0; margin-bottom: 10px;">Add New Stay</h5>
                             <input type="hidden" id="stay-id">
                             <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end;">
                                 <div style="flex: 1; min-width: 150px;">
-                                    <label style="font-size: 0.85rem; color: #666; display: block; margin-bottom: 5px;">Giriş Tarihi</label>
-                                    <input type="date" id="stay-form-start-date" style="width: 100%;">
+                                    <label style="font-size: 0.85rem; color: #666; display: block; margin-bottom: 5px;">Check-in Date</label>
+                                    <input type="text" id="stay-form-start-date" class="date-input-flatpickr" style="width: 100%;">
                                 </div>
                                 <div style="flex: 1; min-width: 150px;">
-                                    <label style="font-size: 0.85rem; color: #666; display: block; margin-bottom: 5px;">Çıkış Tarihi</label>
-                                    <input type="date" id="stay-form-end-date" style="width: 100%;">
+                                    <label style="font-size: 0.85rem; color: #666; display: block; margin-bottom: 5px;">Check-out Date</label>
+                                    <input type="text" id="stay-form-end-date" class="date-input-flatpickr" style="width: 100%;">
                                 </div>
                                 <div style="display: flex; gap: 10px;">
-                                    <button type="button" class="btn btn-secondary" id="stay-cancel-btn" onclick="resetStayForm()" style="padding: 8px 15px; display: none;">Vazgeç</button>
-                                    <button type="button" class="btn" id="stay-save-btn" onclick="saveStay()" style="padding: 8px 15px;">Kaydet</button>
+                                    <button type="button" class="btn btn-secondary" id="stay-cancel-btn" onclick="resetStayForm()" style="padding: 8px 15px; display: none;">Cancel</button>
+                                    <button type="button" class="btn" id="stay-save-btn" onclick="saveStay()" style="padding: 8px 15px;">Save</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
-                        <button type="button" class="btn btn-secondary" onclick="resetGuestForm()">Vazgeç /
-                            Temizle</button>
-                        <button type="button" class="btn" id="guest-save-btn" onclick="saveGuest()">Kartı
-                            Kaydet</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetGuestForm()">Clear Form</button>
+                        <button type="button" class="btn" id="guest-save-btn" onclick="saveGuest()">Save Profile</button>
                     </div>
                 </div>
             </div>
@@ -1142,15 +1141,15 @@
             <!-- Guests List -->
             <div id="guests-items-container">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3>Misafir Kartları</h3>
+                    <h3>Guest Profiles</h3>
                     <div style="display: flex; gap: 10px;">
-                        <button type="button" class="btn btn-secondary" onclick="fetchGuests()">🔄 Yenile</button>
+                        <button type="button" class="btn btn-secondary" onclick="fetchGuests()">🔄 Refresh</button>
                     </div>
                 </div>
 
                 <div id="guests-list" class="gallery-manager-grid">
-                    <!-- Guest cards will be injected here -->
-                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #888;">Yükleniyor...</div>
+                    <!-- Guest profiles will be injected here -->
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #888;">Loading...</div>
                 </div>
             </div>
 
@@ -1159,47 +1158,47 @@
         <!-- PANEL: SECURITY -->
         <div id="security-panel" class="tab-panel" style="display: none;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>Güvenlik Ayarları</h2>
+                <h2>Security Settings</h2>
             </div>
 
             <div class="security-grid">
                 <!-- Password Change Card -->
                 <div class="security-card">
-                    <h3>🔑 Şifre Değiştir</h3>
+                    <h3>🔑 Change Password</h3>
                     <div id="password-form">
                         <div class="form-group">
-                            <label>Mevcut Şifre</label>
+                            <label>Current Password</label>
                             <input type="password" id="current-password" placeholder="••••••••">
                         </div>
                         <div class="form-group">
-                            <label>Yeni Şifre</label>
-                            <input type="password" id="new-password" placeholder="En az 6 karakter">
+                            <label>New Password</label>
+                            <input type="password" id="new-password" placeholder="At least 6 characters">
                         </div>
                         <div class="form-group">
-                            <label>Yeni Şifre (Tekrar)</label>
+                            <label>Confirm New Password</label>
                             <input type="password" id="confirm-password" placeholder="••••••••">
                         </div>
-                        <button type="button" class="btn" style="width: 100%; margin-top: 10px;" onclick="changePassword()">Şifreyi Güncelle</button>
+                        <button type="button" class="btn" style="width: 100%; margin-top: 10px;" onclick="changePassword()">Update Password</button>
                         <p id="password-msg" style="margin-top: 10px; font-size: 14px; display: none;"></p>
                     </div>
                 </div>
 
                 <!-- Trusted Devices Card -->
                 <div class="security-card">
-                    <h3>📱 Güvenilir Cihazlar</h3>
+                    <h3>📱 Trusted Devices</h3>
                     <div id="trusted-devices-list">
                         <!-- Devices injected here -->
-                        <div style="text-align: center; padding: 20px; color: #888;">Cihazlar listeleniyor...</div>
+                        <div style="text-align: center; padding: 20px; color: #888;">Listing devices...</div>
                     </div>
-                    <button type="button" class="btn btn-secondary" style="width: 100%; margin-top: 15px; font-size: 0.85rem;" onclick="logoutOthers()">Diğer Tüm Oturumları Kapat</button>
+                    <button type="button" class="btn btn-secondary" style="width: 100%; margin-top: 15px; font-size: 0.85rem;" onclick="logoutOthers()">Log Out All Other Sessions</button>
                 </div>
 
                 <!-- Security Logs Card -->
                 <div class="security-card">
-                    <h3>📜 Son Güvenlik Hareketleri</h3>
+                    <h3>📜 Recent Security Activity</h3>
                     <div id="security-logs" style="font-size: 0.85rem; max-height: 250px; overflow-y: auto;">
                         <!-- Logs injected here -->
-                        <div style="text-align: center; padding: 20px; color: #888;">Yükleniyor...</div>
+                        <div style="text-align: center; padding: 20px; color: #888;">Loading...</div>
                     </div>
                 </div>
             </div>
@@ -1215,28 +1214,28 @@
             <div style="background: #fdfdfd; padding: 20px; border-radius: 15px; border: 1px solid #eee; margin-bottom: 30px; display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap;">
                 <div>
                     <label style="display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px;">Filter From:</label>
-                    <input type="date" id="archive-date-from" style="padding: 8px; border-radius: 8px; border: 1px solid #ddd;">
+                    <input type="text" id="archive-date-from" class="date-input-flatpickr" style="padding: 8px; border-radius: 8px; border: 1px solid #ddd;">
                 </div>
                 <div>
                     <label style="display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px;">Filter To:</label>
-                    <input type="date" id="archive-date-to" style="padding: 8px; border-radius: 8px; border: 1px solid #ddd;">
+                    <input type="text" id="archive-date-to" class="date-input-flatpickr" style="padding: 8px; border-radius: 8px; border: 1px solid #ddd;">
                 </div>
-                <button type="button" class="btn btn-secondary" onclick="updateUI()">Filtrele</button>
+                <button type="button" class="btn btn-secondary" onclick="updateUI()">Filter</button>
             </div>
 
             <div style="background: white; border-radius: 15px; border: 1px solid #eee; padding: 2px; overflow-x: auto;">
                 <table id="archive-table">
                     <thead>
                         <tr>
-                            <th>Müşteri</th>
-                            <th>Tarihler</th>
-                            <th>Tutar / Ödeme</th>
-                            <th>Durum</th>
-                            <th>İşlem</th>
+                            <th>Customer</th>
+                            <th>Dates</th>
+                            <th>Amount / Payment</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="archive-list">
-                        <tr><td colspan="5" style="text-align:center;">Yükleniyor...</td></tr>
+                        <tr><td colspan="5" style="text-align:center;">Loading...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1247,36 +1246,36 @@
     <!-- Modal -->
     <div id="bookingModal" class="modal">
         <div class="modal-content">
-            <h2 id="modalTitle">Kayıt Detayları</h2>
+            <h2 id="modalTitle">Booking Details</h2>
             <div id="bookingBox">
                 <input type="hidden" id="bookingIndex">
                 <div class="form-group">
-                    <label>Müşteri Adı</label>
+                    <label>Customer Name</label>
                     <input type="text" id="customerName">
                 </div>
                 <div class="form-group">
-                    <label>Telefon Numarası</label>
+                    <label>Phone Number</label>
                     <input type="text" id="customerContact">
                 </div>
                 <div class="form-group">
-                    <label>Kedi Sayısı</label>
+                    <label>Cat Count</label>
                     <select id="catCount">
-                        <option value="1">1 Kedi (€24/gece)</option>
-                        <option value="2">2 Kedi (€42/gece)</option>
+                        <option value="1">1 Cat (€24/night)</option>
+                        <option value="2">2 Cats (€42/night)</option>
                     </select>
                 </div>
                 <div class="form-group" style="display: flex; gap: 10px;">
                     <div style="flex: 1;">
-                        <label>Geliş Tarihi</label>
-                        <input type="date" id="startDate">
+                        <label>Drop-off Date</label>
+                        <input type="text" id="startDate" class="date-input-flatpickr">
                     </div>
                     <div style="flex: 1;">
-                        <label>Gidiş Tarihi</label>
-                        <input type="date" id="endDate">
+                        <label>Pickup Date</label>
+                        <input type="text" id="endDate" class="date-input-flatpickr">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Status / Durum</label>
+                    <label>Status</label>
                     <select id="status">
                         <option value="pending">⏳ Pending Request</option>
                         <option value="confirmed">✅ Approved / Confirmed</option>
@@ -1303,20 +1302,20 @@
                     <label>WhatsApp Status: <span id="wa-status-badge" class="wa-status none">NONE</span></label>
                 </div>
                 <div class="form-group">
-                    <label>Fiyat (€)</label>
+                    <label>Price (€)</label>
                     <input type="number" step="0.01" id="price">
                 </div>
                 <div class="form-group">
-                    <label>Mesaj Dili</label>
+                    <label>Message Language</label>
                     <select id="bookingLanguage">
                         <option value="EN">English</option>
-                        <option value="NL">Nederlands</option>
-                        <option value="TR">Türkçe</option>
+                        <option value="NL">Dutch</option>
+                        <option value="TR">Turkish</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label style="display: flex; justify-content: space-between; align-items: center;">
-                        Notlar (Transfer detayları vb.)
+                        Notes (Transfer details, etc.)
                     </label>
                     <textarea id="notes" rows="2" onpaste="handlePlainPaste(event)"></textarea>
                 </div>
@@ -1331,14 +1330,14 @@
                         </div>
                         <div style="flex: 1;">
                             <label style="font-size: 0.75rem;">Payment Date</label>
-                            <input type="date" id="paymentDate">
+                            <input type="text" id="paymentDate" class="date-input-flatpickr">
                         </div>
                     </div>
                     <div class="form-group" style="display: flex; gap: 10px;">
                         <div style="flex: 1;">
                             <label style="font-size: 0.75rem;">Method</label>
                             <select id="paymentMethod">
-                                <option value="">-- Seçiniz --</option>
+                                <option value="">-- Select --</option>
                                 <option value="tikkie">Tikkie</option>
                                 <option value="cash">Cash</option>
                                 <option value="bank_transfer">Bank Transfer</option>
@@ -1359,18 +1358,18 @@
                     </div>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Kapat</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
                     <div id="editButtons" style="display:none; display:flex; gap:10px;">
                         <button type="button" class="btn btn-warning" id="reject-btn"
-                            onclick="rejectBooking(event)">Reddet</button>
+                            onclick="rejectBooking(event)">Decline</button>
                         <button type="button" class="btn btn-success" id="approve-btn"
-                            onclick="approveBooking(event)">Onayla</button>
+                            onclick="approveBooking(event)">Approve</button>
                         <button type="button" class="btn btn-danger" id="delete-btn"
-                            onclick="deleteBooking(event)">Sil</button>
+                            onclick="deleteBooking(event)">Delete</button>
                         <button type="button" class="btn btn-success" id="whatsapp-btn" onclick="sendWhatsApp()">📱
-                            WhatsApp Onayı Gönder</button>
+                            Send WhatsApp Confirmation</button>
                     </div>
-                    <button type="button" class="btn" id="save-btn" onclick="saveBookingManually(event)">Kaydet</button>
+                    <button type="button" class="btn" id="save-btn" onclick="saveBookingManually(event)">Save</button>
                 </div>
             </div>
         </div>
@@ -1379,21 +1378,21 @@
     <!-- Custom Confirm Modal -->
     <div id="customConfirmModal">
         <div class="confirm-content">
-            <h3>Emin misiniz?</h3>
-            <p id="confirmMessage">Seçtiğiniz işlemi onaylamak istiyor musunuz?</p>
+            <h3>Are you sure?</h3>
+            <p id="confirmMessage">Are you sure you want to approve the selected action?</p>
 
             <div id="wa-opt-in-container"
                 style="margin-top: 15px; text-align: left; background: #f9f9f9; padding: 10px; border-radius: 8px; border: 1px solid #eee; display: none;">
                 <label
                     style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 0.9em; color: #444;">
                     <input type="checkbox" id="send-wa-checkbox" checked style="width: 18px; height: 18px;">
-                    Müşteriye WhatsApp onay mesajı gönderilsin mi?
+                    Send WhatsApp confirmation message to the customer?
                 </label>
             </div>
 
             <div class="confirm-btns">
-                <button type="button" class="btn btn-secondary" onclick="closeConfirmModal()">Vazgeç</button>
-                <button type="button" class="btn btn-success" id="confirmYesBtn">Evet, Onayla</button>
+                <button type="button" class="btn btn-secondary" onclick="closeConfirmModal()">Cancel</button>
+                <button type="button" class="btn btn-success" id="confirmYesBtn">Yes, Confirm</button>
             </div>
         </div>
     </div>
@@ -1401,12 +1400,12 @@
     <!-- Note Reader Modal -->
     <div id="noteReaderModal" class="modal" style="display: none; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; backdrop-filter: blur(5px);">
         <div class="modal-content">
-            <h2 id="noteReaderTitle" style="margin-top: 0; color: #4A4A4A; font-size: 1.5rem;">Konaklama Notu</h2>
+            <h2 id="noteReaderTitle" style="margin-top: 0; color: #4A4A4A; font-size: 1.5rem;">Stay Note</h2>
             <p id="noteReaderDates" style="font-size: 0.9rem; color: #666; margin-bottom: 15px;"></p>
             <div id="noteReaderContent" style="background: #f9f9f9; padding: 15px; border-radius: 10px; border: 1px solid #eee; min-height: 100px; white-space: pre-wrap; font-size: 0.95rem; color: #333; margin-bottom: 15px;"></div>
             <p id="noteReaderTimestamp" style="font-size: 0.8rem; color: #999; margin-bottom: 20px;"></p>
             <div style="display: flex; justify-content: flex-end;">
-                <button type="button" class="btn btn-secondary" onclick="closeNoteReaderModal()">Kapat</button>
+                <button type="button" class="btn btn-secondary" onclick="closeNoteReaderModal()">Close</button>
             </div>
         </div>
     </div>
@@ -1414,21 +1413,200 @@
     <!-- Note Editor Modal -->
     <div id="noteEditorModal" class="modal" style="display: none; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; backdrop-filter: blur(5px);">
         <div class="modal-content">
-            <h2 id="noteEditorTitle" style="margin-top: 0; color: #4A4A4A; font-size: 1.5rem;">Not Düzenle / Ekle</h2>
+            <h2 id="noteEditorTitle" style="margin-top: 0; color: #4A4A4A; font-size: 1.5rem;">Edit / Add Note</h2>
             <p id="noteEditorDates" style="font-size: 0.9rem; color: #666; margin-bottom: 15px;"></p>
             <input type="hidden" id="note-stay-id">
             <div class="form-group">
-                <textarea id="note-editor-text" rows="6" style="width: 100%; border: 1px solid #ccc; border-radius: 10px; padding: 10px; font-family: inherit; font-size: 0.95rem; resize: vertical;" placeholder="Konaklamaya ait özel notunuzu yazınız..."></textarea>
+                <textarea id="note-editor-text" rows="6" style="width: 100%; border: 1px solid #ccc; border-radius: 10px; padding: 10px; font-family: inherit; font-size: 0.95rem; resize: vertical;" placeholder="Write your private note for this stay..."></textarea>
             </div>
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                <button type="button" class="btn btn-secondary" onclick="closeNoteEditorModal()">Vazgeç</button>
-                <button type="button" class="btn" id="note-save-btn" onclick="saveNote()">Kaydet</button>
+                <button type="button" class="btn btn-secondary" onclick="closeNoteEditorModal()">Cancel</button>
+                <button type="button" class="btn" id="note-save-btn" onclick="saveNote()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Journal Overview Modal -->
+    <div id="journalOverviewModal" class="modal" style="display: none; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; backdrop-filter: blur(5px);">
+        <div class="modal-content" style="max-width: 600px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h2 style="margin: 0; color: #4A4A4A; font-size: 1.5rem;">Stay Journal</h2>
+                <button type="button" class="btn" style="background: #27ae60; color: white;" onclick="createNewJournalEntry()">New Journal</button>
+            </div>
+            <p id="journalOverviewDates" style="font-size: 0.9rem; color: #666; margin-bottom: 15px;"></p>
+            <input type="hidden" id="journal-stay-id">
+            
+            <div id="journalOverviewContent" style="min-height: 150px; max-height: 50vh; overflow-y: auto; margin-bottom: 20px;">
+                <!-- Daily journal entries will be listed here -->
+            </div>
+            
+            <div style="display: flex; justify-content: flex-end;">
+                <button type="button" class="btn btn-secondary" onclick="closeJournalOverviewModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Journal Editor Modal -->
+    <div id="journalEditorModal" class="modal" style="display: none; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1001; backdrop-filter: blur(5px);">
+        <div class="modal-content" style="max-width: 720px; max-height: 85vh; overflow-y: auto;">
+            <h2 id="journalEditorTitle" style="margin-top: 0; color: #4A4A4A; font-size: 1.5rem;">Journal Entry</h2>
+            <p id="journalEditorDates" style="font-size: 0.9rem; color: #666; margin-bottom: 15px;"></p>
+            <input type="hidden" id="journal-entry-id">
+            
+            <div id="journal-editor-error" style="color: #e74c3c; background: #fdf2f2; border: 1px solid rgba(231, 76, 60, 0.2); padding: 10px; border-radius: 8px; font-weight: bold; font-size: 0.9rem; margin-bottom: 15px; display: none;"></div>
+            
+            <div class="form-group">
+                <label for="journal-entry-date">Date <span style="color: red;">*</span></label>
+                <input type="text" id="journal-entry-date" class="date-input-flatpickr" required>
+            </div>
+            <div class="form-group">
+                <label for="journal-general-condition">General Condition</label>
+                <textarea id="journal-general-condition" rows="3" placeholder="Cat's general mood, eating/drinking status, etc..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="journal-health-observations">Health Observations</label>
+                <textarea id="journal-health-observations" rows="3" placeholder="Physical and behavioral observations only (no diagnosis)..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="journal-private-note">Private Admin Note</label>
+                <textarea id="journal-private-note" rows="3" placeholder="Notes visible only in the admin panel..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="journal-family-message">Family Update Message</label>
+                <textarea id="journal-family-message" rows="9" placeholder="Message sent to the family..."></textarea>
+            </div>
+            
+            <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-top: 15px;">
+                <input type="checkbox" id="journal-is-sent" style="width: auto;" onchange="toggleJournalSentTime()">
+                <label for="journal-is-sent" style="margin-bottom: 0; font-weight: normal; cursor: pointer;">Update Sent</label>
+            </div>
+            
+            <div class="form-group" id="journal-sent-time-group" style="display: none;">
+                <label for="journal-sent-time">Sent Date/Time</label>
+                <input type="text" id="journal-sent-time">
+            </div>
+            
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                <button type="button" class="btn btn-secondary" onclick="closeJournalEditorModal()">Cancel</button>
+                <button type="button" class="btn btn-success" id="journal-save-btn" onclick="saveJournalEntry()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Journal View Modal -->
+    <div id="journalViewModal" class="modal" style="display: none; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1002; backdrop-filter: blur(5px);">
+        <div class="modal-content" style="max-width: 720px; max-height: 85vh; overflow-y: auto;">
+            <h2 style="margin-top: 0; color: #4A4A4A; font-size: 1.5rem;">Journal Details</h2>
+            <p id="journalViewDates" style="font-size: 0.9rem; color: #666; margin-bottom: 15px;"></p>
+            
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div>
+                    <strong style="color: #666; font-size: 0.85rem; display: block;">Date</strong>
+                    <div id="view-journal-date" style="font-size: 1.1rem; font-weight: bold;"></div>
+                </div>
+                <div>
+                    <strong style="color: #666; font-size: 0.85rem; display: block;">General Condition</strong>
+                    <div id="view-journal-general-condition" style="background: #f9f9f9; padding: 10px; border-radius: 8px; white-space: pre-wrap; border: 1px solid #eee;"></div>
+                </div>
+                <div>
+                    <strong style="color: #666; font-size: 0.85rem; display: block;">Health Observations</strong>
+                    <div id="view-journal-health-observations" style="background: #f9f9f9; padding: 10px; border-radius: 8px; white-space: pre-wrap; border: 1px solid #eee;"></div>
+                </div>
+                <div>
+                    <strong style="color: #666; font-size: 0.85rem; display: block;">Private Admin Note</strong>
+                    <div id="view-journal-private-note" style="background: #f9f9f9; padding: 10px; border-radius: 8px; white-space: pre-wrap; border: 1px solid #eee;"></div>
+                </div>
+                <div>
+                    <strong style="color: #666; font-size: 0.85rem; display: block;">Family Update Message</strong>
+                    <div id="view-journal-family-message" style="background: #f9f9f9; padding: 12px; border-radius: 8px; white-space: pre-wrap; border: 1px solid #eee; max-height: 280px; overflow-y: auto; line-height: 1.6; font-size: 0.95rem;"></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <strong style="color: #666; font-size: 0.85rem; display: block;">Sent Status</strong>
+                        <div id="view-journal-sent-status" style="font-weight: bold;"></div>
+                    </div>
+                    <div>
+                        <strong style="color: #666; font-size: 0.85rem; display: block;">Sent Time</strong>
+                        <div id="view-journal-sent-time"></div>
+                    </div>
+                </div>
+                <div>
+                    <strong style="color: #666; font-size: 0.85rem; display: block;">Last Update Date</strong>
+                    <div id="view-journal-updated-at" style="font-size: 0.85rem; color: #777;"></div>
+                </div>
+            </div>
+            
+            <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                <button type="button" class="btn btn-secondary" onclick="closeJournalViewModal()">Close</button>
             </div>
         </div>
     </div>
 
 
     <script>
+        // Date & Datetime UI Formatting Helpers (English d/m/Y format)
+        function formatToUIDate(isoString) {
+            if (!isoString) return '';
+            const parts = isoString.split('-');
+            if (parts.length === 3) {
+                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            return isoString;
+        }
+
+        function formatToUIDatetime(isoString) {
+            if (!isoString) return '';
+            const d = new Date(isoString);
+            if (isNaN(d.getTime())) return isoString;
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const year = d.getFullYear();
+            const hours = String(d.getHours()).padStart(2, '0');
+            const minutes = String(d.getMinutes()).padStart(2, '0');
+            return `${day}/${month}/${year} ${hours}:${minutes}`;
+        }
+
+        function formatStayDates(stayDatesStr) {
+            if (!stayDatesStr) return 'No dates';
+            if (stayDatesStr.includes(' - ')) {
+                const parts = stayDatesStr.split(' - ');
+                return `${formatToUIDate(parts[0])} - ${formatToUIDate(parts[1])}`;
+            }
+            return formatToUIDate(stayDatesStr);
+        }
+
+        // Flatpickr programmatic value setter
+        function setDateFieldValue(id, val) {
+            const el = document.getElementById(id);
+            if (el) {
+                if (el._flatpickr) {
+                    if (val) {
+                        el._flatpickr.setDate(val);
+                    } else {
+                        el._flatpickr.clear();
+                    }
+                } else {
+                    el.value = val || '';
+                }
+            }
+        }
+
+        // Flatpickr programmatic minDate setter
+        function setDateFieldMinLimit(id, minDateStr) {
+            const el = document.getElementById(id);
+            if (el) {
+                if (el._flatpickr) {
+                    el._flatpickr.set('minDate', minDateStr || null);
+                } else {
+                    if (minDateStr) {
+                        el.setAttribute('min', minDateStr);
+                    } else {
+                        el.removeAttribute('min');
+                    }
+                }
+            }
+        }
+
         let reservations = [];
         let calendar;
         let currentUser = null;
@@ -1473,8 +1651,7 @@
 
         // Set default archive filter
         document.addEventListener('DOMContentLoaded', () => {
-            const archiveFrom = document.getElementById('archive-date-from');
-            if (archiveFrom) archiveFrom.value = '2026-04-01';
+            setDateFieldValue('archive-date-from', '2026-04-01');
         });
 
         // Login logic
@@ -1485,6 +1662,143 @@
         }
         // Initialize App
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Flatpickr for Date inputs
+            
+            // 1. Guest Profile top-level dates
+            flatpickr("#stay-start-date", {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "d/m/Y",
+                allowInput: false,
+                onChange: function(selectedDates, dateStr) {
+                    if (dateStr) {
+                        const parts = dateStr.split('-');
+                        const date = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])));
+                        date.setUTCDate(date.getUTCDate() + 1);
+                        const minDateStr = date.toISOString().split('T')[0];
+                        setDateFieldMinLimit('stay-end-date', minDateStr);
+                        
+                        const endVal = document.getElementById('stay-end-date').value;
+                        if (endVal && endVal < minDateStr) {
+                            setDateFieldValue('stay-end-date', '');
+                        }
+                    } else {
+                        setDateFieldMinLimit('stay-end-date', '');
+                    }
+                }
+            });
+
+            flatpickr("#stay-end-date", {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "d/m/Y",
+                allowInput: false
+            });
+
+            // 2. Stay History Management dates
+            flatpickr("#stay-form-start-date", {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "d/m/Y",
+                allowInput: false,
+                onChange: function(selectedDates, dateStr) {
+                    if (dateStr) {
+                        const parts = dateStr.split('-');
+                        const date = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])));
+                        date.setUTCDate(date.getUTCDate() + 1);
+                        const minDateStr = date.toISOString().split('T')[0];
+                        setDateFieldMinLimit('stay-form-end-date', minDateStr);
+                        
+                        const endVal = document.getElementById('stay-form-end-date').value;
+                        if (endVal && endVal < minDateStr) {
+                            setDateFieldValue('stay-form-end-date', '');
+                        }
+                    } else {
+                        setDateFieldMinLimit('stay-form-end-date', '');
+                    }
+                }
+            });
+
+            flatpickr("#stay-form-end-date", {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "d/m/Y",
+                allowInput: false
+            });
+
+            // 3. Booking Details modal Drop-off / Pickup dates
+            flatpickr("#startDate", {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "d/m/Y",
+                allowInput: false,
+                onChange: function(selectedDates, dateStr) {
+                    calculateAdminPrice();
+                    syncNotesWithTemplate();
+                    if (dateStr) {
+                        setDateFieldMinLimit('endDate', dateStr);
+                        const endVal = document.getElementById('endDate').value;
+                        if (endVal && endVal < dateStr) {
+                            setDateFieldValue('endDate', '');
+                        }
+                    } else {
+                        setDateFieldMinLimit('endDate', '');
+                    }
+                }
+            });
+
+            flatpickr("#endDate", {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "d/m/Y",
+                allowInput: false,
+                onChange: function() {
+                    calculateAdminPrice();
+                    syncNotesWithTemplate();
+                }
+            });
+
+            // 4. Financials archive filters
+            flatpickr("#archive-date-from", {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "d/m/Y",
+                allowInput: false
+            });
+
+            flatpickr("#archive-date-to", {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "d/m/Y",
+                allowInput: false
+            });
+
+            // 5. Booking details payment date
+            flatpickr("#paymentDate", {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "d/m/Y",
+                allowInput: false
+            });
+
+            // 6. Journal editor date
+            flatpickr("#journal-entry-date", {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "d/m/Y",
+                allowInput: false
+            });
+
+            // Initialize Flatpickr for Datetime input
+            flatpickr("#journal-sent-time", {
+                enableTime: true,
+                dateFormat: "Y-m-d\\TH:i",
+                altInput: true,
+                altFormat: "d/m/Y H:i",
+                time_24hr: true,
+                allowInput: false
+            });
+
             const delBtn = document.getElementById('delete-btn');
             if (delBtn) delBtn.addEventListener('click', deleteBooking);
 
@@ -1547,13 +1861,13 @@
             // Dynamic Logic for Personalization
             if (status === 'confirmed') {
                 if (items.toLowerCase().includes('own food')) {
-                    personalizedNotes += lang === 'TR' ? "- Kendi mamasını getireceğiniz not edilmiştir.\n" : "- Note: We see you will bring your cat's own food.\n";
+                    personalizedNotes += lang === 'TR' ? "- Note: We see you will bring your cat's own food.\n" : "- Note: We see you will bring your cat's own food.\n";
                 }
                 if (needs.toLowerCase().includes('medication')) {
-                    personalizedNotes += lang === 'TR' ? "- İlaç rutinini giriş günü detaylandırabiliriz.\n" : "- Note: Medication routine noted; we will discuss details at check-in.\n";
+                    personalizedNotes += lang === 'TR' ? "- Note: Medication routine noted; we will discuss details at check-in.\n" : "- Note: Medication routine noted; we will discuss details at check-in.\n";
                 }
                 if (needs.toLowerCase().includes('allergy')) {
-                    personalizedNotes += lang === 'TR' ? "- Alerji bilgisi dikkatle not alınmıştır.\n" : "- Note: Allergy information has been carefully noted.\n";
+                    personalizedNotes += lang === 'TR' ? "- Note: Allergy information has been carefully noted.\n" : "- Note: Allergy information has been carefully noted.\n";
                 }
             }
 
@@ -1565,9 +1879,9 @@
                     'generic': `Hello ${name}, regarding your reservation from ${start} to ${end}...`
                 },
                 'TR': {
-                    'confirmed': `Merhaba ${name}, 🐾\n\nHarika haber — Princess & White Prince konaklamanız onaylandı. ✨\n\nRezervasyon detayları:\nGiriş: ${start}\nDönüş: ${end}\n\n${personalizedNotes}\nDostunuzu ağırlamak ve ona huzurlu, güvenli bir ortam sunmak için sabırsızlanıyoruz.\n\nSevgiler,\nEmel\nPrincess & White Prince`,
-                    'declined': `Merhaba ${name}, 🐾\n\nİsteğiniz için çok teşekkürler.\n\nMaalesef seçtiğiniz tarihler için bu rezervasyonu onaylayamıyorum. Her kedinin ihtiyacı olan sakin ve güvenli bakımı aldığından emin olmak istiyorum.\n\nAnlayışınız için teşekkürler.\n\nSevgiler,\nEmel`,
-                    'pending': `Merhaba ${name}, 🐾\n\n${start} tarihli talebinizi aldık. Müsaitlik durumunu kontrol edip size en kısa sürede döneceğiz!`
+                    'confirmed': `Hi ${name}, 🐾\n\nWonderful news — your stay with Princess & White Prince has been approved. ✨\n\nReservation details:\nCheck-in: ${start}\nCheck-out: ${end}\n\n${personalizedNotes}\nWe’re looking forward to welcoming your cat and making their stay calm, safe, and comfortable.\n\nWarm regards,\nEmel\nPrincess & White Prince`,
+                    'declined': `Hi ${name}, 🐾\n\nThank you so much for your request.\n\nI’m sorry, but unfortunately I’m not able to confirm this reservation for the selected dates. I always want to make sure every cat receives the calm, safe and personal care they need.\n\nThank you for your understanding.\n\nWarm regards,\nEmel`,
+                    'pending': `Hi ${name}, 🐾\n\nWe received your request for ${start}. We are checking our availability and will get back to you shortly!`
                 }
             };
 
@@ -1593,7 +1907,7 @@
 
             if (error) {
                 console.error(error);
-                alert("Veriler çekilirken hata oluştu!");
+                alert("An error occurred while fetching data!");
                 return;
             }
 
@@ -1655,7 +1969,7 @@
 
             // Render Real Table
             if (realList.length === 0) {
-                realTbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">Gelecek veya bekleyen gerçek kayıt bulunmuyor.</td></tr>';
+                realTbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">No upcoming or pending real bookings found.</td></tr>';
             } else {
                 realList.forEach((r) => {
                     const tr = createRow(r, todayAtMidnight);
@@ -1671,7 +1985,7 @@
 
             // Render Test Table
             if (allTests.length === 0) {
-                testTbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">Test kaydı bulunmuyor.</td></tr>';
+                testTbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">No test bookings found.</td></tr>';
             } else {
                 allTests.forEach((r) => {
                     const tr = createRow(r, todayAtMidnight, true);
@@ -1727,7 +2041,7 @@
                         <span class="cat-tag">> 7 Days</span>
                     </div>
                     <p><b>Customer:</b> ${res.customer_name}</p>
-                    <p><b>Requested:</b> ${res.dropoff_date}</p>
+                    <p><b>Requested:</b> ${formatToUIDate(res.dropoff_date)}</p>
                     <button class="btn btn-warning" style="width:100%; margin-top:10px; border-radius:8px;" onclick="editBooking('${res.id}')">
                         Review Now
                     </button>
@@ -1748,13 +2062,13 @@
             let bgStyle = "";
 
             if (r.status === 'pending' && diffDays <= 7 && !isTestRow) {
-                urgentWarning = `<div style="color:white; background:#e74c3c; font-size:11px; padding:3px 6px; border-radius:4px; display:inline-block; margin-top:5px; font-weight:bold;">🔥 ACİL ONAY: ${diffDays} Gün Kaldı!</div>`;
+                urgentWarning = `<div style="color:white; background:#e74c3c; font-size:11px; padding:3px 6px; border-radius:4px; display:inline-block; margin-top:5px; font-weight:bold;">🔥 URGENT APPROVAL: ${diffDays} Days Left!</div>`;
                 bgStyle = "background-color: #ffeaea;";
             }
 
             let statusBadge = r.status === 'confirmed'
-                ? `<span style="color:#2ecc71; font-weight:bold;">✅ Onaylı</span>`
-                : (r.status === 'test' ? `<span style="color:#7f8c8d; font-weight:bold;">🧪 Test</span>` : `<span style="color:#f39c12; font-weight:bold;">⏳ Beklemede</span>`);
+                ? `<span style="color:#2ecc71; font-weight:bold;">✅ Confirmed</span>`
+                : (r.status === 'test' ? `<span style="color:#7f8c8d; font-weight:bold;">🧪 Test</span>` : `<span style="color:#f39c12; font-weight:bold;">⏳ Pending</span>`);
 
             const tr = document.createElement('tr');
             if (bgStyle) tr.style = bgStyle;
@@ -1764,10 +2078,10 @@
 
             tr.innerHTML = `
             <td><b>${r.customer_name}</b><br><small>${r.customer_contact || 'No contact'}</small><br>${urgentWarning}</td>
-            <td>${r.dropoff_date} <br> ${r.pickup_date} <br>${statusBadge}</td>
-            <td>${r.cat_count} Kedi<br>€${r.total_price}</td>
+            <td>${formatToUIDate(r.dropoff_date)} <br> ${formatToUIDate(r.pickup_date)} <br>${statusBadge}</td>
+            <td>${r.cat_count} Cat<br>€${r.total_price}</td>
             <td style="white-space:nowrap;">
-                <button type="button" class="btn" style="padding: 6px 12px; font-size:0.8em;" onclick="editBooking('${r.id}')">İncele</button>
+                <button type="button" class="btn" style="padding: 6px 12px; font-size:0.8em;" onclick="editBooking('${r.id}')">Review</button>
                 ${waButton}
             </td>
         `;
@@ -1779,7 +2093,7 @@
             const calendarEl = document.getElementById('calendar');
             calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                locale: 'tr',
+                locale: 'en',
                 headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek' },
                 eventClick: function (info) { editBooking(info.event.id); },
                 selectable: true,
@@ -1793,7 +2107,7 @@
         function formatEvents() {
             return reservations.filter(r => r.status !== 'cancelled').map((res) => ({
                 id: res.id,
-                title: res.customer_name + (res.status === 'pending' ? ' (Beklemede)' : ''),
+                title: res.customer_name + (res.status === 'pending' ? ' (Pending)' : ''),
                 start: res.dropoff_date,
                 end: res.pickup_date ? new Date(new Date(res.pickup_date).getTime() + 86400000).toISOString().split('T')[0] : null, // +1 day for FullCalendar exclusive end
                 backgroundColor: res.status === 'confirmed' ? '#DE9999' : '#f39c12',
@@ -1814,8 +2128,8 @@
             document.getElementById('customerName').value = res.customer_name;
             document.getElementById('customerContact').value = res.customer_contact;
             document.getElementById('catCount').value = res.cat_count || "1";
-            document.getElementById('startDate').value = res.dropoff_date;
-            document.getElementById('endDate').value = res.pickup_date;
+            setDateFieldValue('startDate', res.dropoff_date);
+            setDateFieldValue('endDate', res.pickup_date);
             document.getElementById('status').value = res.status;
             document.getElementById('price').value = res.total_price || 0;
             document.getElementById('bookingLanguage').value = res.language || 'EN';
@@ -1864,7 +2178,7 @@
             if (currentMethod && !validMethods.includes(currentMethod)) currentMethod = '';
 
             document.getElementById('paymentAmount').value = res.payment_amount || 0;
-            document.getElementById('paymentDate').value = res.payment_date || '';
+            setDateFieldValue('paymentDate', res.payment_date || '');
             document.getElementById('paymentMethod').value = currentMethod || '';
             document.getElementById('paymentStatus').value = res.payment_status || 'unpaid';
             document.getElementById('internalNotes').value = res.internal_notes || '';
@@ -1875,19 +2189,19 @@
         }
 
         function openNewBookingModal(startStr = '', endStr = '') {
-            document.getElementById('modalTitle').innerText = "Yeni Rezervasyon Ekle";
+            document.getElementById('modalTitle').innerText = "Add New Booking";
             // Manuel reset
             document.getElementById('customerName').value = "";
             document.getElementById('customerContact').value = "";
             document.getElementById('catCount').value = "1";
-            document.getElementById('startDate').value = "";
-            document.getElementById('endDate').value = "";
+            setDateFieldValue('startDate', "");
+            setDateFieldValue('endDate', "");
             document.getElementById('status').value = "confirmed";
             document.getElementById('price').value = "";
             document.getElementById('notes').value = "";
             document.getElementById('bookingLanguage').value = "EN"; // Default to English for manual dashboard bookings
             document.getElementById('paymentAmount').value = "0";
-            document.getElementById('paymentDate').value = "";
+            setDateFieldValue('paymentDate', "");
             document.getElementById('paymentMethod').value = "";
             document.getElementById('paymentStatus').value = "unpaid";
             document.getElementById('internalNotes').value = "";
@@ -1901,11 +2215,11 @@
             document.getElementById('editButtons').style.display = "none";
             document.getElementById('whatsapp-btn').style.display = "none";
 
-            if (startStr) document.getElementById('startDate').value = startStr;
+            if (startStr) setDateFieldValue('startDate', startStr);
             if (endStr) {
                 let d = new Date(endStr);
                 d.setDate(d.getDate() - 1);
-                document.getElementById('endDate').value = d.toISOString().split('T')[0];
+                setDateFieldValue('endDate', d.toISOString().split('T')[0]);
             }
 
             toggleModalButtons(false); // Ensure buttons are clickable
@@ -1925,7 +2239,7 @@
         async function checkSession() {
             const { data: { session }, error } = await supabase.auth.getSession();
             if (error || !session) {
-                alert("Oturumunuzun süresi dolmuş. Lütfen tekrar giriş yapın.");
+                alert("Your session has expired. Please log in again.");
                 location.reload();
                 return false;
             }
@@ -1961,14 +2275,14 @@
             if (event) { event.preventDefault(); event.stopPropagation(); }
             if (!(await checkSession())) return;
 
-            showConfirm("Bu rezervasyonu onaylamak istediğinizden emin misiniz?", async () => {
+            showConfirm("Are you sure you want to confirm this reservation?", async () => {
                 const btn = document.getElementById('approve-btn');
-                btn.innerHTML = "Onaylanıyor...";
+                btn.innerHTML = "Confirming...";
                 toggleModalButtons(true);
 
                 document.getElementById('status').value = 'confirmed';
 
-                // Onay kutucuğu işaretliyse WA bayrağını set et
+                // If confirmation checkbox is checked, set WA flag
                 const waCheckbox = document.getElementById('send-wa-checkbox');
                 if (waCheckbox && waCheckbox.checked) {
                     window._pendingWA = true;
@@ -1984,9 +2298,9 @@
             if (event) { event.preventDefault(); event.stopPropagation(); }
             if (!(await checkSession())) return;
 
-            showConfirm("Bu rezervasyonu iptal etmek istediğinizden emin misiniz?", async () => {
+            showConfirm("Are you sure you want to cancel this reservation?", async () => {
                 const btn = document.getElementById('reject-btn');
-                btn.innerHTML = "İptal Ediliyor...";
+                btn.innerHTML = "Cancelling...";
                 toggleModalButtons(true);
 
                 document.getElementById('status').value = 'cancelled';
@@ -2009,12 +2323,12 @@
             const pMethod = document.getElementById('paymentMethod').value;
 
             if (pStatus !== 'unpaid' && !pMethod) {
-                alert("Lütfen ödeme yöntemini seçiniz (Partial/Paid durumları için zorunludur).");
+                alert("Please select a payment method (required for Partial/Paid statuses).");
                 return;
             }
 
             if (!name || !contact || !start || !end) {
-                alert("Lütfen tüm zorunlu alanları doldurun.");
+                alert("Please fill in all required fields.");
                 return;
             }
 
@@ -2028,7 +2342,7 @@
 
             try {
                 toggleModalButtons(true);
-                if (saveBtn.innerHTML === "Kaydet") saveBtn.innerHTML = "Kayıt...";
+                if (saveBtn.innerHTML === "Save") saveBtn.innerHTML = "Saving...";
 
                 const payload = {
                     customer_name: name,
@@ -2071,12 +2385,12 @@
                     // AUTOMATIC WA (No prompt)
                     sendWhatsAppFor(id || 'latest', payload);
                 } else {
-                    alert("Kayıt başarıyla kaydedildi.");
+                    alert("Booking saved successfully.");
                 }
 
             } catch (error) {
                 console.error("Save Error:", error);
-                alert("Hata Oluştu: " + error.message);
+                alert("An error occurred: " + error.message);
             } finally {
                 toggleModalButtons(false);
                 saveBtn.innerHTML = originalSaveText;
@@ -2093,20 +2407,20 @@
 
             if (!(await checkSession())) return;
 
-            showConfirm('Bu kaydı tamamen SİLMEK istediğinize emin misiniz?', async () => {
+            showConfirm('Are you sure you want to completely DELETE this booking?', async () => {
                 try {
                     toggleModalButtons(true);
                     const { error } = await supabase.from('reservations').delete().eq('id', id);
                     if (!error) {
-                        alert("Kayıt başarıyla silindi.");
+                        alert("Booking deleted successfully.");
                         closeModal();
                         fetchData();
                     } else {
-                        alert("Silme işlemi başarısız: " + error.message);
+                        alert("Deletion failed: " + error.message);
                     }
                 } catch (err) {
                     console.error("Delete Error:", err);
-                    alert("Silme sırasında beklenmeyen bir hata oluştu.");
+                    alert("An unexpected error occurred during deletion.");
                 } finally {
                     toggleModalButtons(false);
                 }
@@ -2194,11 +2508,11 @@
                 btn.classList.remove('active');
                 // Check if button text matches target tab
                 const text = btn.innerText.toLowerCase();
-                if (tabName === 'reservations' && text.includes('rezervasyon')) btn.classList.add('active');
-                else if (tabName === 'financials' && text.includes('arşiv')) btn.classList.add('active');
-                else if (tabName === 'gallery' && text.includes('galeri')) btn.classList.add('active');
-                else if (tabName === 'guests' && text.includes('misafir')) btn.classList.add('active');
-                else if (tabName === 'security' && text.includes('güvenlik')) btn.classList.add('active');
+                if (tabName === 'reservations' && text.includes('reservations')) btn.classList.add('active');
+                else if (tabName === 'financials' && text.includes('archive')) btn.classList.add('active');
+                else if (tabName === 'gallery' && text.includes('gallery')) btn.classList.add('active');
+                else if (tabName === 'guests' && text.includes('guests')) btn.classList.add('active');
+                else if (tabName === 'security' && text.includes('security')) btn.classList.add('active');
             });
 
             // Update Panels
@@ -2217,7 +2531,7 @@
             } else if (tabName === 'security') {
                 fetchSecurityData();
             } else if (tabName === 'financials') {
-                document.getElementById('archive-date-from').value = '2026-04-01';
+                setDateFieldValue('archive-date-from', '2026-04-01');
                 populateArchive(reservations);
             }
         }
@@ -2242,7 +2556,7 @@
             if (error) return;
 
             tbody.innerHTML = data.map(log => {
-                const date = new Date(log.created_at).toLocaleString('tr-TR');
+                const date = formatToUIDatetime(log.created_at);
                 const actionColors = {
                     'UPLOAD': 'blue',
                     'APPROVE': 'green',
@@ -2270,7 +2584,7 @@
             const fileGroup = document.getElementById('gallery-file-group');
 
             if (type === 'image') {
-                label.innerText = 'Resim URL\'si';
+                label.innerText = 'Image URL';
                 input.placeholder = 'https://.../assets/images/gallery/cat1.jpg';
                 urlGroup.style.display = 'block';
                 fileGroup.style.display = 'block';
@@ -2294,7 +2608,7 @@
             if (to) filtered = filtered.filter(r => r.dropoff_date <= to);
 
             if (filtered.length === 0) {
-                list.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#888;">Filtreye uygun kayıt bulunamadı.</td></tr>';
+                list.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#888;">No bookings found matching the filters.</td></tr>';
                 return;
             }
 
@@ -2314,17 +2628,17 @@
                 
                 tr.innerHTML = `
                     <td><b>${r.customer_name}</b><br><small>${r.customer_contact || ''}</small></td>
-                    <td>${r.dropoff_date}<br>${r.pickup_date}</td>
+                    <td>${formatToUIDate(r.dropoff_date)}<br>${formatToUIDate(r.pickup_date)}</td>
                     <td>€${r.total_price}<br><small>Rec: €${r.payment_amount || 0}</small></td>
                     <td>${paymentBadge}</td>
-                    <td><button class="btn" style="padding:4px 8px; font-size:0.75rem;" onclick="editBooking('${r.id}')">İncele</button></td>
+                    <td><button class="btn" style="padding:4px 8px; font-size:0.75rem;" onclick="editBooking('${r.id}')">Review</button></td>
                 `;
                 list.appendChild(tr);
             });
         }
 
         async function exportToCSV() {
-            if (!currentUser) return alert("Yetkiniz yok.");
+            if (!currentUser) return alert("Unauthorized.");
             
             const from = document.getElementById('archive-date-from').value;
             const to = document.getElementById('archive-date-to').value;
@@ -2333,7 +2647,7 @@
             if (from) data = data.filter(r => r.dropoff_date >= from);
             if (to) data = data.filter(r => r.dropoff_date <= to);
 
-            if (data.length === 0) return alert("Dışa aktarılacak veri yok.");
+            if (data.length === 0) return alert("No data to export.");
 
             const headers = ["Customer", "Cat Count", "Drop-off", "Pick-up", "Total Price", "Paid Amount", "Method", "Status", "Payment Date", "Notes"];
             const rows = data.map(r => [
@@ -2364,8 +2678,8 @@
             const draftContainer = document.getElementById('gallery-draft-list');
             const liveContainer = document.getElementById('gallery-published-list');
 
-            draftContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #888;">Yükleniyor...</div>';
-            liveContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #888;">Yükleniyor...</div>';
+            draftContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #888;">Loading...</div>';
+            liveContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #888;">Loading...</div>';
 
             const { data, error } = await supabase
                 .from('gallery')
@@ -2381,8 +2695,8 @@
             const drafts = data.filter(i => i.status === 'draft');
             const published = data.filter(i => i.status === 'published');
 
-            draftContainer.innerHTML = drafts.length ? '' : '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #ccc;">Boş (Onay Bekleyen Yok)</div>';
-            liveContainer.innerHTML = published.length ? '' : '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #ccc;">Yayında içerik bulunmuyor.</div>';
+            draftContainer.innerHTML = drafts.length ? '' : '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #ccc;">Empty (No Pending Approval)</div>';
+            liveContainer.innerHTML = published.length ? '' : '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #ccc;">No published content found.</div>';
 
             data.forEach(item => {
                 const card = document.createElement('div');
@@ -2401,18 +2715,18 @@
                 }
 
                 const actionBtn = item.status === 'draft'
-                    ? `<button class="btn btn-success" style="padding: 4px 10px; font-size: 0.75rem;" onclick="updateGalleryStatus('${item.id}', 'published')">✅ Yayınla</button>`
-                    : `<button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;" onclick="updateGalleryStatus('${item.id}', 'draft')">📥 Havuza Al</button>`;
+                    ? `<button class="btn btn-success" style="padding: 4px 10px; font-size: 0.75rem;" onclick="updateGalleryStatus('${item.id}', 'published')">✅ Publish</button>`
+                    : `<button class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.75rem;" onclick="updateGalleryStatus('${item.id}', 'draft')">📥 Unpublish</button>`;
 
                 card.innerHTML = `
-                <span class="gallery-item-type">${item.type === 'image' ? '🖼️ Resim' : '🎥 Video'}</span>
+                <span class="gallery-item-type">${item.type === 'image' ? '🖼️ Image' : '🎥 Video'}</span>
                 ${preview}
                 <div class="gallery-item-info">
                     <div style="display: flex; flex-direction: column; gap: 5px;">
                         <span style="font-size: 0.8rem; color: #888; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.url}</span>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                              <div>${actionBtn}</div>
-                            <button class="btn btn-danger" style="padding: 4px 10px; font-size: 0.75rem;" onclick="deleteGalleryItem('${item.id}', '${item.url}')">Sil</button>
+                            <button class="btn btn-danger" style="padding: 4px 10px; font-size: 0.75rem;" onclick="deleteGalleryItem('${item.id}', '${item.url}')">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -2427,7 +2741,7 @@
             if (!(await checkSession())) return;
             const { error } = await supabase.from('gallery').update({ status: newStatus }).eq('id', id);
             if (!error) {
-                await logGalleryAction(newStatus === 'published' ? 'APPROVE' : 'UNPUBLISH', `ID: ${id} durumu ${newStatus} yapıldı.`);
+                await logGalleryAction(newStatus === 'published' ? 'APPROVE' : 'UNPUBLISH', `ID: ${id} status set to ${newStatus}.`);
                 fetchGalleryItems();
                 fetchGalleryLogs();
             }
@@ -2465,7 +2779,7 @@
                             await supabase.storage.from('gallery').remove([fileName]);
                         }
                         await supabase.from('gallery').delete().eq('id', item.id);
-                        await logGalleryAction('AUTO_DELETE', `Kapasite dolduğu için en eski içerik (${item.url}) sistem tarafından silindi.`, 'System');
+                        await logGalleryAction('AUTO_DELETE', `Oldest content (${item.url}) was deleted automatically due to capacity limit.`, 'System');
                     }
                 }
 
@@ -2474,7 +2788,7 @@
                 if (type === 'image' && fileInput.files.length > 0) {
                     const files = fileInput.files;
                     for (let i = 0; i < files.length; i++) {
-                        saveBtn.innerHTML = `Yükleniyor (${i + 1}/${files.length})...`;
+                        saveBtn.innerHTML = `Uploading (${i + 1}/${files.length})...`;
                         const file = files[i];
                         const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${file.name.split('.').pop()}`;
                         const { error: upErr } = await supabase.storage.from('gallery').upload(fileName, file);
@@ -2484,24 +2798,24 @@
                     }
                 } else {
                     let url = urlInput.value.trim();
-                    if (!url) throw new Error('Lütfen URL giriniz veya dosya seçiniz.');
+                    if (!url) throw new Error('Please enter a URL or select a file.');
                     uploadObjects.push({ type, url, title: lang, order_index: order, status: 'draft' });
                 }
 
                 const { error: dbError } = await supabase.from('gallery').insert(uploadObjects);
                 if (dbError) throw dbError;
 
-                await logGalleryAction('UPLOAD', `${uploadObjects.length} yeni içerik havuza eklendi.`, currentUser?.email);
+                await logGalleryAction('UPLOAD', `${uploadObjects.length} new contents added to the pool.`, currentUser?.email);
 
                 urlInput.value = '';
                 fileInput.value = '';
                 fetchGalleryItems();
                 fetchGalleryLogs();
-                alert("İçerikler kütüphaneye eklendi. Lütfen yayına almak için onaylayın.");
+                alert("Contents added to the library. Please approve them to go live.");
 
             } catch (err) {
                 console.error(err);
-                alert("Hata: " + err.message);
+                alert("Error: " + err.message);
             } finally {
                 saveBtn.innerHTML = originalText;
                 saveBtn.disabled = false;
@@ -2510,7 +2824,7 @@
 
         async function deleteGalleryItem(id, url) {
             if (!(await checkSession())) return;
-            showConfirm('Bu içeriği tamamen silmek istediğinizden emin misiniz?', async () => {
+            showConfirm('Are you sure you want to completely delete this content?', async () => {
                 try {
                     // Delete from storage if possible
                     if (url && url.includes('storage/v1/object/public/gallery/')) {
@@ -2519,7 +2833,7 @@
                     }
                     const { error } = await supabase.from('gallery').delete().eq('id', id);
                     if (!error) {
-                        await logGalleryAction('MANUAL_DELETE', `İçerik silindi: ${url}`, currentUser?.email);
+                        await logGalleryAction('MANUAL_DELETE', `Content deleted: ${url}`, currentUser?.email);
                         fetchGalleryItems();
                         fetchGalleryLogs();
                     }
@@ -2569,7 +2883,7 @@
 
         async function fetchGuests() {
             const container = document.getElementById('guests-list');
-            container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #888;">Yükleniyor...</div>';
+            container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #888;">Loading...</div>';
 
             try {
                 const { data, error } = await supabase
@@ -2582,13 +2896,13 @@
                 renderGuests();
             } catch (error) {
                 console.error("Fetch Guests Error:", error);
-                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #e74c3c;">Hata: Veri yüklenemedi. (${error.message})</div>`;
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #e74c3c;">Error: Failed to load data. (${error.message})</div>`;
             }
         }
 
         function renderGuests() {
             const container = document.getElementById('guests-list');
-            container.innerHTML = guestList.length ? '' : '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #ccc;">Henüz misafir kartı eklenmemiş.</div>';
+            container.innerHTML = guestList.length ? '' : '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #ccc;">No guest profiles added yet.</div>';
 
             guestList.forEach(guest => {
                 const card = document.createElement('div');
@@ -2607,14 +2921,14 @@
                 <div class="gallery-item-info">
                     <h4 style="margin: 0 0 5px 0;">${guest.cat_name}</h4>
                     <p style="font-size: 0.8rem; color: #D9A3A3; font-weight: bold; margin-bottom: 5px;">${codeDisplay}</p>
-                    <p style="font-size: 0.8rem; color: #888; margin-bottom: 5px;">${guest.stay_dates || 'No dates'}</p>
+                    <p style="font-size: 0.8rem; color: #888; margin-bottom: 5px;">${formatStayDates(guest.stay_dates)}</p>
                     <div style="margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 2px;">${tagsHtml}</div>
                     <div style="display: flex; justify-content: space-between; align-items: center; gap: 5px;">
-                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.75rem;" onclick="editGuest('${guest.id}')">Düzenle</button>
+                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.75rem;" onclick="editGuest('${guest.id}')">Edit</button>
                         <button class="btn ${guest.status === 'published' ? 'btn-warning' : 'btn-success'}" style="padding: 4px 8px; font-size: 0.75rem;" onclick="toggleGuestStatus('${guest.id}', '${guest.status}')">
-                            ${guest.status === 'published' ? 'Taslağa Al' : 'Yayınla'}
+                            ${guest.status === 'published' ? 'Set to Draft' : 'Publish'}
                         </button>
-                        <button class="btn btn-danger" style="padding: 4px 8px; font-size: 0.75rem;" onclick="deleteGuest('${guest.id}')">Sil</button>
+                        <button class="btn btn-danger" style="padding: 4px 8px; font-size: 0.75rem;" onclick="deleteGuest('${guest.id}')">Delete</button>
                     </div>
                 </div>
             `;
@@ -2640,19 +2954,19 @@
             const saveBtn = document.getElementById('guest-save-btn');
 
             if (!cat_name) {
-                alert("Lütfen kedi adını giriniz.");
+                alert("Please enter the cat's name.");
                 return;
             }
 
             // If creating a new guest and dates are filled, pre-validate start/end date order
             if (!id && start && end && end <= start) {
-                alert("Çıkış tarihi giriş tarihinden sonra olmalıdır.");
+                alert("Check-out date must be after check-in date.");
                 return;
             }
 
             try {
                 saveBtn.disabled = true;
-                saveBtn.innerText = "Kaydediliyor...";
+                saveBtn.innerText = "Saving...";
 
                 // 1. Handle File Upload if exists
                 if (fileInput.files.length > 0) {
@@ -2739,22 +3053,22 @@
                     
                     if (stayError) {
                         hasStayError = true;
-                        alert("Misafir kartı oluşturuldu ancak ilk konaklama kaydı oluşturulamadı: " + stayError.message);
+                        alert("Guest profile was created but the first stay record could not be created: " + stayError.message);
                     }
                 }
 
                 if (!hasStayError) {
-                    alert("Misafir kartı başarıyla kaydedildi.");
+                    alert("Guest profile successfully saved.");
                 }
                 resetGuestForm();
                 fetchGuests();
 
             } catch (error) {
                 console.error("Save Guest Error:", error);
-                alert("Hata Oluştu: " + error.message);
+                alert("An error occurred: " + error.message);
             } finally {
                 saveBtn.disabled = false;
-                saveBtn.innerText = "Kartı Kaydet";
+                saveBtn.innerText = "Save Card";
             }
         }
 
@@ -2773,16 +3087,16 @@
 
             if (guest.stay_dates && guest.stay_dates.includes(' - ')) {
                 const parts = guest.stay_dates.split(' - ');
-                document.getElementById('stay-start-date').value = parts[0] || '';
-                document.getElementById('stay-end-date').value = parts[1] || '';
+                setDateFieldValue('stay-start-date', parts[0] || '');
+                setDateFieldValue('stay-end-date', parts[1] || '');
             } else {
-                document.getElementById('stay-start-date').value = '';
-                document.getElementById('stay-end-date').value = '';
+                setDateFieldValue('stay-start-date', '');
+                setDateFieldValue('stay-end-date', '');
             }
 
             document.getElementById('guest-description').value = guest.description || '';
             document.getElementById('guest-photo-url').value = guest.photo_url || '';
-            document.getElementById('guest-form-title').innerText = 'Misafir Kartını Düzenle: ' + guest.cat_name;
+            document.getElementById('guest-form-title').innerText = 'Edit Guest Profile: ' + guest.cat_name;
 
             const tags = guest.tags ? guest.tags.split(',').map(t => t.trim()) : [];
             const checkboxes = document.querySelectorAll('#guest-tags-container input[type="checkbox"]');
@@ -2807,13 +3121,13 @@
                 if (error) throw error;
                 fetchGuests();
             } catch (error) {
-                alert("Durum güncellenirken hata oluştu: " + error.message);
+                alert("An error occurred while updating status: " + error.message);
             }
         }
 
         async function deleteGuest(id) {
             if (!(await checkSession())) return;
-            if (!confirm('Bu misafir kartını silmek istediğinizden emin misiniz?')) return;
+            if (!confirm('Are you sure you want to delete this guest profile?')) return;
             
             try {
                 const { error } = await supabase
@@ -2824,7 +3138,7 @@
                 if (error) throw error;
                 fetchGuests();
             } catch (error) {
-                alert("Silme işlemi başarısız: " + error.message);
+                alert("Deletion failed: " + error.message);
             }
         }
 
@@ -2832,13 +3146,15 @@
             document.getElementById('guest-id').value = '';
             document.getElementById('guest-cat-name').value = '';
             document.getElementById('guest-chip-number').value = '';
-            document.getElementById('stay-start-date').value = '';
-            document.getElementById('stay-end-date').value = '';
-            document.getElementById('stay-end-date').removeAttribute('min'); // Clear top-level end date min attribute
+            setDateFieldValue('stay-start-date', '');
+            setDateFieldValue('stay-end-date', '');
+            setDateFieldMinLimit('stay-end-date', '');
             document.getElementById('guest-description').value = '';
             document.getElementById('guest-photo-url').value = '';
             document.getElementById('guest-file').value = '';
-            document.getElementById('guest-form-title').innerText = 'Yeni Misafir Kartı Ekle';
+            const guestFileChosen = document.getElementById('guest-file-chosen');
+            if (guestFileChosen) guestFileChosen.innerText = 'No file selected';
+            document.getElementById('guest-form-title').innerText = 'Add New Guest Profile';
 
             const checkboxes = document.querySelectorAll('#guest-tags-container input[type="checkbox"]');
             checkboxes.forEach(cb => cb.checked = false);
@@ -2958,13 +3274,13 @@
                 // Clear/hide stays table content and show error message
                 const tbody = document.getElementById('guest-stays-list-body');
                 if (tbody) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#e74c3c; padding:15px; font-weight:bold;">Hata: Konaklama kayıtları yüklenemedi.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#e74c3c; padding:15px; font-weight:bold;">Error: Stay records could not be loaded.</td></tr>';
                 }
                 
                 const legacyNotice = document.getElementById('legacy-stays-notice');
                 if (legacyNotice) legacyNotice.style.display = 'none';
 
-                alert("Konaklama geçmişi yüklenirken bir hata oluştu.");
+                alert("An error occurred while loading stay history.");
                 document.getElementById('guest-stays-section').style.display = 'block';
             }
         }
@@ -2974,7 +3290,7 @@
             tbody.innerHTML = '';
 
             if (guestStaysList.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#888; padding:15px;">Konaklama kaydı bulunmuyor.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#888; padding:15px;">No stay records found.</td></tr>';
                 return;
             }
 
@@ -3023,32 +3339,33 @@
                     `;
                 }
 
-                // Column 6: Not İşlemleri
+                // Column 6: Note Actions
                 let noteActionHTML = '';
                 if (hasNote) {
                     noteActionHTML = `
-                        <button type="button" class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.75rem; margin-right: 5px;" onclick="openNoteEditor('${stay.id}', '${stay.start_date}', '${stay.end_date}')">Düzenle</button>
-                        <button type="button" class="btn btn-danger" style="padding: 4px 8px; font-size: 0.75rem;" onclick="deleteNote('${stay.id}', '${stay.start_date}', '${stay.end_date}')">Sil</button>
+                        <button type="button" class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.75rem; margin-right: 5px;" onclick="openNoteEditor('${stay.id}', '${stay.start_date}', '${stay.end_date}')">Edit</button>
+                        <button type="button" class="btn btn-danger" style="padding: 4px 8px; font-size: 0.75rem;" onclick="deleteNote('${stay.id}', '${stay.start_date}', '${stay.end_date}')">Delete</button>
                     `;
                 } else {
                     noteActionHTML = `
-                        <button type="button" class="btn" style="padding: 4px 8px; font-size: 0.75rem; background: #3498db; color: white;" onclick="openNoteEditor('${stay.id}', '${stay.start_date}', '${stay.end_date}')">Not ekle</button>
+                        <button type="button" class="btn" style="padding: 4px 8px; font-size: 0.75rem; background: #3498db; color: white;" onclick="openNoteEditor('${stay.id}', '${stay.start_date}', '${stay.end_date}')">Add note</button>
                     `;
                 }
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td style="padding: 10px; border-bottom: 1px solid #eee;">${stay.start_date}</td>
-                    <td style="padding: 10px; border-bottom: 1px solid #eee;">${stay.end_date}</td>
-                    <td style="padding: 10px; border-bottom: 1px solid #eee;">${nights} gece</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">${formatToUIDate(stay.start_date)}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">${formatToUIDate(stay.end_date)}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">${nights} nights</td>
                     <td style="padding: 10px; border-bottom: 1px solid #eee;">
                         <span class="stay-status-badge ${statusClass}">${statusLabel}</span>
                     </td>
                     <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">${noteColHTML}</td>
                     <td style="padding: 10px; border-bottom: 1px solid #eee;">${noteActionHTML}</td>
                     <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">
-                        <button type="button" class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.75rem; margin-right: 5px;" onclick="editStay('${stay.id}')">Düzenle</button>
-                        <button type="button" class="btn btn-danger" style="padding: 4px 8px; font-size: 0.75rem;" onclick="deleteStay('${stay.id}')">Sil</button>
+                        <button type="button" class="btn" style="padding: 4px 8px; font-size: 0.75rem; background: #9b59b6; color: white; margin-right: 5px;" onclick="openJournalOverview('${stay.id}', '${stay.start_date}', '${stay.end_date}')">Open Journal</button>
+                        <button type="button" class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.75rem; margin-right: 5px;" onclick="editStay('${stay.id}')">Edit</button>
+                        <button type="button" class="btn btn-danger" style="padding: 4px 8px; font-size: 0.75rem;" onclick="deleteStay('${stay.id}')">Delete</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -3060,13 +3377,13 @@
 
             // Guard currentGuestId in saveStay()
             if (!currentGuestId) {
-                alert("Lütfen önce bir misafir kartı seçiniz veya kaydediniz.");
+                alert("Please select or save a guest profile first.");
                 return;
             }
 
             // Guard loading-state
             if (currentGuestStaysLoadedSuccessfully !== true) {
-                alert("Konaklama kayıtları güvenli şekilde yüklenmeden işlem yapılamaz. Lütfen tekrar deneyiniz.");
+                alert("Action cannot be performed before stay records are successfully loaded. Please try again.");
                 return;
             }
 
@@ -3076,12 +3393,12 @@
             const end = document.getElementById('stay-form-end-date').value;
 
             if (!start || !end) {
-                alert("Lütfen giriş ve çıkış tarihlerini seçiniz.");
+                alert("Please select check-in and check-out dates.");
                 return;
             }
 
             if (end <= start) {
-                alert("Çıkış tarihi giriş tarihinden sonra olmalıdır.");
+                alert("Check-out date must be after check-in date.");
                 return;
             }
 
@@ -3092,14 +3409,14 @@
             });
 
             if (overlap) {
-                alert("Bu tarihler başka bir konaklama kaydıyla çakışmaktadır.");
+                alert("These dates conflict with another stay record.");
                 return;
             }
 
             try {
                 if (staySaveBtn) {
                     staySaveBtn.disabled = true;
-                    staySaveBtn.innerText = "Kaydediliyor...";
+                    staySaveBtn.innerText = "Saving...";
                 }
 
                 let error;
@@ -3124,16 +3441,16 @@
 
                 if (error) throw error;
 
-                alert("Konaklama kaydı başarıyla kaydedildi.");
+                alert("Stay record successfully saved.");
                 resetStayForm();
                 await fetchStaysForGuest(currentGuestId);
             } catch (err) {
                 console.error("Save Stay Error:", err);
-                alert("Kaydedilemedi: " + err.message);
+                alert("Failed to save: " + err.message);
             } finally {
                 if (staySaveBtn) {
                     staySaveBtn.disabled = false;
-                    staySaveBtn.innerText = "Kaydet";
+                    staySaveBtn.innerText = "Save";
                 }
             }
         }
@@ -3148,13 +3465,13 @@
                 const date = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])));
                 date.setUTCDate(date.getUTCDate() + 1);
                 const minDateStr = date.toISOString().split('T')[0];
-                document.getElementById('stay-form-end-date').setAttribute('min', minDateStr);
+                setDateFieldMinLimit('stay-form-end-date', minDateStr);
             }
 
             document.getElementById('stay-id').value = stay.id;
-            document.getElementById('stay-form-start-date').value = stay.start_date;
-            document.getElementById('stay-form-end-date').value = stay.end_date;
-            document.getElementById('stay-editor-title').innerText = "Konaklama Kaydını Düzenle";
+            setDateFieldValue('stay-form-start-date', stay.start_date);
+            setDateFieldValue('stay-form-end-date', stay.end_date);
+            document.getElementById('stay-editor-title').innerText = "Edit Stay Record";
             document.getElementById('stay-cancel-btn').style.display = "inline-flex";
         }
 
@@ -3164,7 +3481,7 @@
             const stay = guestStaysList.find(s => s.id === stayId);
             if (!stay) return;
 
-            if (!confirm(`Bu misafirin ${stay.start_date} - ${stay.end_date} tarihlerindeki konaklamasını silmek istediğinizden emin misiniz?`)) {
+            if (!confirm(`Are you sure you want to delete this guest's stay from ${stay.start_date} to ${stay.end_date}?`)) {
                 return;
             }
 
@@ -3176,7 +3493,7 @@
 
                 if (error) throw error;
 
-                alert("Konaklama kaydı başarıyla silindi.");
+                alert("Stay record successfully deleted.");
                 
                 // Reset form if we were editing the deleted stay
                 if (document.getElementById('stay-id').value === stayId) {
@@ -3186,61 +3503,20 @@
                 await fetchStaysForGuest(currentGuestId);
             } catch (err) {
                 console.error("Delete Stay Error:", err);
-                alert("Silme işlemi başarısız: " + err.message);
+                alert("Deletion failed: " + err.message);
             }
         }
 
         function resetStayForm() {
             document.getElementById('stay-id').value = '';
-            document.getElementById('stay-form-start-date').value = '';
-            document.getElementById('stay-form-end-date').value = '';
-            document.getElementById('stay-form-end-date').removeAttribute('min'); // Clear Stay Manager end date min attribute
-            document.getElementById('stay-editor-title').innerText = "Yeni Konaklama Ekle";
+            setDateFieldValue('stay-form-start-date', '');
+            setDateFieldValue('stay-form-end-date', '');
+            setDateFieldMinLimit('stay-form-end-date', '');
+            document.getElementById('stay-editor-title').innerText = "Add New Stay";
             document.getElementById('stay-cancel-btn').style.display = "none";
         }
 
-        // Auto-guided min dates validation for checkout
-        document.addEventListener('DOMContentLoaded', () => {
-            const topLevelStart = document.getElementById('stay-start-date');
-            const topLevelEnd = document.getElementById('stay-end-date');
-            if (topLevelStart && topLevelEnd) {
-                topLevelStart.addEventListener('change', () => {
-                    const val = topLevelStart.value;
-                    if (val) {
-                        const parts = val.split('-');
-                        const date = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])));
-                        date.setUTCDate(date.getUTCDate() + 1);
-                        const minDateStr = date.toISOString().split('T')[0];
-                        topLevelEnd.setAttribute('min', minDateStr);
-                        if (topLevelEnd.value && topLevelEnd.value < minDateStr) {
-                            topLevelEnd.value = '';
-                        }
-                    } else {
-                        topLevelEnd.removeAttribute('min');
-                    }
-                });
-            }
-
-            const stayFormStart = document.getElementById('stay-form-start-date');
-            const stayFormEnd = document.getElementById('stay-form-end-date');
-            if (stayFormStart && stayFormEnd) {
-                stayFormStart.addEventListener('change', () => {
-                    const val = stayFormStart.value;
-                    if (val) {
-                        const parts = val.split('-');
-                        const date = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])));
-                        date.setUTCDate(date.getUTCDate() + 1);
-                        const minDateStr = date.toISOString().split('T')[0];
-                        stayFormEnd.setAttribute('min', minDateStr);
-                        if (stayFormEnd.value && stayFormEnd.value < minDateStr) {
-                            stayFormEnd.value = '';
-                        }
-                    } else {
-                        stayFormEnd.removeAttribute('min');
-                    }
-                });
-            }
-        });
+        // Auto-guided min dates validation for checkout is now handled inline within Flatpickr initialization.
 
         // --- STAY NOTE HELPER FUNCTIONS ---
 
@@ -3252,17 +3528,12 @@
             const notesText = noteObj ? noteObj.notes : '';
             const timestamp = noteObj ? noteObj.notes_updated_at : '';
 
-            document.getElementById('noteReaderDates').innerText = `${startDate} - ${endDate}`;
+            document.getElementById('noteReaderDates').innerText = `${formatToUIDate(startDate)} - ${formatToUIDate(endDate)}`;
             document.getElementById('noteReaderContent').innerText = notesText;
             
             let timeStr = '';
             if (timestamp) {
-                try {
-                    const d = new Date(timestamp);
-                    timeStr = `Son Güncelleme: ${d.toLocaleDateString('tr-TR')} ${d.toLocaleTimeString('tr-TR')}`;
-                } catch(e) {
-                    timeStr = `Son Güncelleme: ${timestamp}`;
-                }
+                timeStr = `Last Update: ${formatToUIDatetime(timestamp)}`;
             }
             document.getElementById('noteReaderTimestamp').innerText = timeStr;
             document.getElementById('noteReaderModal').style.display = 'flex';
@@ -3280,7 +3551,7 @@
             const notesText = noteObj ? noteObj.notes : '';
 
             document.getElementById('note-stay-id').value = stayId;
-            document.getElementById('noteEditorDates').innerText = `${startDate} - ${endDate}`;
+            document.getElementById('noteEditorDates').innerText = `${formatToUIDate(startDate)} - ${formatToUIDate(endDate)}`;
             document.getElementById('note-editor-text').value = notesText;
             document.getElementById('noteEditorModal').style.display = 'flex';
         }
@@ -3299,19 +3570,19 @@
             const saveBtn = document.getElementById('note-save-btn');
 
             if (!stayId) {
-                alert("Konaklama bilgisi bulunamadı.");
+                alert("Stay info not found.");
                 return;
             }
 
             if (!noteText) {
-                alert("Lütfen not içeriğini boş bırakmayınız.");
+                alert("Please do not leave the note empty.");
                 return;
             }
 
             try {
                 if (saveBtn) {
                     saveBtn.disabled = true;
-                    saveBtn.innerText = "Kaydediliyor...";
+                    saveBtn.innerText = "Saving...";
                 }
 
                 const { error } = await supabase
@@ -3324,18 +3595,18 @@
 
                 if (error) throw error;
 
-                alert("Not başarıyla kaydedildi.");
+                alert("Note successfully saved.");
                 closeNoteEditorModal();
                 if (currentGuestId) {
                     await fetchStaysForGuest(currentGuestId);
                 }
             } catch (err) {
                 console.error("Save Note Error:", err);
-                alert("Not kaydedilemedi: " + err.message);
+                alert("Failed to save note: " + err.message);
             } finally {
                 if (saveBtn) {
                     saveBtn.disabled = false;
-                    saveBtn.innerText = "Kaydet";
+                    saveBtn.innerText = "Save";
                 }
             }
         }
@@ -3345,7 +3616,7 @@
 
             if (!stayId) return;
 
-            if (!confirm(`Bu konaklamaya ait notu silmek istediğinizden emin misiniz? (Tarihler: ${startDate} - ${endDate})`)) {
+            if (!confirm(`Are you sure you want to delete this stay note? (Dates: ${startDate} - ${endDate})`)) {
                 return;
             }
 
@@ -3357,13 +3628,361 @@
 
                 if (error) throw error;
 
-                alert("Not başarıyla silindi.");
+                alert("Note successfully deleted.");
                 if (currentGuestId) {
                     await fetchStaysForGuest(currentGuestId);
                 }
             } catch (err) {
                 console.error("Delete Note Error:", err);
-                alert("Not silinemedi: " + err.message);
+                alert("Failed to delete note: " + err.message);
+            }
+        }
+
+
+        // --- JOURNAL OVERVIEW MANAGEMENT ---
+
+        let currentStayId = null;
+        let currentStayStart = '';
+        let currentStayEnd = '';
+        let currentJournalEntries = [];
+
+        function getLocalCalendarDate(dateObj = new Date()) {
+            const year = dateObj.getFullYear();
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const day = String(dateObj.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function formatISODateToLocalDatetimeLocal(isoString) {
+            if (!isoString) return '';
+            const d = new Date(isoString);
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            const hours = String(d.getHours()).padStart(2, '0');
+            const minutes = String(d.getMinutes()).padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+
+        async function openJournalOverview(stayId, startDate, endDate) {
+            if (!(await checkSession())) return;
+
+            currentStayId = stayId;
+            currentStayStart = startDate;
+            currentStayEnd = endDate;
+
+            document.getElementById('journal-stay-id').value = stayId;
+            document.getElementById('journalOverviewDates').innerText = `Stay: ${formatToUIDate(startDate)} - ${formatToUIDate(endDate)}`;
+            document.getElementById('journalOverviewContent').innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">Loading...</div>';
+            document.getElementById('journalOverviewModal').style.display = 'flex';
+
+            try {
+                const { data, error } = await supabase
+                    .from('guest_journals')
+                    .select('*')
+                    .eq('stay_id', stayId)
+                    .order('entry_date', { ascending: false });
+
+                if (error) throw error;
+
+                currentJournalEntries = data || [];
+                const container = document.getElementById('journalOverviewContent');
+                container.innerHTML = '';
+
+                if (currentJournalEntries.length === 0) {
+                    container.innerHTML = '<div style="text-align: center; color: #888; padding: 30px; font-weight: bold;">No journal entries found yet.</div>';
+                    return;
+                }
+
+                currentJournalEntries.forEach(entry => {
+                    const card = document.createElement('div');
+                    card.style.background = '#f9f9f9';
+                    card.style.border = '1px solid #eee';
+                    card.style.borderRadius = '10px';
+                    card.style.padding = '15px';
+                    card.style.marginBottom = '10px';
+
+                    const entryDate = entry.entry_date;
+                    const hasUpdateMsg = entry.family_update_message ? '✔️' : '❌';
+                    const hasPrivateNote = entry.private_admin_note ? '✔️' : '❌';
+                    const hasGeneral = entry.general_condition_observations ? '✔️' : '❌';
+                    const hasHealth = entry.health_observations ? '✔️' : '❌';
+                    const isSent = entry.is_family_update_sent ? '<span style="color: #2ecc71; font-weight: bold;">Sent</span>' : '<span style="color: #e74c3c; font-weight: bold;">Not Sent</span>';
+
+                    card.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #ddd; padding-bottom: 8px; margin-bottom: 8px;">
+                            <span style="font-weight: bold; color: #4A4A4A; font-size: 1rem;">📅 ${formatToUIDate(entryDate)}</span>
+                            <span>${isSent}</span>
+                        </div>
+                        <div style="font-size: 0.85rem; color: #555; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                            <div><strong>Family Update:</strong> ${hasUpdateMsg}</div>
+                            <div><strong>Private Admin Note:</strong> ${hasPrivateNote}</div>
+                            <div><strong>General Condition:</strong> ${hasGeneral}</div>
+                            <div><strong>Health Condition:</strong> ${hasHealth}</div>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                            <button type="button" class="btn" style="padding: 4px 8px; font-size: 0.75rem; background: #3498db; color: white;" onclick="viewJournalEntry('${entry.id}')">View</button>
+                            <button type="button" class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.75rem;" onclick="editJournalEntry('${entry.id}')">Edit</button>
+                            <button type="button" class="btn btn-danger" style="padding: 4px 8px; font-size: 0.75rem;" onclick="deleteJournalEntry('${entry.id}')">Delete</button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (err) {
+                console.error('Fetch journals error:', err);
+                document.getElementById('journalOverviewContent').innerHTML = '<div style="text-align: center; color: #e74c3c; padding: 20px; font-weight: bold;">An error occurred while loading journal entries.</div>';
+            }
+        }
+
+        function closeJournalOverviewModal() {
+            document.getElementById('journalOverviewModal').style.display = 'none';
+            document.getElementById('journal-stay-id').value = '';
+            currentStayId = null;
+            currentStayStart = '';
+            currentStayEnd = '';
+            currentJournalEntries = [];
+        }
+
+        function createNewJournalEntry() {
+            document.getElementById('journal-entry-id').value = '';
+            document.getElementById('journal-entry-date').value = '';
+            document.getElementById('journal-family-message').value = '';
+            document.getElementById('journal-general-condition').value = '';
+            document.getElementById('journal-health-observations').value = '';
+            document.getElementById('journal-private-note').value = '';
+            document.getElementById('journal-is-sent').checked = false;
+            document.getElementById('journal-sent-time').value = '';
+            document.getElementById('journal-sent-time-group').style.display = 'none';
+
+            const errorDiv = document.getElementById('journal-editor-error');
+            errorDiv.style.display = 'none';
+            errorDiv.innerText = '';
+
+            document.getElementById('journalEditorTitle').innerText = 'New Journal Entry';
+            document.getElementById('journalEditorDates').innerText = `Stay: ${currentStayStart} - ${currentStayEnd}`;
+
+            const localToday = getLocalCalendarDate();
+            if (localToday >= currentStayStart && localToday <= currentStayEnd) {
+                document.getElementById('journal-entry-date').value = localToday;
+            }
+
+            document.getElementById('journalEditorModal').style.display = 'flex';
+        }
+
+        function toggleJournalSentTime() {
+            const isSent = document.getElementById('journal-is-sent').checked;
+            const group = document.getElementById('journal-sent-time-group');
+            const input = document.getElementById('journal-sent-time');
+
+            if (isSent) {
+                group.style.display = 'block';
+                if (!input.value) {
+                    const now = new Date();
+                    const year = now.getFullYear();
+                    const month = String(now.getMonth() + 1).padStart(2, '0');
+                    const day = String(now.getDate()).padStart(2, '0');
+                    const hours = String(now.getHours()).padStart(2, '0');
+                    const minutes = String(now.getMinutes()).padStart(2, '0');
+                    input.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+                }
+            } else {
+                group.style.display = 'none';
+                input.value = '';
+            }
+        }
+
+        function closeJournalEditorModal() {
+            document.getElementById('journalEditorModal').style.display = 'none';
+        }
+
+        async function saveJournalEntry() {
+            if (!(await checkSession())) return;
+
+            const errorDiv = document.getElementById('journal-editor-error');
+            errorDiv.style.display = 'none';
+            errorDiv.innerText = '';
+
+            const saveBtn = document.getElementById('journal-save-btn');
+            const entryId = document.getElementById('journal-entry-id').value;
+            const entryDate = document.getElementById('journal-entry-date').value.trim();
+            const familyMessage = document.getElementById('journal-family-message').value.trim();
+            const generalCondition = document.getElementById('journal-general-condition').value.trim();
+            const healthObservations = document.getElementById('journal-health-observations').value.trim();
+            const privateNote = document.getElementById('journal-private-note').value.trim();
+            const isSent = document.getElementById('journal-is-sent').checked;
+            const sentTime = document.getElementById('journal-sent-time').value;
+
+            if (!entryDate) {
+                errorDiv.innerText = "Please select a date.";
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            if (entryDate < currentStayStart || entryDate > currentStayEnd) {
+                errorDiv.innerText = `Date must be within stay dates (${currentStayStart} - ${currentStayEnd}).`;
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            const isDuplicate = currentJournalEntries.some(e => e.entry_date === entryDate && e.id !== entryId);
+            if (isDuplicate) {
+                errorDiv.innerText = "A journal entry for this date already exists. Please edit the existing entry.";
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            const hasContent = familyMessage || generalCondition || healthObservations || privateNote || isSent;
+            if (!hasContent) {
+                errorDiv.innerText = "Cannot save an empty journal entry. Please fill in at least one field or mark as sent.";
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            let sentTimeISO = null;
+            if (isSent && sentTime) {
+                sentTimeISO = new Date(sentTime).toISOString();
+            }
+
+            const payload = {
+                stay_id: currentStayId,
+                entry_date: entryDate,
+                family_update_message: familyMessage || null,
+                general_condition_observations: generalCondition || null,
+                health_observations: healthObservations || null,
+                private_admin_note: privateNote || null,
+                is_family_update_sent: isSent,
+                family_update_sent_at: sentTimeISO,
+                updated_at: new Date().toISOString()
+            };
+
+            try {
+                saveBtn.disabled = true;
+                saveBtn.innerText = "Saving...";
+
+                let error;
+                if (entryId) {
+                    const { error: err } = await supabase
+                        .from('guest_journals')
+                        .update(payload)
+                        .eq('id', entryId);
+                    error = err;
+                } else {
+                    const { error: err } = await supabase
+                        .from('guest_journals')
+                        .insert([payload]);
+                    error = err;
+                }
+
+                if (error) {
+                    if (error.code === '23505') {
+                        throw new Error("A journal entry for this date already exists. Please edit the existing entry.");
+                    }
+                    throw error;
+                }
+
+                closeJournalEditorModal();
+                await openJournalOverview(currentStayId, currentStayStart, currentStayEnd);
+            } catch (err) {
+                console.error("Save Journal Error:", err);
+                errorDiv.innerText = "Error: " + err.message;
+                errorDiv.style.display = 'block';
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerText = "Save";
+            }
+        }
+
+        function editJournalEntry(entryId) {
+            const entry = currentJournalEntries.find(e => e.id === entryId);
+            if (!entry) return;
+
+            const errorDiv = document.getElementById('journal-editor-error');
+            errorDiv.style.display = 'none';
+            errorDiv.innerText = '';
+
+            document.getElementById('journal-entry-id').value = entry.id;
+            setDateFieldValue('journal-entry-date', entry.entry_date);
+            document.getElementById('journal-family-message').value = entry.family_update_message || '';
+            document.getElementById('journal-general-condition').value = entry.general_condition_observations || '';
+            document.getElementById('journal-health-observations').value = entry.health_observations || '';
+            document.getElementById('journal-private-note').value = entry.private_admin_note || '';
+
+            const isSent = entry.is_family_update_sent;
+            document.getElementById('journal-is-sent').checked = isSent;
+
+            const sentTimeInput = document.getElementById('journal-sent-time');
+            const sentTimeGroup = document.getElementById('journal-sent-time-group');
+            if (isSent && entry.family_update_sent_at) {
+                sentTimeGroup.style.display = 'block';
+                setDateFieldValue('journal-sent-time', entry.family_update_sent_at);
+            } else {
+                sentTimeGroup.style.display = 'none';
+                setDateFieldValue('journal-sent-time', '');
+            }
+
+            document.getElementById('journalEditorTitle').innerText = 'Edit Journal Entry';
+            document.getElementById('journalEditorDates').innerText = `Stay: ${currentStayStart} - ${currentStayEnd}`;
+            document.getElementById('journalEditorModal').style.display = 'flex';
+        }
+
+        function viewJournalEntry(entryId) {
+            const entry = currentJournalEntries.find(e => e.id === entryId);
+            if (!entry) return;
+
+            document.getElementById('journalViewDates').innerText = `Stay: ${formatToUIDate(currentStayStart)} - ${formatToUIDate(currentStayEnd)}`;
+            document.getElementById('view-journal-date').innerText = formatToUIDate(entry.entry_date);
+
+            const formatVal = (val) => val ? val : '<span style="color: #888; font-weight: normal; font-style: normal; opacity: 0.7;">No entry</span>';
+
+            document.getElementById('view-journal-family-message').innerHTML = formatVal(entry.family_update_message);
+            document.getElementById('view-journal-general-condition').innerHTML = formatVal(entry.general_condition_observations);
+            document.getElementById('view-journal-health-observations').innerHTML = formatVal(entry.health_observations);
+            document.getElementById('view-journal-private-note').innerHTML = formatVal(entry.private_admin_note);
+
+            const isSent = entry.is_family_update_sent;
+            document.getElementById('view-journal-sent-status').innerHTML = isSent ? '<span style="color: #2ecc71;">Sent</span>' : '<span style="color: #e74c3c;">Not Sent</span>';
+
+            let sentTimeStr = 'No entry';
+            if (isSent && entry.family_update_sent_at) {
+                sentTimeStr = formatToUIDatetime(entry.family_update_sent_at);
+            }
+            document.getElementById('view-journal-sent-time').innerText = sentTimeStr;
+
+            let updatedAtStr = 'No entry';
+            if (entry.updated_at) {
+                updatedAtStr = formatToUIDatetime(entry.updated_at);
+            }
+            document.getElementById('view-journal-updated-at').innerText = updatedAtStr;
+
+            document.getElementById('journalViewModal').style.display = 'flex';
+        }
+
+        function closeJournalViewModal() {
+            document.getElementById('journalViewModal').style.display = 'none';
+        }
+
+        async function deleteJournalEntry(entryId) {
+            if (!(await checkSession())) return;
+
+            const entry = currentJournalEntries.find(e => e.id === entryId);
+            if (!entry) return;
+
+            if (!confirm(`Are you sure you want to delete this journal entry? (Date: ${entry.entry_date})`)) {
+                return;
+            }
+
+            try {
+                const { error } = await supabase
+                    .from('guest_journals')
+                    .delete()
+                    .eq('id', entryId);
+
+                if (error) throw error;
+
+                await openJournalOverview(currentStayId, currentStayStart, currentStayEnd);
+            } catch (err) {
+                console.error("Delete Journal Error:", err);
+                alert("Error: " + err.message);
             }
         }
 
@@ -3394,7 +4013,7 @@
                 .eq('fingerprint', fingerprint);
 
             if (error) {
-                console.error("Cihaz kontrol hatası:", error);
+                console.error("Device check error:", error);
                 return; // Fallback: allow if DB fails to prevent lockout
             }
 
@@ -3425,14 +4044,14 @@
                 .insert([{ user_id: user.id, code: otpCode, expires_at: expiresAt }]);
 
             if (error) {
-                console.error("OTP oluşturma hatası:", error);
-                alert("Doğrulama kodu oluşturulamadı. Lütfen tekrar deneyin.");
+                console.error("OTP generation error:", error);
+                alert("Failed to generate verification code. Please try again.");
                 return;
             }
 
             // 2. Mock SMS Notification
-            console.warn("🔐 GÜVENLİK BİLDİRİMİ: Yeni cihazdan giriş tespit edildi.");
-            console.log(`📱 [MOCK SMS] Sayın Admin, giriş kodunuz: ${otpCode}. Bu kod 10 dakika geçerlidir.`);
+            console.warn("🔐 SECURITY NOTICE: Login detected from a new device.");
+            console.log(`📱 [MOCK SMS] Dear Admin, your login code is: ${otpCode}. This code is valid for 10 minutes.`);
             
             // 3. Log the event
             await supabase.from('admin_security_logs').insert([{
@@ -3447,7 +4066,7 @@
             const errEl = document.getElementById('otp-error');
             
             if (!code || code.length !== 6) {
-                errEl.innerText = "Lütfen 6 haneli kodu giriniz.";
+                errEl.innerText = "Please enter the 6-digit code.";
                 errEl.style.display = 'block';
                 return;
             }
@@ -3464,7 +4083,7 @@
                 .limit(1);
 
             if (error || !data || data.length === 0) {
-                errEl.innerText = "Geçersiz veya süresi dolmuş kod.";
+                errEl.innerText = "Invalid or expired code.";
                 errEl.style.display = 'block';
                 return;
             }
@@ -3489,13 +4108,13 @@
             }]);
 
             document.getElementById('otpModal').style.display = 'none';
-            alert("Cihaz başarıyla doğrulandı ve güvenilir olarak kaydedildi.");
+            alert("Device successfully verified and saved as trusted.");
         }
 
         async function resendOTP() {
             const { data: { user } } = await supabase.auth.getUser();
             await start2FAFlow(user, current2FAFingerprint);
-            alert("Yeni kod gönderildi (Konsolu kontrol edin).");
+            alert("New code sent (Check the console).");
         }
 
         async function changePassword() {
@@ -3505,19 +4124,19 @@
             const msg = document.getElementById('password-msg');
 
             if (!current || !newPass || !confirm) {
-                msg.innerText = "Lütfen tüm alanları doldurun.";
+                msg.innerText = "Please fill in all fields.";
                 msg.style.color = "red"; msg.style.display = "block";
                 return;
             }
 
             if (newPass !== confirm) {
-                msg.innerText = "Yeni şifreler eşleşmiyor.";
+                msg.innerText = "New passwords do not match.";
                 msg.style.color = "red"; msg.style.display = "block";
                 return;
             }
 
             if (newPass.length < 6) {
-                msg.innerText = "Şifre en az 6 karakter olmalıdır.";
+                msg.innerText = "Password must be at least 6 characters long.";
                 msg.style.color = "red"; msg.style.display = "block";
                 return;
             }
@@ -3527,10 +4146,10 @@
             const { error: updateError } = await supabase.auth.updateUser({ password: newPass });
 
             if (updateError) {
-                msg.innerText = "Hata: " + updateError.message;
+                msg.innerText = "Error: " + updateError.message;
                 msg.style.color = "red"; msg.style.display = "block";
             } else {
-                msg.innerText = "Şifreniz başarıyla güncellendi.";
+                msg.innerText = "Password updated successfully.";
                 msg.style.color = "green"; msg.style.display = "block";
                 
                 document.getElementById('current-password').value = '';
@@ -3545,11 +4164,11 @@
         }
 
         async function logoutOthers() {
-            if (!confirm("Bu cihaz dışındaki tüm diğer oturumları kapatmak istediğinize emin misiniz?")) return;
+            if (!confirm("Are you sure you want to log out all sessions other than this device?")) return;
             const { error } = await supabase.auth.signOut({ scope: 'others' });
-            if (error) alert("Hata: " + error.message);
+            if (error) alert("Error: " + error.message);
             else {
-                alert("Diğer tüm oturumlar sonlandırıldı.");
+                alert("All other sessions have been terminated.");
                 fetchSecurityData();
             }
         }
@@ -3566,14 +4185,14 @@
                 deviceList.innerHTML = devices.map(d => `
                     <div class="device-item">
                         <div class="device-info">
-                            <div>${d.device_name || 'Bilinmeyen Cihaz'} ${d.fingerprint === currentFingerprint ? '<span class="device-current">(Bu Cihaz)</span>' : ''}</div>
-                            <div class="ip">Son Giriş: ${new Date(d.last_login).toLocaleString()}</div>
+                            <div>${d.device_name || 'Unknown Device'} ${d.fingerprint === currentFingerprint ? '<span class="device-current">(This Device)</span>' : ''}</div>
+                            <div class="ip">Last Login: ${formatToUIDatetime(d.last_login)}</div>
                         </div>
-                        ${d.fingerprint !== currentFingerprint ? `<button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.7rem;" onclick="revokeDevice('${d.id}')">Unut</button>` : ''}
+                        ${d.fingerprint !== currentFingerprint ? `<button class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.7rem;" onclick="revokeDevice('${d.id}')">Forget</button>` : ''}
                     </div>
                 `).join('');
             } else {
-                deviceList.innerHTML = '<div style="text-align: center; padding: 20px; color: #888;">Kayıtlı güvenilir cihaz yok.</div>';
+                deviceList.innerHTML = '<div style="text-align: center; padding: 20px; color: #888;">No trusted devices registered.</div>';
             }
 
             const { data: logs } = await supabase.from('admin_security_logs').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(20);
@@ -3582,28 +4201,28 @@
                 logsList.innerHTML = logs.map(l => `
                     <div style="padding: 8px 0; border-bottom: 1px solid #f9f9f9;">
                         <div style="font-weight: 500;">${formatAction(l.action)}</div>
-                        <div style="font-size: 0.75rem; color: #888;">${new Date(l.created_at).toLocaleString()}</div>
+                        <div style="font-size: 0.75rem; color: #888;">${formatToUIDatetime(l.created_at)}</div>
                     </div>
                 `).join('');
             } else {
-                logsList.innerHTML = '<div style="text-align: center; padding: 20px; color: #888;">Hareket kaydı yok.</div>';
+                logsList.innerHTML = '<div style="text-align: center; padding: 20px; color: #888;">No activity logs.</div>';
             }
         }
 
         function formatAction(action) {
             const maps = {
-                'password_change': '🔑 Şifre Değiştirildi',
-                'new_device_attempt': '⚠️ Yeni Cihaz Giriş Girişimi',
-                'new_device_verified': '✅ Yeni Cihaz Doğrulandı',
-                'device_revoked': '🗑️ Cihaz Güveni Kaldırıldı'
+                'password_change': '🔑 Password Changed',
+                'new_device_attempt': '⚠️ New Device Login Attempt',
+                'new_device_verified': '✅ New Device Verified',
+                'device_revoked': '🗑️ Device Trust Revoked'
             };
             return maps[action] || action;
         }
 
         async function revokeDevice(id) {
-            if (!confirm("Bu cihazın güvenini kaldırmak istediğinize emin misiniz? Bu cihazdan tekrar girildiğinde doğrulama istenecektir.")) return;
+            if (!confirm("Are you sure you want to revoke trust for this device? Verification will be required when logging in from this device again.")) return;
             const { error } = await supabase.from('admin_trusted_devices').delete().eq('id', id);
-            if (error) alert("Hata: " + error.message);
+            if (error) alert("Error: " + error.message);
             else {
                 const { data: { user } } = await supabase.auth.getUser();
                 await supabase.from('admin_security_logs').insert([{ user_id: user.id, action: 'device_revoked' }]);
@@ -3618,22 +4237,22 @@
     <div id="otpModal" class="modal" style="display: none; z-index: 10001; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);">
         <div class="modal-content" style="max-width: 400px; text-align: center; padding: 40px 30px;">
             <div style="font-size: 50px; margin-bottom: 20px;">🛡️</div>
-            <h2>Yeni Cihaz Doğrulaması</h2>
-            <p style="color: #666; margin-bottom: 20px;">Bu cihazı ilk kez kullanıyorsunuz. Güvenliğiniz için 6 haneli doğrulama kodunu giriniz.</p>
+            <h2>New Device Verification</h2>
+            <p style="color: #666; margin-bottom: 20px;">You are using this device for the first time. For your security, please enter the 6-digit verification code.</p>
             
             <div class="otp-input-group">
                 <input type="text" maxlength="6" id="otp-code" class="otp-digit" style="width: 200px; letter-spacing: 10px; padding-left: 15px;" placeholder="000000">
             </div>
 
-            <button type="button" class="btn" style="width: 100%; height: 50px; font-size: 1.1rem;" onclick="verifyOTP()">Doğrula ve Giriş Yap</button>
+            <button type="button" class="btn" style="width: 100%; height: 50px; font-size: 1.1rem;" onclick="verifyOTP()">Verify and Log In</button>
             <p id="otp-error" style="color: red; margin-top: 15px; display: none;"></p>
             
             <div style="margin-top: 25px; font-size: 0.9rem;">
-                <span style="color: #888;">Kod gelmedi mi?</span>
-                <button type="button" class="btn-link" style="background: none; border: none; color: #D9A3A3; cursor: pointer; text-decoration: underline;" onclick="resendOTP()">Tekrar Gönder</button>
+                <span style="color: #888;">Code not received?</span>
+                <button type="button" class="btn-link" style="background: none; border: none; color: #D9A3A3; cursor: pointer; text-decoration: underline;" onclick="resendOTP()">Resend</button>
             </div>
             
-            <p style="margin-top: 20px; font-size: 0.8rem; color: #aaa;">Not: SMS altyapısı henüz aktif değilse, kodu tarayıcı konsolunda (F12) görebilirsiniz.</p>
+            <p style="margin-top: 20px; font-size: 0.8rem; color: #aaa;">Note: If the SMS system is not active yet, you can see the code in the browser console (F12).</p>
         </div>
     </div>
 
